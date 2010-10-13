@@ -1,0 +1,6 @@
+*.log
+*.pdf
+*.make
+*.aux
+*.d
+*.fls

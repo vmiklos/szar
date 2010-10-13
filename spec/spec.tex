@@ -1,0 +1,110 @@
+\documentclass[a4paper,12pt]{article}
+
+\sloppy
+\frenchspacing
+
+\usepackage[left=4cm,top=4cm,right=4cm,bottom=4cm,nohead,nofoot]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[magyar]{babel}
+\usepackage{listings}
+\usepackage{multicol}
+
+\title{Szoftverarchitektúrák (VIAUM105)\\Egyszerű verziókövető rendszer\\Házi feladat dokumentáció}
+\author{Vajna Miklós (AYU9RZ)\\Veres-Szentkirályi András (YZIOAW)}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\lstset{numbers=left, numberstyle=\tiny, basicstyle=\ttfamily, breaklines=true, frame=single, tabsize=2}
+
+\pagebreak
+\onehalfspacing
+\section{Feladat leírás}
+
+Tegyük fel, hogy többen akarnak egy nagy adatbázist közösen megtervezni. Mivel
+a modellező program nem támogatja a verzió követést, de SQL DDL scriptet vissza
+tud olvasni. Ezért mindenki create script-ek formájában kiexportálja a
+változtatás utáni verziót, melyet feltölt a közös tárhelybe. Ott az egyes
+verziók összefésülődnek, majd mindenki letöltheti azt a verziót, mely már
+minden változtatást tartalmaz. A program támogassa a kizárólagos és konkurens
+hozzáférést, valamint az összefésülést. Vagyis ha két fejlesztő párhuzamosan
+módosít egy create script-et, akkor mindkettő módosításai jelenjenek meg az
+eredményben, vagy ha automatikusan feloldhatatlan ütközés van, akkor a program
+támogassa annak feloldását.
+
+\section{Követelmény specifikáció}
+\subsection{A program informális leírása}
+
+A program egy központosított verzikezelő rendszer funkcionalitásának
+részhalmazát kívánja megvalósítani. A rendszer csak szöveges file-okat kezel,
+melyeken a következő operációkat támogatja:
+
+\begin{itemize}
+\item létrehozás - ez csak akkor sikeres, ha a megadott egyedi névvel még nem létezik script
+\item letöltés - már létező script tetszőleges verziójának eléréséhez
+\item frissítés - ez a feltöltés azon esete, mikor már egy letöltött scriptet töltünk fel újra
+\item törlés
+\item zárolás - kizárólagos hozzáféréshez
+\item zárolás megszüntetése
+\item történet - egy script elérhető verzióit adja meg
+\end{itemize}
+
+\subsubsection{Konkurens hozzáférés támogatása}
+
+Az ütközéseket - mikor két felhasználó is letölti ugyanazt a verziót, majd a
+második felhasználó is visszatölti a scriptet - 3-way merge algoritmussal
+valósítjuk meg. Ennek alapja, hogy a merge-ölendő két dokumentumnak ismert a
+közös őse. Ezt úgy biztosítjuk, hogy a scripteket pozitív nemnulla integer
+számokkal látjuk el, melyek a módosítások hatására növelődnek. Letöltéskor a
+kliens eltárolja a letöltött script verzióját, és feltöltéskor ha a legfrissebb
+verzió változott, akkor a helyi, a letöltött és a serveren lévő scriptek között
+végez merge-ölést. Ha ez automatikusan nem megoldható, a kliens conflict
+markereket helyez el a scriptben majd kézi feloldás után ennek eredményét tölti
+a serverre.
+
+\subsubsection{Felhasználók kezelése}
+
+A rendszert csak jelszóval azonosított felhasználók használhatják. A
+felhasználók kezeléséhez egy adminisztrációs interfész készül, mely a következő
+funkcionalitással bír:
+
+\begin{itemize}
+\item felhasználó létrehozása (azonosítás email címmel)
+\item felhasználó adatainak megváltoztatása (teljes név, jelszó)
+\item felhasználó törlése
+\end{itemize}
+
+\section{A megvalósítás részletei}
+
+Az alkalmazást 3 rétegű architektúrával valósítjuk meg:
+
+\begin{itemize}
+\item Az adatokat MySQL adatbáziskezelőben tároljuk, adateléréshez QtSql-t használunk.
+\item Az üzleti logikát (merge-ölés, stb.) egy központi helyen futó, felhasználói
+felülettel nem rendelkező server alkalmazás tartalmazza, kizárólag ennek van
+közvetlen hozzáférése az adatbázishoz.
+\item A harmadik réteg a Qt keretrendszerrel készített grafikus felhasználói felület,
+mely Corba keretrendszer mico implementációját használja a serverrel való
+kommunikációra.
+\end{itemize}
+
+A szoftvert C++ nyelven írjuk, a forráskód, tesztesetek és dokumentációt a git
+verziókezelő használatával kezeljük a kollaboráció megkönnyítésé érdekében.
+
+A rendszer legfontosabb funkcióit a cppunit keretrendszer segítségével
+automatikusan tesztelhetővé tesszük.
+
+A dokumentáció 3 formában készül el:
+\begin{itemize}
+\item a fejlesztői dokumentációt doxygen megjegyzések formájában a forráskódban
+helyezzük el
+\item a felhasználói dokumentációt \TeX{} nyelven
+\item a telepítési dokumentációt szintén
+\end{itemize}
+
+A fejlesztést Linux operációs rendszer alatt végezzük, de az összes komponens
+gondosan így lett kiválasztva, hogy a szoftver hordozható maradjon, így más
+UNIX vagy akár Windows rendszerre is könnyen portolható legyen.
+
+\end{document}
