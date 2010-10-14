@@ -84,9 +84,8 @@ Az alkalmazást háromrétegű architektúrával valósítjuk meg:
 \item Az üzleti logikát (merge-ölés, stb.) egy központi helyen futó, felhasználói
 felülettel nem rendelkező server alkalmazás tartalmazza, kizárólag ennek van
 közvetlen hozzáférése az adatbázishoz.
-\item A harmadik réteg a Qt keretrendszerrel készített grafikus felhasználói felület,
-mely CORBA keretrendszer mico implementációját használja a serverrel való
-kommunikációra.
+\item A harmadik réteg a Qt keretrendszerrel készített GUI, mely CORBA
+keretrendszer mico implementációját használja a serverrel való kommunikációra.
 \end{itemize}
 
 A szoftvert C++ nyelven írjuk, a forráskód, tesztesetek és dokumentációt a git
