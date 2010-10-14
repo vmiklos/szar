@@ -77,7 +77,7 @@ funkcionalitással bír:
 
 \section{A megvalósítás részletei}
 
-Az alkalmazást 3 rétegű architektúrával valósítjuk meg:
+Az alkalmazást háromrétegű architektúrával valósítjuk meg:
 
 \begin{itemize}
 \item Az adatokat MySQL adatbáziskezelőben tároljuk, adateléréshez QtSql-t használunk.
@@ -85,7 +85,7 @@ Az alkalmazást 3 rétegű architektúrával valósítjuk meg:
 felülettel nem rendelkező server alkalmazás tartalmazza, kizárólag ennek van
 közvetlen hozzáférése az adatbázishoz.
 \item A harmadik réteg a Qt keretrendszerrel készített grafikus felhasználói felület,
-mely Corba keretrendszer mico implementációját használja a serverrel való
+mely CORBA keretrendszer mico implementációját használja a serverrel való
 kommunikációra.
 \end{itemize}
 
@@ -97,7 +97,7 @@ automatikusan tesztelhetővé tesszük.
 
 A dokumentáció 3 formában készül el:
 \begin{itemize}
-\item a fejlesztői dokumentációt doxygen megjegyzések formájában a forráskódban
+\item a fejlesztői dokumentációt Doxygen megjegyzések formájában a forráskódban
 helyezzük el
 \item a felhasználói dokumentációt \TeX{} nyelven
 \item a telepítési dokumentációt szintén
