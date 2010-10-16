@@ -77,6 +77,8 @@ funkcionalitással bír:
 
 \section{A megvalósítás részletei}
 
+\subsection{Architektúra}
+
 Az alkalmazást háromrétegű architektúrával valósítjuk meg:
 
 \begin{itemize}
@@ -88,6 +90,8 @@ közvetlen hozzáférése az adatbázishoz.
 keretrendszer omniORB implementációját használja a serverrel való kommunikációra.
 \end{itemize}
 
+\subsection{Felhasznált nyelvek és eszközök}
+
 A szoftvert C++ nyelven írjuk, a forráskód, tesztesetek és dokumentációt a git
 verziókezelő használatával kezeljük a kollaboráció megkönnyítésé érdekében.
 
@@ -98,6 +102,8 @@ deb csomagot készítünk mind a kliensből, mind a szerverből.
 A rendszer legfontosabb funkcióit a cppunit keretrendszer segítségével
 automatikusan tesztelhetővé tesszük.
 
+\subsection{Dokumentáció}
+
 A dokumentáció 3 formában készül el:
 \begin{itemize}
 \item a fejlesztői dokumentációt Doxygen megjegyzések formájában a forráskódban
@@ -105,6 +111,8 @@ helyezzük el
 \item a felhasználói dokumentációt \TeX{} nyelven
 \item a telepítési dokumentációt szintén
 \end{itemize}
+
+\subsection{Platform}
 
 A fejlesztést Linux operációs rendszer alatt végezzük, de az összes komponens
 gondosan így lett kiválasztva, hogy a szoftver hordozható maradjon, így más
