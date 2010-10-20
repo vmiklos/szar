@@ -1,0 +1,107 @@
+module VersionControl {
+	// Typedefs
+	typedef string ModelData;
+
+	// Enumerations
+	enum AccessLevel { Read, ReadWrite };
+
+	// Exceptions without parameters
+	exception AccessDenied {};
+	exception InvalidUser {};
+	exception InvalidRevision {};
+
+	// Interface for user information
+	interface User {
+		string getName();
+		boolean getAdmin();
+	};
+
+	// User - Access tuple
+	struct UserAccess {
+		User grantee;
+		AccessLevel level;
+	};
+
+	// User is already assigned to the model
+	exception UserAlreadyAssigned {
+		UserAccess access;
+	};
+
+	typedef sequence<UserAccess> UserAccessSeq;
+
+	// Interface for user administration
+	interface UserAdmin : User {
+		void setPassword(in string password);
+		void setAdmin(in boolean admin) raises (InvalidUser); // inaccessible for users
+	};
+
+	typedef sequence<UserAdmin> UserAdminSeq;
+
+	// Model is locked by another user
+	exception LockedException {
+		User lockedBy;
+	};
+
+	// The interface of a single revision of a model
+	interface Revision {
+		unsigned long getNumber();
+		string getData();
+		User getAuthor();
+	};
+
+	typedef sequence<Revision> RevisionSeq;
+
+	// The interface of models (the object being tracked)
+	interface Model {
+		string getName();
+		RevisionSeq getRevisions();
+		Revision getRevision(in unsigned long number);
+		Revision getCurrentRevision();
+		void commit(in ModelData data) raises (LockedException);
+		void lock() raises (LockedException);
+		void unlock() raises (LockedException); // not raised for admins
+	};
+
+	// Interface for model administration
+	interface ModelAdmin : Model {
+		UserAccessSeq getUsers();
+		void setName(in string name);
+		void removeUser(in User toRemove) raises (InvalidUser);
+		void changeUserLevel(in User toChange, in AccessLevel access) raises (InvalidUser);
+		void addUser(in UserAccess access) raises (UserAlreadyAssigned);
+		void removeRevision(in Revision toRemove) raises (InvalidRevision);
+		void removeModel();
+	};
+
+	typedef sequence<ModelAdmin> ModelAdminSeq;
+
+	// A model with this name already exists
+	exception AlreadyExistsException {
+		Model existingModel;
+	};
+
+	typedef sequence<Model> ModelSeq;
+
+	// The interface for administrators ("director room")
+	interface Admin {
+		Model addModel(in string name) raises (AlreadyExistsException);
+		UserAdmin addUser(in string name);
+		UserAdminSeq getUsers();
+		UserAdmin findUser(in string name);
+		void removeUser(in UserAdmin user);
+		ModelAdmin getModelAdmin(in Model target);
+	};
+
+	// The interface for logged-in users ("hallway")
+	interface Root {
+		Admin getAdmin();
+		ModelSeq getModels();
+		Model getModel(in string name);
+		UserAdmin getMyUser();
+	};
+
+	// The only interface with network-facing implementation ("door")
+	interface Auth {
+		Root login(in string username, in string password);
+	};
+};
