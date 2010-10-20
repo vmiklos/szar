@@ -102,6 +102,6 @@ module VersionControl {
 
 	// The only interface with network-facing implementation ("door")
 	interface Auth {
-		Root login(in string username, in string password);
+		Root login(in string username, in string password) raises (AccessDenied);
 	};
 };
