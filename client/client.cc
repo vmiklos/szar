@@ -15,7 +15,12 @@ int main (int argc, char **argv)
 		if( CORBA::is_nil(authref) )
 			cerr << "The object reference is nil!" << endl;
 
-		authref->login("foobar", "bazqux");
+		try {
+			authref->login("foobar", "bazqux");
+		}
+		catch (VersionControl::AccessDenied& e) {
+			cerr << "Access denied" << endl;
+		}
 
 		// corba deinit
 		orb->destroy();
