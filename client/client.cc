@@ -21,6 +21,9 @@ int main (int argc, char **argv)
 		catch (VersionControl::AccessDenied& e) {
 			cerr << "Access denied" << endl;
 		}
+		catch (VersionControl::DbError& e) {
+			cerr << "Database error" << endl;
+		}
 
 		// corba deinit
 		orb->destroy();

@@ -24,6 +24,6 @@ VersionControl::Root_ptr AuthImpl::login(const char* username, const char* passw
 			}
 		}
 	}
-	// TODO throw db error exception
+	throw VersionControl::DbError();
 	return VersionControl::Root::_nil();
 }
