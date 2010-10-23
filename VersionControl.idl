@@ -87,7 +87,6 @@ module VersionControl {
 		Model addModel(in string name) raises (AlreadyExistsException);
 		UserAdmin addUser(in string name);
 		UserAdminSeq getUsers();
-		UserAdmin findUser(in string name);
 		void removeUser(in UserAdmin user);
 		ModelAdmin getModelAdmin(in Model target);
 	};
