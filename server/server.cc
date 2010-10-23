@@ -4,8 +4,6 @@
 
 using namespace std;
 
-QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-
 class AuthImpl : public POA_VersionControl::Auth
 {
 public:
@@ -15,6 +13,7 @@ public:
 
 VersionControl::Root_ptr AuthImpl::login(const char* username, const char* password)
 {
+	QSqlDatabase db = QSqlDatabase::database();
 	cerr << "[debug] LOGIN " << username << " / " << password << endl;
 	QSqlQuery q(db);
 	q.prepare(QString("SELECT id, admin FROM users "
@@ -41,6 +40,7 @@ VersionControl::Root_ptr AuthImpl::login(const char* username, const char* passw
 }
 
 bool db_init() {
+	QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
 	db.setHostName("localhost");
 	db.setDatabaseName("swar");
 	db.setUserName("root");
@@ -80,6 +80,7 @@ int main(int argc, char **argv)
 		cerr << "  line: " << fe.line() << endl;
 		cerr << "  mesg: " << fe.errmsg() << endl;
 	}
+	QSqlDatabase db = QSqlDatabase::database();
 	db.close();
 	return 0;
 }
