@@ -7,13 +7,15 @@ module VersionControl {
 
 	// Exceptions without parameters
 	exception AccessDenied {};
+	exception DbError {};
 	exception InvalidUser {};
+	exception InvalidModel {};
 	exception InvalidRevision {};
 
 	// Interface for user information
 	interface User {
-		string getName();
-		boolean getAdmin();
+		string getName() raises (DbError);
+		boolean getAdmin() raises (DbError);
 	};
 
 	// User - Access tuple
@@ -31,8 +33,8 @@ module VersionControl {
 
 	// Interface for user administration
 	interface UserAdmin : User {
-		void setPassword(in string password);
-		void setAdmin(in boolean admin) raises (InvalidUser); // inaccessible for users
+		void setPassword(in string password) raises (DbError);
+		void setAdmin(in boolean admin) raises (InvalidUser, DbError); // inaccessible for users
 	};
 
 	typedef sequence<UserAdmin> UserAdminSeq;
@@ -45,32 +47,32 @@ module VersionControl {
 	// The interface of a single revision of a model
 	interface Revision {
 		unsigned long getNumber();
-		string getData();
-		User getAuthor();
+		string getData() raises (DbError);
+		User getAuthor() raises (DbError);
 	};
 
 	typedef sequence<Revision> RevisionSeq;
 
 	// The interface of models (the object being tracked)
 	interface Model {
-		string getName();
-		RevisionSeq getRevisions();
-		Revision getRevision(in unsigned long number);
-		Revision getCurrentRevision();
-		void commit(in ModelData data) raises (LockedException);
-		void lock() raises (LockedException);
-		void unlock() raises (LockedException); // not raised for admins
+		string getName() raises (DbError);
+		RevisionSeq getRevisions() raises (DbError);
+		Revision getRevision(in unsigned long number) raises (DbError);
+		Revision getCurrentRevision() raises (DbError);
+		void commit(in ModelData data) raises (LockedException, DbError);
+		void lock() raises (LockedException, DbError);
+		void unlock() raises (LockedException, DbError); // LE not raised for admins
 	};
 
 	// Interface for model administration
 	interface ModelAdmin : Model {
 		UserAccessSeq getUsers();
-		void setName(in string name);
-		void removeUser(in User toRemove) raises (InvalidUser);
-		void changeUserLevel(in User toChange, in AccessLevel access) raises (InvalidUser);
-		void addUser(in UserAccess access) raises (UserAlreadyAssigned);
-		void removeRevision(in Revision toRemove) raises (InvalidRevision);
-		void removeModel();
+		void setName(in string name) raises (DbError);
+		void removeUser(in User toRemove) raises (InvalidUser, DbError);
+		void changeUserLevel(in User toChange, in AccessLevel access) raises (InvalidUser, DbError);
+		void addUser(in UserAccess access) raises (UserAlreadyAssigned, DbError);
+		void removeRevision(in Revision toRemove) raises (InvalidRevision, DbError);
+		void removeModel() raises (DbError);
 	};
 
 	typedef sequence<ModelAdmin> ModelAdminSeq;
@@ -84,23 +86,23 @@ module VersionControl {
 
 	// The interface for administrators ("director room")
 	interface Admin {
-		Model addModel(in string name) raises (AlreadyExistsException);
-		UserAdmin addUser(in string name);
-		UserAdminSeq getUsers();
-		void removeUser(in UserAdmin user);
+		Model addModel(in string name) raises (AlreadyExistsException, DbError);
+		UserAdmin addUser(in string name) raises (DbError);
+		UserAdminSeq getUsers() raises (DbError);
+		void removeUser(in UserAdmin user) raises (DbError);
 		ModelAdmin getModelAdmin(in Model target);
 	};
 
 	// The interface for logged-in users ("hallway")
 	interface Root {
 		Admin getAdmin();
-		ModelSeq getModels();
-		Model getModel(in string name);
+		ModelSeq getModels() raises (DbError);
+		Model getModel(in string name) raises (InvalidModel, DbError);
 		UserAdmin getMyUser();
 	};
 
 	// The only interface with network-facing implementation ("door")
 	interface Auth {
-		Root login(in string username, in string password) raises (AccessDenied);
+		Root login(in string username, in string password) raises (AccessDenied, DbError);
 	};
 };
