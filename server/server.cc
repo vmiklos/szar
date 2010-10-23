@@ -34,6 +34,12 @@ int main(int argc, char **argv)
 		poa->activate_object_with_id(id, auth);
 		cout << "Activated" << endl;
 
+		// activate RootPOA too
+		obj = orb->resolve_initial_references("RootPOA");
+		poa = PortableServer::POA::_narrow(obj);
+		pman = poa->the_POAManager();
+		pman->activate();
+
 		// Enter main loop
 		orb->run();
 	} catch(CORBA::SystemException& ex) {

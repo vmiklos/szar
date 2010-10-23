@@ -20,10 +20,12 @@ VersionControl::Root_ptr AuthImpl::login(const char* username, const char* passw
 				QString admin = r.value("admin").toString();
 				cout << "Result: ID = " << id.toStdString() <<
 					" admin = " << admin.toStdString() << endl;
-				// TODO return Root object
+				int uid = r.value("id").toInt();
+				UserRoot *impl = new UserRoot();
+				impl->setUid(uid);
+				return impl->_this();
 			}
 		}
 	}
 	throw VersionControl::DbError();
-	return VersionControl::Root::_nil();
 }

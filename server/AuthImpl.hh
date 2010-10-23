@@ -1,5 +1,6 @@
 #include <iostream>
 #include <VersionControl.hh>
+#include <UserRoot.hh>
 #include <QtSql>
 
 using namespace std;
