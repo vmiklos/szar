@@ -1,7 +1,10 @@
 #include <iostream>
 #include <VersionControl.hh>
+#include <QtSql>
 
 using namespace std;
+
+QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
 
 class AuthImpl : public POA_VersionControl::Auth
 {
@@ -14,11 +17,44 @@ public:
 VersionControl::Root_ptr AuthImpl::login(const char* username, const char* password)
 {
 	cerr << "[debug] LOGIN " << username << " / " << password << endl;
+	QSqlQuery q(db);
+	q.prepare(QString("SELECT id, admin FROM users "
+		"WHERE username = :username AND password = SHA1(:password)"));
+	q.bindValue(QString(":username"), QVariant(username));
+	q.bindValue(QString(":password"), QVariant(password));
+	if (q.exec()) {
+		if (q.size() < 1) {
+			cout << "Result: authentication failure" << endl;
+			throw VersionControl::AccessDenied();
+		} else {
+			if (q.next()) {
+				QSqlRecord r = q.record();
+				QString id = r.value("id").toString();
+				QString admin = r.value("admin").toString();
+				cout << "Result: ID = " << id.toStdString() <<
+					" admin = " << admin.toStdString() << endl;
+				// TODO return Root object
+			}
+		}
+	}
+	// TODO throw db error exception
 	return VersionControl::Root::_nil();
+}
+
+bool db_init() {
+	db.setHostName("localhost");
+	db.setDatabaseName("swar");
+	db.setUserName("root");
+	db.setPassword("");
+	return db.open();
 }
 
 int main(int argc, char **argv)
 {
+	if (!db_init()) {
+		cerr << "Could not connect to MySQL" << endl;
+		return 1;
+	}
 	try {
 		// CORBA init
 		CORBA::ORB_var orb = CORBA::ORB_init(argc, argv);
@@ -45,5 +81,6 @@ int main(int argc, char **argv)
 		cerr << "  line: " << fe.line() << endl;
 		cerr << "  mesg: " << fe.errmsg() << endl;
 	}
+	db.close();
 	return 0;
 }
