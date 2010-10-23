@@ -1,0 +1,1 @@
+Build procedure: qmake-qt4 && make stub && make
