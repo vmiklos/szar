@@ -10,7 +10,6 @@ class AuthImpl : public POA_VersionControl::Auth
 {
 public:
 	inline AuthImpl() {}
-	virtual ~AuthImpl() {}
 	virtual VersionControl::Root_ptr login(const char* username, const char* password);
 };
 
