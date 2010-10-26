@@ -4,6 +4,7 @@
 #include <VersionControl.hh>
 #include <UserRoot.hh>
 #include <QtSql>
+#include <QCryptographicHash>
 
 using namespace std;
 
