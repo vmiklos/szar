@@ -13,16 +13,16 @@ public:
 	void setUp()
 	{
 		// setup up the db & corba server
-		test_server_init("LoginTest");
+		test_server_init((char*)"LoginTest");
 
 		// set up the client
 		int argc = 5;
 		char* argv[] = {
-			"",
-			"-ORBInitRef",
-			"AuthService=corbaloc:iiop:localhost:31337/AuthService",
-			"-ORBnativeCharCodeSet",
-			"UTF-8"
+			(char*)"",
+			(char*)"-ORBInitRef",
+			(char*)"AuthService=corbaloc:iiop:localhost:31337/AuthService",
+			(char*)"-ORBnativeCharCodeSet",
+			(char*)"UTF-8"
 		};
 		orb = CORBA::ORB_init(argc, argv);
 		obj = orb->resolve_initial_references("AuthService");

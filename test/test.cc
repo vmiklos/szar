@@ -30,11 +30,11 @@ void test_server_init(char *name) {
 		// start the server
 		int argc_ = 5;
 		char* argv_[] = {
-			"",
-			"-ORBendPoint",
-			"giop:tcp::31337",
-			"-ORBnativeCharCodeSet",
-			"UTF-8"
+			(char*)"",
+			(char*)"-ORBendPoint",
+			(char*)"giop:tcp::31337",
+			(char*)"-ORBnativeCharCodeSet",
+			(char*)"UTF-8"
 		};
 		corba_run(argc_, argv_);
 		exit(1);
@@ -50,6 +50,8 @@ void test_server_destroy() {
 
 int main(int argc, char ** argv)
 {
+	argc = argc, argv = argv;
+
 	CppUnit::TextUi::TestRunner runner;
 
 	runner.addTest( LoginTest::suite() );
