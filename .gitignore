@@ -5,5 +5,6 @@
 *.d
 *.fls
 *.o
+*.swp
 stub
 Makefile

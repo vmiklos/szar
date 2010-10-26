@@ -1,3 +1,5 @@
+#ifndef _USERROOT_H
+#define _USERROOT_H
 #include <iostream>
 #include <VersionControl.hh>
 
@@ -14,3 +16,4 @@ public:
 	virtual VersionControl::Model_ptr getModel(const char* name);
 	virtual VersionControl::UserAdmin_ptr getMyUser();
 };
+#endif
