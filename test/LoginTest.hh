@@ -1,10 +1,10 @@
-#include <iostream>
-#include <string>
-
-using namespace std;
-
 class LoginTest : public CppUnit::TestFixture
 {
+	CPPUNIT_TEST_SUITE(LoginTest);
+	CPPUNIT_TEST(testLoginSuccess);
+	CPPUNIT_TEST(testLoginFailure);
+	CPPUNIT_TEST_SUITE_END();
+
 public:
 	CORBA::ORB_ptr orb;
 	CORBA::Object_ptr obj;
@@ -57,17 +57,5 @@ public:
 			failed = 2;
 		}
 		CPPUNIT_ASSERT(failed == 1);
-	}
-
-	static CppUnit::TestSuite *suite()
-	{
-		CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite( "LoginTest" );
-		suiteOfTests->addTest( new CppUnit::TestCaller<LoginTest>( 
-					"testLoginSuccess",
-					&LoginTest::testLoginSuccess ) );
-		suiteOfTests->addTest( new CppUnit::TestCaller<LoginTest>( 
-					"testLoginFailure",
-					&LoginTest::testLoginFailure ) );
-		return suiteOfTests;
 	}
 };

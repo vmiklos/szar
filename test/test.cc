@@ -1,3 +1,6 @@
+#include <iostream>
+using namespace std;
+
 #include <cppunit/ui/text/TestRunner.h>
 
 #include <VersionControl.hh>
@@ -5,6 +8,7 @@
 #include <cppunit/TestAssert.h>
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
+#include <cppunit/extensions/HelperMacros.h>
 
 #include "LoginTest.hh"
 
