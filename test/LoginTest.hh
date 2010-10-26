@@ -12,18 +12,8 @@ public:
 
 	void setUp()
 	{
-		// setup up the db
-		if (!QSqlDatabase::contains("qt_sql_default_connection")) {
-			QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-			db.setHostName("localhost");
-			db.setDatabaseName("swar");
-			db.setUserName("root");
-			db.setPassword("");
-			CPPUNIT_ASSERT(db.open());
-		}
-
-		// set up the server
-		test_server_init();
+		// setup up the db & corba server
+		test_server_init("LoginTest");
 
 		// set up the client
 		int argc = 5;

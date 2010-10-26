@@ -5,9 +5,11 @@
 #include <iostream>
 using namespace std;
 
-#include <cppunit/ui/text/TestRunner.h>
-
 #include <VersionControl.hh>
+
+#include <QTextStream>
+
+#include <cppunit/ui/text/TestRunner.h>
 #include <cppunit/TestFixture.h>
 #include <cppunit/TestAssert.h>
 #include <cppunit/TestSuite.h>
@@ -16,7 +18,7 @@ using namespace std;
 
 #include "server_lib.hh"
 
-void test_server_init();
+void test_server_init(char *name);
 void test_server_destroy();
 
 #include "LoginTest.hh"
