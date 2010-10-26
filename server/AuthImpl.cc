@@ -30,6 +30,8 @@ VersionControl::Root_ptr AuthImpl::login(const char* username, const char* passw
 				return impl->_this();
 			}
 		}
+	} else {
+		cerr << "AuthImpl::login() Error occured during SQL query: " << q.lastError().text().toStdString() << endl;
 	}
 	throw VersionControl::DbError();
 }
