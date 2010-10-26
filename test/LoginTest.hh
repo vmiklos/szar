@@ -6,15 +6,11 @@ using namespace std;
 class LoginTest : public CppUnit::TestFixture
 {
 public:
+	CORBA::ORB_ptr orb;
+	CORBA::Object_ptr obj;
+	VersionControl::Auth_ptr authref;
+
 	void setUp()
-	{
-	}
-
-	void tearDown() 
-	{
-	}
-
-	void testLogin()
 	{
 		int argc = 5;
 		char* argv[] = {
@@ -24,20 +20,54 @@ public:
 			"-ORBnativeCharCodeSet",
 			"UTF-8"
 		};
-		CORBA::ORB_var orb = CORBA::ORB_init(argc, argv);
-		CORBA::Object_var obj = orb->resolve_initial_references("AuthService");
-		VersionControl::Auth_var authref = VersionControl::Auth::_narrow(obj);
+		orb = CORBA::ORB_init(argc, argv);
+		obj = orb->resolve_initial_references("AuthService");
+		authref = VersionControl::Auth::_narrow(obj);
 		CPPUNIT_ASSERT( !CORBA::is_nil(authref) );
-		authref->login("foobar", "bazqux");
+	}
+
+	void tearDown() 
+	{
+		CORBA::release(authref);
+		CORBA::release(obj);
 		orb->destroy();
+	}
+
+	void testLoginSuccess()
+	{
+		int failed = 0;
+		try {
+			authref->login("foobar", "bazqux");
+		} catch (VersionControl::AccessDenied& e) {
+			failed = 1;
+		} catch (VersionControl::DbError& e) {
+			failed = 2;
+		}
+		CPPUNIT_ASSERT(failed == 0);
+	}
+
+	void testLoginFailure()
+	{
+		int failed = 0;
+		try {
+			authref->login("foobarr", "bazqux");
+		} catch (VersionControl::AccessDenied& e) {
+			failed = 1;
+		} catch (VersionControl::DbError& e) {
+			failed = 2;
+		}
+		CPPUNIT_ASSERT(failed == 1);
 	}
 
 	static CppUnit::TestSuite *suite()
 	{
 		CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite( "LoginTest" );
 		suiteOfTests->addTest( new CppUnit::TestCaller<LoginTest>( 
-					"testLogin", 
-					&LoginTest::testLogin ) );
+					"testLoginSuccess",
+					&LoginTest::testLoginSuccess ) );
+		suiteOfTests->addTest( new CppUnit::TestCaller<LoginTest>( 
+					"testLoginFailure",
+					&LoginTest::testLoginFailure ) );
 		return suiteOfTests;
 	}
 };
