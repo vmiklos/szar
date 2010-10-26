@@ -12,6 +12,20 @@ public:
 
 	void setUp()
 	{
+		// setup up the db
+		if (!QSqlDatabase::contains("qt_sql_default_connection")) {
+			QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
+			db.setHostName("localhost");
+			db.setDatabaseName("swar");
+			db.setUserName("root");
+			db.setPassword("");
+			CPPUNIT_ASSERT(db.open());
+		}
+
+		// set up the server
+		test_server_init();
+
+		// set up the client
 		int argc = 5;
 		char* argv[] = {
 			"",
@@ -31,6 +45,11 @@ public:
 		CORBA::release(authref);
 		CORBA::release(obj);
 		orb->destroy();
+
+		test_server_destroy();
+
+		QSqlDatabase db = QSqlDatabase::database();
+		db.close();
 	}
 
 	void testLoginSuccess()

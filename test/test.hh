@@ -14,8 +14,9 @@ using namespace std;
 #include <cppunit/TestCaller.h>
 #include <cppunit/extensions/HelperMacros.h>
 
-#include "LoginTest.hh"
 #include "server_lib.hh"
 
 void test_server_init();
 void test_server_destroy();
+
+#include "LoginTest.hh"
