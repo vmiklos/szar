@@ -1,23 +1,8 @@
-#include <unistd.h>
-#include <sys/types.h>
-#include <signal.h>
+#include "test.hh"
 
-#include <iostream>
-using namespace std;
+pid_t pid = 0;
 
-#include <cppunit/ui/text/TestRunner.h>
-
-#include <VersionControl.hh>
-#include <cppunit/TestFixture.h>
-#include <cppunit/TestAssert.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
-#include <cppunit/extensions/HelperMacros.h>
-
-#include "LoginTest.hh"
-#include "server_lib.hh"
-
-bool db_init() {
+bool test_db_init() {
         QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
         db.setHostName("localhost");
         db.setDatabaseName("swar");
@@ -26,11 +11,7 @@ bool db_init() {
         return db.open();
 }
 
-int main(int argc, char ** argv)
-{
-	CppUnit::TextUi::TestRunner runner;
-	pid_t pid;
-
+void test_server_init() {
 	pid = fork();
 	if (pid == 0) {
 		// we are in the child, connect to the db and start the server
@@ -42,17 +23,28 @@ int main(int argc, char ** argv)
 			"-ORBnativeCharCodeSet",
 			"UTF-8"
 		};
-		db_init();
 		corba_run(argc_, argv_);
 	}
 	// give a little time to start up
 	sleep(1);
 
+}
+
+void test_server_destory() {
+	kill(pid, 15);
+}
+
+int main(int argc, char ** argv)
+{
+	CppUnit::TextUi::TestRunner runner;
+
+	test_db_init();
+	test_server_init();
+
 	runner.addTest( LoginTest::suite() );
 	runner.run();
 
-	// kill the server
-	kill(pid, 15);
+	test_server_destory();
 
 	return 0;
 }
