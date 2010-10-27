@@ -14,8 +14,8 @@ module VersionControl {
 
 	// Interface for user information
 	interface User {
-		string getName() raises (DbError);
-		boolean getAdmin() raises (DbError);
+		string getName() raises (DbError, InvalidUser);
+		boolean getAdmin() raises (DbError, InvalidUser);
 	};
 
 	// User - Access tuple
