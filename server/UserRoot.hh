@@ -2,6 +2,7 @@
 #define _USERROOT_H
 #include <iostream>
 #include <VersionControl.hh>
+#include "MyUserAdmin.hh"
 
 using namespace std;
 

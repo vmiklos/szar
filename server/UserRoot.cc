@@ -18,5 +18,9 @@ VersionControl::Model_ptr UserRoot::getModel(const char* name) {
 }
 
 VersionControl::UserAdmin_ptr UserRoot::getMyUser() {
-	return VersionControl::UserAdmin::_nil();
+	MyUserAdmin *mua = new MyUserAdmin();
+	mua->setUid(uid);
+	POA_VersionControl::UserAdmin_tie<MyUserAdmin> *uat =
+		new POA_VersionControl::UserAdmin_tie<MyUserAdmin>(mua);
+	return uat->_this();
 }
