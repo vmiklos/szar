@@ -1,6 +1,4 @@
 #include <iostream>
-#include <VersionControl.hh>
-#include "AuthImpl.hh"
 #include <QtSql>
 #include "server_lib.hh"
 
