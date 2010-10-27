@@ -34,7 +34,7 @@ module VersionControl {
 	// Interface for user administration
 	interface UserAdmin : User {
 		void setPassword(in string password) raises (DbError);
-		void setAdmin(in boolean admin) raises (InvalidUser, DbError); // inaccessible for users
+		void setAdmin(in boolean admin) raises (AccessDenied, DbError); // inaccessible for users
 	};
 
 	typedef sequence<UserAdmin> UserAdminSeq;
