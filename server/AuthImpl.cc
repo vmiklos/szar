@@ -9,10 +9,10 @@ VersionControl::Root_ptr AuthImpl::login(const char* username, const char* passw
 	sha1.addData(password, strlen(password));
 	QByteArray sha1pw = sha1.result().toHex();
 	QSqlQuery q(db);
-	q.prepare(QString("SELECT id, admin FROM users "
-		"WHERE username = :username AND password = :password"));
-	q.bindValue(QString(":username"), QVariant(username));
-	q.bindValue(QString(":password"), QVariant(sha1pw));
+	q.prepare("SELECT id, admin FROM users "
+		"WHERE username = :username AND password = :password");
+	q.bindValue(":username", username);
+	q.bindValue(":password", sha1pw);
 	if (q.exec()) {
 		if (q.size() < 1) {
 			cout << "Result: authentication failure" << endl;

@@ -7,8 +7,8 @@ void UserImpl::setUid(int value) {
 ::CORBA::Boolean UserImpl::getAdmin() {
 	QSqlDatabase db = QSqlDatabase::database();
 	QSqlQuery q(db);
-	q.prepare(QString("SELECT admin FROM users WHERE id = :id"));
-	q.bindValue(QString(":id"), QVariant(uid));
+	q.prepare("SELECT admin FROM users WHERE id = :id");
+	q.bindValue(":id", uid);
 	if (q.exec()) {
 		if (q.next())
 			return q.record().value("admin").toBool();
@@ -21,8 +21,8 @@ void UserImpl::setUid(int value) {
 char* UserImpl::getName() {
 	QSqlDatabase db = QSqlDatabase::database();
 	QSqlQuery q(db);
-	q.prepare(QString("SELECT username FROM users WHERE id = :id"));
-	q.bindValue(QString(":id"), QVariant(uid));
+	q.prepare("SELECT username FROM users WHERE id = :id");
+	q.bindValue(":id", uid);
 	if (q.exec()) {
 		if (q.next())
 			return strdup(q.record().value("username").toString().toUtf8());
