@@ -2,6 +2,7 @@
 #define _MODELREADER_H
 #include <VersionControl.hh>
 #include <QtSql>
+#include "RevisionImpl.hh"
 
 class ModelReader
 {

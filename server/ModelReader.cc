@@ -19,15 +19,41 @@ char* ModelReader::getName() {
 }
 
 VersionControl::RevisionSeq* ModelReader::getRevisions() {
-	return NULL;
+	QSqlDatabase db = QSqlDatabase::database();
+	QSqlQuery q(db);
+	q.prepare("SELECT revnum FROM revisions WHERE model_id = :id "
+		"ORDER BY revnum DESC");
+	q.bindValue(":id", mid);
+	if (q.exec()) {
+		VersionControl::RevisionSeq *retval = new VersionControl::RevisionSeq();
+		retval->length(q.size());
+		for (int i = 0; q.next(); i++)
+			(*retval)[i] = getRevision(q.record().value("revnum").toUInt());
+		return retval;
+	}
+	throw VersionControl::DbError();
 }
 
-VersionControl::Revision_ptr ModelReader::getRevision(::CORBA::ULong /*number*/) {
-	return VersionControl::Revision::_nil();
+VersionControl::Revision_ptr ModelReader::getRevision(::CORBA::ULong number) {
+	RevisionImpl *impl = new RevisionImpl();
+	impl->setRevnum(number);
+	impl->setMid(mid);
+	return impl->_this();
 }
 
 VersionControl::Revision_ptr ModelReader::getCurrentRevision() {
-	return VersionControl::Revision::_nil();
+	QSqlDatabase db = QSqlDatabase::database();
+	QSqlQuery q(db);
+	q.prepare("SELECT revnum FROM revisions WHERE model_id = :id "
+		"ORDER BY revnum DESC LIMIT 1");
+	q.bindValue(":id", mid);
+	if (q.exec()) {
+		if (q.next())
+			return getRevision(q.record().value("revnum").toUInt());
+		else
+			throw VersionControl::InvalidModel();
+	}
+	throw VersionControl::DbError();
 }
 
 void ModelReader::commit(const char* /*data*/, ::CORBA::ULong /*base*/) {
