@@ -55,23 +55,23 @@ module VersionControl {
 
 	// The interface of models (the object being tracked)
 	interface Model {
-		string getName() raises (DbError);
-		RevisionSeq getRevisions() raises (DbError);
-		Revision getRevision(in unsigned long number) raises (DbError);
-		Revision getCurrentRevision() raises (DbError);
-		void commit(in ModelData data) raises (LockedException, DbError);
-		void lock() raises (LockedException, DbError);
-		void unlock() raises (LockedException, DbError); // LE not raised for admins
+		string getName() raises (InvalidModel, DbError);
+		RevisionSeq getRevisions() raises (InvalidModel, DbError);
+		Revision getRevision(in unsigned long number) raises (InvalidModel, DbError);
+		Revision getCurrentRevision() raises (InvalidModel, DbError);
+		void commit(in ModelData data, in unsigned long base) raises (InvalidModel, LockedException, DbError);
+		void lock() raises (InvalidModel, LockedException, DbError);
+		void unlock() raises (InvalidModel, LockedException, DbError); // LE not raised for admins
 	};
 
 	// Interface for model administration
 	interface ModelAdmin : Model {
-		UserAccessSeq getUsers();
-		void setName(in string name) raises (DbError);
-		void removeUser(in User toRemove) raises (InvalidUser, DbError);
-		void changeUserLevel(in User toChange, in AccessLevel access) raises (InvalidUser, DbError);
-		void addUser(in UserAccess access) raises (UserAlreadyAssigned, DbError);
-		void removeModel() raises (DbError);
+		UserAccessSeq getUsers() raises (InvalidModel, DbError);
+		void setName(in string name) raises (InvalidModel, DbError);
+		void removeUser(in User toRemove) raises (InvalidModel, InvalidUser, DbError);
+		void changeUserLevel(in User toChange, in AccessLevel access) raises (InvalidModel, InvalidUser, DbError);
+		void addUser(in UserAccess access) raises (InvalidModel, UserAlreadyAssigned, DbError);
+		void removeModel() raises (InvalidModel, DbError);
 	};
 
 	typedef sequence<ModelAdmin> ModelAdminSeq;
