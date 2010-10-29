@@ -9,8 +9,11 @@ class ModelWriter : public ModelReader
 {
 protected:
 	int uid;
+	void checkLocking(QSqlQuery &q);
 public:
 	void setUid(int value);
 	virtual void commit(const char* data, ::CORBA::ULong base);
+	virtual void lock();
+	virtual void unlock();
 };
 #endif
