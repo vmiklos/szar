@@ -59,9 +59,9 @@ module VersionControl {
 		RevisionSeq getRevisions() raises (InvalidModel, DbError);
 		Revision getRevision(in unsigned long number) raises (InvalidModel, DbError);
 		Revision getCurrentRevision() raises (InvalidModel, DbError);
-		void commit(in ModelData data, in unsigned long base) raises (InvalidModel, LockedException, DbError);
-		void lock() raises (InvalidModel, LockedException, DbError);
-		void unlock() raises (InvalidModel, LockedException, DbError); // LE not raised for admins
+		void commit(in ModelData data, in unsigned long base) raises (AccessDenied, InvalidModel, LockedException, DbError);
+		void lock() raises (AccessDenied, InvalidModel, LockedException, DbError);
+		void unlock() raises (AccessDenied, InvalidModel, LockedException, DbError); // AD + LE not raised for admins
 	};
 
 	// Interface for model administration
