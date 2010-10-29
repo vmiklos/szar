@@ -56,8 +56,8 @@ module VersionControl {
 	// The interface of models (the object being tracked)
 	interface Model {
 		string getName() raises (InvalidModel, DbError);
-		RevisionSeq getRevisions() raises (InvalidModel, DbError);
-		Revision getRevision(in unsigned long number) raises (InvalidModel, DbError);
+		RevisionSeq getRevisions() raises (DbError);
+		Revision getRevision(in unsigned long number);
 		Revision getCurrentRevision() raises (InvalidModel, DbError);
 		void commit(in ModelData data, in unsigned long base) raises (AccessDenied, InvalidModel, LockedException, DbError);
 		void lock() raises (AccessDenied, InvalidModel, LockedException, DbError);
