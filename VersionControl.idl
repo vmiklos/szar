@@ -71,7 +71,6 @@ module VersionControl {
 		void removeUser(in User toRemove) raises (InvalidUser, DbError);
 		void changeUserLevel(in User toChange, in AccessLevel access) raises (InvalidUser, DbError);
 		void addUser(in UserAccess access) raises (UserAlreadyAssigned, DbError);
-		void removeRevision(in Revision toRemove) raises (InvalidRevision, DbError);
 		void removeModel() raises (DbError);
 	};
 
