@@ -16,6 +16,7 @@ CREATE TABLE acl (
 
 CREATE TABLE models (
 	id INT(11) AUTO_INCREMENT PRIMARY KEY,
+	locked INT(11) DEFAULT NULL,
 	name VARCHAR(128) NOT NULL
 ) ENGINE = InnoDB;
 
@@ -49,3 +50,7 @@ ALTER TABLE revisions
 		REFERENCES users (id) ON DELETE CASCADE,
 	ADD CONSTRAINT revisions_fk_model FOREIGN KEY (model_id)
 		REFERENCES models (id) ON DELETE CASCADE;
+
+ALTER TABLE models
+	ADD CONSTRAINT models_fk_user FOREIGN KEY (locked)
+		REFERENCES users (id) ON DELETE SET NULL;
