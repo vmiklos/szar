@@ -25,7 +25,7 @@ VersionControl::Root_ptr AuthImpl::login(const char* username, const char* passw
 				cout << "Result: ID = " << id.toStdString() <<
 					" admin = " << admin.toStdString() << endl;
 				int uid = r.value("id").toInt();
-				UserRoot *impl = new UserRoot();
+				RootImpl *impl = new RootImpl();
 				impl->setUid(uid);
 				return impl->_this();
 			}

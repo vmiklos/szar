@@ -8,7 +8,7 @@
 
 using namespace std;
 
-class UserRoot : public POA_VersionControl::Root
+class RootImpl : public POA_VersionControl::Root
 {
 protected:
 	int uid;

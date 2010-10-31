@@ -1,10 +1,10 @@
-#include "UserRoot.hh"
+#include "RootImpl.hh"
 
-void UserRoot::setUid(int value) {
+void RootImpl::setUid(int value) {
 	uid = value;
 }
 
-VersionControl::_objref_Model* UserRoot::modelFromId(QSqlQuery &q) {
+VersionControl::_objref_Model* RootImpl::modelFromId(QSqlQuery &q) {
 	QSqlRecord r = q.record();
 	int mid = r.value("id").toInt();
 	QString rights = r.value("rights").toString();
@@ -25,11 +25,11 @@ VersionControl::_objref_Model* UserRoot::modelFromId(QSqlQuery &q) {
 	}
 }
 
-VersionControl::Admin_ptr UserRoot::getAdmin() {
+VersionControl::Admin_ptr RootImpl::getAdmin() {
 	throw VersionControl::AccessDenied();
 }
 
-VersionControl::ModelSeq* UserRoot::getModels() {
+VersionControl::ModelSeq* RootImpl::getModels() {
 	QSqlDatabase db = QSqlDatabase::database();
 	QSqlQuery q(db);
 	q.prepare("SELECT m.id AS id, a.rights AS rights FROM models m JOIN acl a "
@@ -41,12 +41,12 @@ VersionControl::ModelSeq* UserRoot::getModels() {
 		for (int i = 0; q.next(); i++) (*retval)[i] = modelFromId(q);
 		return retval;
 	} else {
-		cerr << "UserRoot::getModels() Error occured during SQL query: " << q.lastError().text().toStdString() << endl;
+		cerr << "RootImpl::getModels() Error occured during SQL query: " << q.lastError().text().toStdString() << endl;
 	}
 	throw VersionControl::DbError();
 }
 
-VersionControl::Model_ptr UserRoot::getModel(const char* name) {
+VersionControl::Model_ptr RootImpl::getModel(const char* name) {
 	cout << "[debug] getModel(name = \"" << name << "\")" << endl;
 	QSqlDatabase db = QSqlDatabase::database();
 	QSqlQuery q(db);
@@ -62,12 +62,12 @@ VersionControl::Model_ptr UserRoot::getModel(const char* name) {
 			if (q.next()) return modelFromId(q);
 		}
 	} else {
-		cerr << "UserRoot::getModel() Error occured during SQL query: " << q.lastError().text().toStdString() << endl;
+		cerr << "RootImpl::getModel() Error occured during SQL query: " << q.lastError().text().toStdString() << endl;
 	}
 	throw VersionControl::DbError();
 }
 
-VersionControl::UserAdmin_ptr UserRoot::getMyUser() {
+VersionControl::UserAdmin_ptr RootImpl::getMyUser() {
 	MyUserAdmin *mua = new MyUserAdmin();
 	mua->setUid(uid);
 	POA_VersionControl::UserAdmin_tie<MyUserAdmin> *uat =
