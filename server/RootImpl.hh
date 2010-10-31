@@ -12,7 +12,7 @@ class RootImpl : public POA_VersionControl::Root
 {
 protected:
 	int uid;
-	VersionControl::_objref_Model* modelFromId(QSqlQuery &q);
+	VersionControl::Model_ptr modelFromId(QSqlQuery &q);
 public:
 	void setUid(int value);
 	virtual VersionControl::Admin_ptr getAdmin();

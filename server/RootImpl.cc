@@ -4,7 +4,7 @@ void RootImpl::setUid(int value) {
 	uid = value;
 }
 
-VersionControl::_objref_Model* RootImpl::modelFromId(QSqlQuery &q) {
+VersionControl::Model_ptr RootImpl::modelFromId(QSqlQuery &q) {
 	QSqlRecord r = q.record();
 	int mid = r.value("id").toInt();
 	QString rights = r.value("rights").toString();
