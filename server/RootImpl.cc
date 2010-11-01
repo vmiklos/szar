@@ -44,6 +44,7 @@ VersionControl::Admin_ptr RootImpl::getAdmin() {
 	} else {
 		cerr << "RootImpl::getAdmin() Error occured during SQL query: " << q.lastError().text().toStdString() << endl;
 	}
+	throw VersionControl::DbError();
 }
 
 VersionControl::ModelSeq* RootImpl::getModels() {
