@@ -21,4 +21,4 @@ using namespace std;
 void test_server_init(char *name);
 void test_server_destroy();
 
-#include "LoginTest.hh"
+#include "AuthTest.hh"

@@ -1,6 +1,6 @@
-class LoginTest : public CppUnit::TestFixture
+class AuthTest : public CppUnit::TestFixture
 {
-	CPPUNIT_TEST_SUITE(LoginTest);
+	CPPUNIT_TEST_SUITE(AuthTest);
 	CPPUNIT_TEST(testLoginSuccess);
 	CPPUNIT_TEST(testLoginFailure);
 	CPPUNIT_TEST_SUITE_END();
@@ -13,7 +13,7 @@ public:
 	void setUp()
 	{
 		// setup up the db & corba server
-		test_server_init((char*)"LoginTest");
+		test_server_init((char*)"AuthTest");
 
 		// set up the client
 		int argc = 5;

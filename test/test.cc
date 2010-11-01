@@ -54,7 +54,7 @@ int main(int argc, char ** argv)
 
 	CppUnit::TextUi::TestRunner runner;
 
-	runner.addTest( LoginTest::suite() );
+	runner.addTest( AuthTest::suite() );
 	runner.run();
 
 	return 0;
