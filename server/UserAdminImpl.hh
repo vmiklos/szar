@@ -1,11 +1,11 @@
-#ifndef _MYUSERADMIN_H
-#define _MYUSERADMIN_H
+#ifndef _USERADMINIMPL_H
+#define _USERADMINIMPL_H
 #include "UserImpl.hh"
 #include <QCryptographicHash>
 
 using namespace std;
 
-class MyUserAdmin : public UserImpl
+class UserAdminImpl : public UserImpl
 {
 public:
 	void setPassword(const char* password);

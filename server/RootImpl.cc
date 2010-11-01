@@ -85,9 +85,9 @@ VersionControl::Model_ptr RootImpl::getModel(const char* name) {
 }
 
 VersionControl::UserAdmin_ptr RootImpl::getMyUser() {
-	MyUserAdmin *mua = new MyUserAdmin();
-	mua->setUid(uid);
-	POA_VersionControl::UserAdmin_tie<MyUserAdmin> *uat =
-		new POA_VersionControl::UserAdmin_tie<MyUserAdmin>(mua);
+	UserAdminImpl *uai = new UserAdminImpl();
+	uai->setUid(uid);
+	POA_VersionControl::UserAdmin_tie<UserAdminImpl> *uat =
+		new POA_VersionControl::UserAdmin_tie<UserAdminImpl>(uai);
 	return uat->_this();
 }

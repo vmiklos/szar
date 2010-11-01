@@ -2,7 +2,7 @@
 #define _USERROOT_H
 #include <iostream>
 #include <VersionControl.hh>
-#include "MyUserAdmin.hh"
+#include "UserAdminImpl.hh"
 #include "ModelReader.hh"
 #include "ModelWriter.hh"
 #include "AdminImpl.hh"

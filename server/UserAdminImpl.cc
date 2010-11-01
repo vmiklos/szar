@@ -1,10 +1,10 @@
-#include "MyUserAdmin.hh"
+#include "UserAdminImpl.hh"
 
-void MyUserAdmin::setAdmin(::CORBA::Boolean /* admin */) {
+void UserAdminImpl::setAdmin(::CORBA::Boolean /* admin */) {
 	throw VersionControl::AccessDenied();
 }
 
-void MyUserAdmin::setPassword(const char* password) {
+void UserAdminImpl::setPassword(const char* password) {
 	QSqlDatabase db = QSqlDatabase::database();
 	QCryptographicHash sha1(QCryptographicHash::Sha1);
 	sha1.reset();
