@@ -74,6 +74,23 @@ void ModelAdminImpl::removeUser(VersionControl::User_ptr toRemove)
 
 void ModelAdminImpl::changeUserLevel(VersionControl::User_ptr toChange, VersionControl::AccessLevel access)
 {
+	QSqlDatabase db = QSqlDatabase::database();
+	QSqlQuery q(db);
+	q.prepare("select id from users where username = :name");
+	q.bindValue(":name", toChange->getName());
+	if (!q.exec() || !q.next())
+		throw VersionControl::InvalidUser();
+	int tcid = q.record().value("id").toInt();
+	q.prepare("update acl set rights = :rights where user_id = :uid and model_id = :mid");
+	q.bindValue(":rights", (access == VersionControl::ReadWrite ? "ReadWrite" : "Read"));
+	q.bindValue(":uid", tcid);
+	q.bindValue(":mid", mid);
+	if (q.exec()) {
+		if (q.numRowsAffected() < 1)
+			throw VersionControl::InvalidModel();
+		return;
+	}
+	throw VersionControl::DbError();
 }
 
 void ModelAdminImpl::addUser(const VersionControl::UserAccess& access)
