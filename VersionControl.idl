@@ -86,7 +86,7 @@ module VersionControl {
 	// The interface for administrators ("director room")
 	interface Admin {
 		Model addModel(in string name) raises (AlreadyExistsException, DbError);
-		UserAdmin addUser(in string name) raises (DbError);
+		UserAdmin addUser(in string name) raises (AlreadyExistsException, DbError);
 		UserAdminSeq getUsers() raises (DbError);
 		void removeUser(in UserAdmin user) raises (DbError);
 		ModelAdmin getModelAdmin(in Model target);

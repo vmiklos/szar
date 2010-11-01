@@ -37,7 +37,7 @@ VersionControl::UserAdmin_ptr AdminImpl::addUser(const char* name)
 	q.bindValue(":name", name);
 	if (q.exec()) {
 		if (q.size() > 0 && q.next()) {
-			throw VersionControl::DbError();
+			throw VersionControl::AlreadyExistsException();
 		} else {
 			q.prepare("insert into users (username, password) values (:name, :pass)");
 			q.bindValue(":name", name);
