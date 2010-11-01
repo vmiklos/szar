@@ -1,3 +1,4 @@
+/// Tests the Auth interface. Status: tests everything.
 class AuthTest : public CppUnit::TestFixture
 {
 	CPPUNIT_TEST_SUITE(AuthTest);

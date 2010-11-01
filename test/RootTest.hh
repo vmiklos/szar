@@ -1,3 +1,4 @@
+/// Tests the Root interface. Status: tests only getAdmin()
 class RootTest : public CppUnit::TestFixture
 {
 	CPPUNIT_TEST_SUITE(RootTest);

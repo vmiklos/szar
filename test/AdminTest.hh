@@ -1,3 +1,4 @@
+/// Tests the Admin interface. Status: everything tested, except getModelAdmin()
 class AdminTest : public CppUnit::TestFixture
 {
 	CPPUNIT_TEST_SUITE(AdminTest);
