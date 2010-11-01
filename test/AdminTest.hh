@@ -3,6 +3,8 @@ class AdminTest : public CppUnit::TestFixture
 	CPPUNIT_TEST_SUITE(AdminTest);
 	CPPUNIT_TEST(testAddModelSuccess);
 	CPPUNIT_TEST(testAddModelFailure);
+	CPPUNIT_TEST(testAddUserSuccess);
+	CPPUNIT_TEST(testAddUserFailure);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -64,4 +66,28 @@ public:
 		}
 		CPPUNIT_ASSERT(failed == 1);
 	}
+
+	void testAddUserSuccess()
+	{
+		VersionControl::Root_var root = authref->login("admin", "admin");
+		VersionControl::Admin_var admin = root->getAdmin();
+		admin->addUser("john");
+	}
+
+	void testAddUserFailure()
+	{
+		VersionControl::Root_var root = authref->login("admin", "admin");
+		VersionControl::Admin_var admin = root->getAdmin();
+		admin->addUser("john");
+		int failed = 0;
+		try {
+			admin->addUser("john");
+		} catch (VersionControl::AlreadyExistsException& e) {
+			failed = 1;
+		} catch (VersionControl::DbError& e) {
+			failed = 2;
+		}
+		CPPUNIT_ASSERT(failed == 1);
+	}
+
 };
