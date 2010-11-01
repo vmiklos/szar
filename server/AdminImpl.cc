@@ -83,9 +83,13 @@ VersionControl::UserAdminSeq* AdminImpl::getUsers()
 	throw VersionControl::DbError();
 }
 
-void AdminImpl::removeUser(VersionControl::UserAdmin_ptr /*user*/)
+void AdminImpl::removeUser(VersionControl::UserAdmin_ptr user)
 {
-	cout << "TODO: AdminImpl::removeUser()" << endl;
+	QSqlDatabase db = QSqlDatabase::database();
+	QSqlQuery q(db);
+	q.prepare("delete from users where username = :name limit 1");
+	q.bindValue(":name", user->getName());
+	if (!q.exec() || q.numRowsAffected() < 1) throw VersionControl::DbError();
 }
 
 VersionControl::ModelAdmin_ptr AdminImpl::getModelAdmin(VersionControl::Model_ptr /*target*/)
