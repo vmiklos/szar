@@ -45,14 +45,10 @@ int main (int argc, char **argv)
 			VersionControl::Admin_var admin = root->getAdmin();
 			VersionControl::UserAdminSeq_var uas = admin->getUsers();
 			VersionControl::ModelAdmin_var ma = admin->getModelAdmin(model);
-			// FIXME if this is not a ptr, then there will
-			// be a doublefree as both the sequence and the
-			// access object wants to release the User
-			// object
-			VersionControl::UserAccess* access = new VersionControl::UserAccess();
-			access->grantee = uas[1];
-			access->level = VersionControl::ReadWrite;
-			ma->addUser(*access);*/
+			VersionControl::UserAccess access;
+			access.grantee = VersionControl::UserAdmin::_duplicate(uas[1]);
+			access.level = VersionControl::ReadWrite;
+			ma->addUser(access);*/
 
 			/*VersionControl::Admin_var admin = root->getAdmin();
 			VersionControl::Model_var model = root->getModel("foo");
