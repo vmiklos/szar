@@ -70,7 +70,7 @@ module VersionControl {
 		void setName(in string name) raises (InvalidModel, DbError);
 		void removeUser(in User toRemove) raises (InvalidModel, InvalidUser, DbError);
 		void changeUserLevel(in User toChange, in AccessLevel access) raises (InvalidModel, InvalidUser, DbError);
-		void addUser(in UserAccess access) raises (InvalidModel, UserAlreadyAssigned, DbError);
+		void addUser(in UserAccess access) raises (InvalidModel, InvalidUser, UserAlreadyAssigned, DbError);
 		void removeModel() raises (InvalidModel, DbError);
 	};
 
