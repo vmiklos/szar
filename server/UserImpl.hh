@@ -1,7 +1,10 @@
 #ifndef _USERIMPL_H
 #define _USERIMPL_H
+#include <iostream>
 #include <VersionControl.hh>
 #include <QtSql>
+
+using namespace std;
 
 class UserImpl
 {
