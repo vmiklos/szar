@@ -16,7 +16,26 @@ int main (int argc, char **argv)
 			cerr << "The object reference is nil!" << endl;
 
 		try {
-			authref->login("foobar", "bazqux");
+			char user[256], pass[256], cmd[256];
+			cerr << "admin or user?" << endl;
+			cin >> cmd;
+			if (!strcmp(cmd, "admin")) {
+				VersionControl::Root_var root = authref->login("admin", "admin");
+				//VersionControl::ModelSeq* models = root->getModels();
+				//cerr << "debug, " << models->length() << endl;
+				VersionControl::Admin_var admin = root->getAdmin();
+				//admin->addModel("foo");
+				//admin->addUser("john");
+				//cerr << admin->getUsers()->length() << endl;
+
+				/*VersionControl::UserAdmin_var u = admin->addUser("john");
+				cerr << admin->getUsers()->length() << endl;
+				admin->removeUser(u);
+				cerr << admin->getUsers()->length() << endl;*/
+			} else {
+				VersionControl::Root_var root = authref->login("foobar", "bazqux");
+				VersionControl::Admin_var admin = root->getAdmin();
+			}
 		}
 		catch (VersionControl::AccessDenied& e) {
 			cerr << "Access denied" << endl;
