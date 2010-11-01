@@ -28,9 +28,34 @@ VersionControl::Model_ptr AdminImpl::addModel(const char* name)
 	}
 }
 
-VersionControl::UserAdmin_ptr AdminImpl::addUser(const char* /*name*/)
+VersionControl::UserAdmin_ptr AdminImpl::addUser(const char* name)
 {
-	cout << "TODO: AdminImpl::addUser()" << endl;
+	QSqlDatabase db = QSqlDatabase::database();
+	QSqlQuery q(db);
+	q.prepare("select id from users where username = :name");
+	q.bindValue(":name", name);
+	if (q.exec()) {
+		if (q.size() > 0 && q.next()) {
+			throw VersionControl::DbError();
+		} else {
+			q.prepare("insert into users (username, password) values (:name, :pass)");
+			q.bindValue(":name", name);
+			// Just like in /etc/passwd, use UserAdmin::setPassword() later.
+			q.bindValue(":pass", "x");
+			if (!q.exec()) {
+				cerr << "AdminImpl::addUser() Error occured during SQL insert: " << q.lastError().text().toStdString() << endl;
+				throw VersionControl::DbError();
+			}
+			int uid = q.lastInsertId().toInt();
+			UserAdminImpl *uai = new UserAdminImpl();
+			uai->setUid(uid);
+			POA_VersionControl::UserAdmin_tie<UserAdminImpl> *uat =
+				new POA_VersionControl::UserAdmin_tie<UserAdminImpl>(uai);
+			return uat->_this();
+		}
+	} else {
+		cerr << "AdminImpl::addUser() Error occured during SQL query: " << q.lastError().text().toStdString() << endl;
+	}
 }
 
 VersionControl::UserAdminSeq* AdminImpl::getUsers()
