@@ -16,61 +16,53 @@ int main (int argc, char **argv)
 			cerr << "The object reference is nil!" << endl;
 
 		try {
-			char user[256], pass[256], cmd[256];
-			cerr << "admin or user?" << endl;
-			cin >> cmd;
-			if (!strcmp(cmd, "admin")) {
-				VersionControl::Root_var root = authref->login("admin", "admin");
+			VersionControl::Root_var root = authref->login("admin", "admin");
 
-				/*VersionControl::Admin_var admin = root->getAdmin();
-				VersionControl::Model_var model = root->getModel("foo");
-				VersionControl::ModelAdmin_var ma = admin->getModelAdmin(model);
-				ma->setName("bar");*/
+			/*VersionControl::Admin_var admin = root->getAdmin();
+			VersionControl::Model_var model = root->getModel("foo");
+			VersionControl::ModelAdmin_var ma = admin->getModelAdmin(model);
+			ma->setName("bar");*/
 
-				/*VersionControl::Admin_var admin = root->getAdmin();
-				VersionControl::Model_var model = root->getModel("bar");
-				VersionControl::ModelAdmin_var ma = admin->getModelAdmin(model);
-				ma->removeUser(root->getMyUser());*/
+			/*VersionControl::Admin_var admin = root->getAdmin();
+			VersionControl::Model_var model = root->getModel("bar");
+			VersionControl::ModelAdmin_var ma = admin->getModelAdmin(model);
+			ma->removeUser(root->getMyUser());*/
 
-				/*VersionControl::Model_var model = root->getModel("foo");
-				VersionControl::Admin_var admin = root->getAdmin();
-				VersionControl::ModelAdmin_var ma = admin->getModelAdmin(model);
-				cout << ma->getUsers()->length() << endl;
-				VersionControl::UserAccessSeq_var uas = ma->getUsers();
-				VersionControl::UserAccess ua = uas[0];
-				cout << ua.grantee->getName() << endl;*/
+			/*VersionControl::Model_var model = root->getModel("foo");
+			VersionControl::Admin_var admin = root->getAdmin();
+			VersionControl::ModelAdmin_var ma = admin->getModelAdmin(model);
+			cout << ma->getUsers()->length() << endl;
+			VersionControl::UserAccessSeq_var uas = ma->getUsers();
+			VersionControl::UserAccess ua = uas[0];
+			cout << ua.grantee->getName() << endl;*/
 
-				/*VersionControl::Model_var model = root->getModel("foo");
-				VersionControl::Admin_var admin = root->getAdmin();
-				VersionControl::ModelAdmin_var ma = admin->getModelAdmin(model);
-				ma->changeUserLevel(root->getMyUser(), VersionControl::Read);*/
+			/*VersionControl::Model_var model = root->getModel("foo");
+			VersionControl::Admin_var admin = root->getAdmin();
+			VersionControl::ModelAdmin_var ma = admin->getModelAdmin(model);
+			ma->changeUserLevel(root->getMyUser(), VersionControl::Read);*/
 
-				/*VersionControl::Model_var model = root->getModel("foo");
-				VersionControl::Admin_var admin = root->getAdmin();
-				VersionControl::UserAdminSeq_var uas = admin->getUsers();
-				VersionControl::ModelAdmin_var ma = admin->getModelAdmin(model);
-				// FIXME if this is not a ptr, then there will
-				// be a doublefree as both the sequence and the
-				// access object wants to release the User
-				// object
-				VersionControl::UserAccess* access = new VersionControl::UserAccess();
-				access->grantee = uas[1];
-				access->level = VersionControl::ReadWrite;
-				ma->addUser(*access);*/
+			/*VersionControl::Model_var model = root->getModel("foo");
+			VersionControl::Admin_var admin = root->getAdmin();
+			VersionControl::UserAdminSeq_var uas = admin->getUsers();
+			VersionControl::ModelAdmin_var ma = admin->getModelAdmin(model);
+			// FIXME if this is not a ptr, then there will
+			// be a doublefree as both the sequence and the
+			// access object wants to release the User
+			// object
+			VersionControl::UserAccess* access = new VersionControl::UserAccess();
+			access->grantee = uas[1];
+			access->level = VersionControl::ReadWrite;
+			ma->addUser(*access);*/
 
-				/*VersionControl::Admin_var admin = root->getAdmin();
-				VersionControl::Model_var model = root->getModel("foo");
-				VersionControl::ModelAdmin_var ma = admin->getModelAdmin(model);
-				ma->removeModel();*/
+			/*VersionControl::Admin_var admin = root->getAdmin();
+			VersionControl::Model_var model = root->getModel("foo");
+			VersionControl::ModelAdmin_var ma = admin->getModelAdmin(model);
+			ma->removeModel();*/
 
-				/*VersionControl::UserAdmin_var u = admin->addUser("john");
-				cerr << admin->getUsers()->length() << endl;
-				admin->removeUser(u);
-				cerr << admin->getUsers()->length() << endl;*/
-			} else {
-				VersionControl::Root_var root = authref->login("foobar", "bazqux");
-				VersionControl::Admin_var admin = root->getAdmin();
-			}
+			/*VersionControl::UserAdmin_var u = admin->addUser("john");
+			cerr << admin->getUsers()->length() << endl;
+			admin->removeUser(u);
+			cerr << admin->getUsers()->length() << endl;*/
 		}
 		catch (VersionControl::AccessDenied& e) {
 			cerr << "Access denied" << endl;
