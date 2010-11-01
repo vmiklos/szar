@@ -26,7 +26,24 @@ VersionControl::Model_ptr RootImpl::modelFromId(QSqlQuery &q) {
 }
 
 VersionControl::Admin_ptr RootImpl::getAdmin() {
-	throw VersionControl::AccessDenied();
+	QSqlDatabase db = QSqlDatabase::database();
+	QSqlQuery q(db);
+	q.prepare("SELECT admin FROM users WHERE id = :uid");
+	q.bindValue(":uid", uid);
+	if (q.exec() && q.next()) {
+		QSqlRecord r = q.record();
+		int admin = r.value("admin").toInt();
+		cerr << "[debug] RootImpl::getAdmin(), admin is " << admin << endl;
+		if (admin) {
+			AdminImpl *impl = new AdminImpl();
+			impl->setUid(uid);
+			return impl->_this();
+		} else {
+			throw VersionControl::AccessDenied();
+		}
+	} else {
+		cerr << "RootImpl::getAdmin() Error occured during SQL query: " << q.lastError().text().toStdString() << endl;
+	}
 }
 
 VersionControl::ModelSeq* RootImpl::getModels() {

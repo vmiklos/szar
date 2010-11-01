@@ -5,6 +5,7 @@
 #include "MyUserAdmin.hh"
 #include "ModelReader.hh"
 #include "ModelWriter.hh"
+#include "AdminImpl.hh"
 
 using namespace std;
 

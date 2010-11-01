@@ -94,7 +94,7 @@ module VersionControl {
 
 	// The interface for logged-in users ("hallway")
 	interface Root {
-		Admin getAdmin();
+		Admin getAdmin() raises (AccessDenied);
 		ModelSeq getModels() raises (DbError);
 		Model getModel(in string name) raises (InvalidModel, DbError);
 		UserAdmin getMyUser();
