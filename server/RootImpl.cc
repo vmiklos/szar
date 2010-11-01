@@ -4,7 +4,7 @@ void RootImpl::setUid(int value) {
 	uid = value;
 }
 
-VersionControl::Model_ptr RootImpl::modelFromId(QSqlQuery &q) {
+VersionControl::Model_ptr RootImpl::modelFromId(QSqlQuery &q, int uid) {
 	QSqlRecord r = q.record();
 	int mid = r.value("id").toInt();
 	QString rights = r.value("rights").toString();
@@ -55,7 +55,7 @@ VersionControl::ModelSeq* RootImpl::getModels() {
 	if (q.exec()) {
 		VersionControl::ModelSeq *retval = new VersionControl::ModelSeq();
 		retval->length(q.size());
-		for (int i = 0; q.next(); i++) (*retval)[i] = modelFromId(q);
+		for (int i = 0; q.next(); i++) (*retval)[i] = modelFromId(q, uid);
 		return retval;
 	} else {
 		cerr << "RootImpl::getModels() Error occured during SQL query: " << q.lastError().text().toStdString() << endl;
@@ -76,7 +76,7 @@ VersionControl::Model_ptr RootImpl::getModel(const char* name) {
 			cout << "Result: model not found" << endl;
 			throw VersionControl::InvalidModel();
 		} else {
-			if (q.next()) return modelFromId(q);
+			if (q.next()) return modelFromId(q, uid);
 		}
 	} else {
 		cerr << "RootImpl::getModel() Error occured during SQL query: " << q.lastError().text().toStdString() << endl;
