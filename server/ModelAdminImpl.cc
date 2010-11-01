@@ -95,6 +95,19 @@ void ModelAdminImpl::changeUserLevel(VersionControl::User_ptr toChange, VersionC
 
 void ModelAdminImpl::addUser(const VersionControl::UserAccess& access)
 {
+	QSqlDatabase db = QSqlDatabase::database();
+	QSqlQuery q(db);
+	q.prepare("select id from users where username = :name");
+	q.bindValue(":name", access.grantee->getName());
+	if (!q.exec() || !q.next())
+		throw VersionControl::InvalidUser();
+	int taid = q.record().value("id").toInt();
+	// TODO: check if already exists
+	q.prepare("insert into acl (user_id, model_id, rights) values (:uid, :mid, :rigths)");
+	q.bindValue(":uid", taid);
+	q.bindValue(":mid", mid);
+	q.bindValue(":rights", (access.level == VersionControl::ReadWrite ? "ReadWrite" : "Read"));
+	if (!q.exec()) throw VersionControl::DbError();
 }
 
 void ModelAdminImpl::removeModel()
