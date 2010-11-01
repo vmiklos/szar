@@ -100,6 +100,23 @@ void AdminImpl::removeUser(VersionControl::UserAdmin_ptr user)
 
 VersionControl::ModelAdmin_ptr AdminImpl::getModelAdmin(VersionControl::Model_ptr target)
 {
-	// TODO
-	throw VersionControl::AccessDenied();
+	QSqlDatabase db = QSqlDatabase::database();
+	QSqlQuery q(db);
+	q.prepare("select id from models where name = :name");
+	q.bindValue(":name", target->getName());
+	if (q.exec()) {
+		if (q.size() > 0 && q.next()) {
+			QSqlRecord r = q.record();
+			int mid = r.value("id").toInt();
+			ModelAdminImpl *mai = new ModelAdminImpl();
+			mai->setMid(mid);
+			mai->setUid(uid);
+			POA_VersionControl::ModelAdmin_tie<ModelAdminImpl> *mat =
+				new POA_VersionControl::ModelAdmin_tie<ModelAdminImpl>(mai);
+			return mat->_this();
+		}
+	} else {
+		cerr << "AdminImpl::getModelAdmin() Error occured during SQL query: " << q.lastError().text().toStdString() << endl;
+	}
+	throw VersionControl::DbError();
 }
