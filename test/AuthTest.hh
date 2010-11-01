@@ -46,7 +46,7 @@ public:
 	{
 		int failed = 0;
 		try {
-			authref->login("foobar", "bazqux");
+			authref->login("admin", "admin");
 		} catch (VersionControl::AccessDenied& e) {
 			failed = 1;
 		} catch (VersionControl::DbError& e) {
@@ -59,7 +59,7 @@ public:
 	{
 		int failed = 0;
 		try {
-			authref->login("foobarr", "bazqux");
+			authref->login("admin", "x");
 		} catch (VersionControl::AccessDenied& e) {
 			failed = 1;
 		} catch (VersionControl::DbError& e) {
