@@ -2,6 +2,34 @@
 
 VersionControl::UserAccessSeq* ModelAdminImpl::getUsers()
 {
+	QSqlDatabase db = QSqlDatabase::database();
+	QSqlQuery q(db);
+	q.prepare("select user_id, rights from acl where model_id = :mid");
+	q.bindValue(":mid", mid);
+	if (q.exec()) {
+		VersionControl::UserAccessSeq *retval = new VersionControl::UserAccessSeq();
+		retval->length(q.size());
+		for (int i = 0; q.next(); i++) {
+			QSqlRecord r = q.record();
+			VersionControl::UserAccess ua;
+
+			UserImpl *ui = new UserImpl();
+			ui->setUid(r.value("user_id").toInt());
+			POA_VersionControl::User_tie<UserImpl> *ut =
+				new POA_VersionControl::User_tie<UserImpl>(ui);
+			ua.grantee = ut->_this();
+
+			if (r.value("rights").toString() == "ReadWrite")
+				ua.level = VersionControl::ReadWrite;
+			else
+				ua.level = VersionControl::Read;
+			(*retval)[i] = ua;
+		}
+		return retval;
+	} else {
+		cerr << "ModelAdminImpl::getUsers() Error occured during SQL query: " << q.lastError().text().toStdString() << endl;
+	}
+	throw VersionControl::DbError();
 }
 
 void ModelAdminImpl::setName(const char* name)
