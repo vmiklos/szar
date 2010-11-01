@@ -3,6 +3,7 @@
 #include <iostream>
 #include <VersionControl.hh>
 #include <RootImpl.hh>
+#include <ModelAdminImpl.hh>
 #include <QtSql>
 #include <QCryptographicHash>
 
