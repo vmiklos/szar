@@ -18,6 +18,12 @@ VersionControl::Model_ptr AdminImpl::addModel(const char* name)
 			q.prepare("insert into models (name) values (:name)");
 			q.bindValue(":name", name);
 			if (!q.exec()) throw VersionControl::DbError();
+			int mid = q.lastInsertId().toInt();
+			q.prepare("insert into acl (user_id, model_id, rights) values (:uid, :mid, :rights);");
+			q.bindValue(":uid", uid);
+			q.bindValue(":mid", mid);
+			q.bindValue(":rights", "ReadWrite");
+			if (!q.exec()) throw VersionControl::DbError();
 			q.prepare("select id from models where name = :name");
 			q.bindValue(":name", name);
 			if (q.exec() && q.next())
