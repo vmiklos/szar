@@ -92,7 +92,8 @@ void AdminImpl::removeUser(VersionControl::UserAdmin_ptr user)
 	if (!q.exec() || q.numRowsAffected() < 1) throw VersionControl::DbError();
 }
 
-VersionControl::ModelAdmin_ptr AdminImpl::getModelAdmin(VersionControl::Model_ptr /*target*/)
+VersionControl::ModelAdmin_ptr AdminImpl::getModelAdmin(VersionControl::Model_ptr target)
 {
-	cout << "TODO: AdminImpl::getModelAdmin()" << endl;
+	// TODO
+	throw VersionControl::AccessDenied();
 }
