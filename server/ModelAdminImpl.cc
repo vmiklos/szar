@@ -112,4 +112,15 @@ void ModelAdminImpl::addUser(const VersionControl::UserAccess& access)
 
 void ModelAdminImpl::removeModel()
 {
+	QSqlDatabase db = QSqlDatabase::database();
+	QSqlQuery q(db);
+	q.prepare("delete from revisions where model_id = :mid");
+	q.bindValue(":mid", mid);
+	if (!q.exec()) throw VersionControl::DbError();
+	q.prepare("delete from acl where model_id = :mid");
+	q.bindValue(":mid", mid);
+	if (!q.exec()) throw VersionControl::DbError();
+	q.prepare("delete from models where id = :mid");
+	q.bindValue(":mid", mid);
+	if (!q.exec()) throw VersionControl::DbError();
 }
