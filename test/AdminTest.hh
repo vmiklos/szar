@@ -5,6 +5,8 @@ class AdminTest : public CppUnit::TestFixture
 	CPPUNIT_TEST(testAddModelFailure);
 	CPPUNIT_TEST(testAddUserSuccess);
 	CPPUNIT_TEST(testAddUserFailure);
+	CPPUNIT_TEST(testGetUsers);
+	CPPUNIT_TEST(testRemoveUser);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -90,4 +92,20 @@ public:
 		CPPUNIT_ASSERT(failed == 1);
 	}
 
+	void testGetUsers()
+	{
+		VersionControl::Root_var root = authref->login("admin", "admin");
+		VersionControl::Admin_var admin = root->getAdmin();
+		CPPUNIT_ASSERT(admin->getUsers()->length() == 1);
+	}
+
+	void testRemoveUser()
+	{
+		VersionControl::Root_var root = authref->login("admin", "admin");
+		VersionControl::Admin_var admin = root->getAdmin();
+		VersionControl::UserAdmin_var u = admin->addUser("john");
+		CPPUNIT_ASSERT(admin->getUsers()->length() == 2);
+		admin->removeUser(u);
+		CPPUNIT_ASSERT(admin->getUsers()->length() == 1);
+	}
 };
