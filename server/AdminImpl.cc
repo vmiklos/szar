@@ -26,6 +26,7 @@ VersionControl::Model_ptr AdminImpl::addModel(const char* name)
 	} else {
 		cerr << "AdminImpl::addModel() Error occured during SQL query: " << q.lastError().text().toStdString() << endl;
 	}
+	throw VersionControl::DbError();
 }
 
 VersionControl::UserAdmin_ptr AdminImpl::addUser(const char* name)
@@ -56,11 +57,30 @@ VersionControl::UserAdmin_ptr AdminImpl::addUser(const char* name)
 	} else {
 		cerr << "AdminImpl::addUser() Error occured during SQL query: " << q.lastError().text().toStdString() << endl;
 	}
+	throw VersionControl::DbError();
 }
 
 VersionControl::UserAdminSeq* AdminImpl::getUsers()
 {
-	cout << "TODO: VersionControl::UserAdminSeq()" << endl;
+	QSqlDatabase db = QSqlDatabase::database();
+	QSqlQuery q(db);
+	if (q.exec("select id from users")) {
+		VersionControl::UserAdminSeq *retval = new VersionControl::UserAdminSeq();
+		retval->length(q.size());
+		for (int i = 0; q.next(); i++) {
+			QSqlRecord r = q.record();
+			int uid = r.value("id").toInt();
+			UserAdminImpl *uai = new UserAdminImpl();
+			uai->setUid(uid);
+			POA_VersionControl::UserAdmin_tie<UserAdminImpl> *uat =
+				new POA_VersionControl::UserAdmin_tie<UserAdminImpl>(uai);
+			(*retval)[i] = uat->_this();
+		}
+		return retval;
+	} else {
+		cerr << "AdminImpl::getUsers() Error occured during SQL query: " << q.lastError().text().toStdString() << endl;
+	}
+	throw VersionControl::DbError();
 }
 
 void AdminImpl::removeUser(VersionControl::UserAdmin_ptr /*user*/)
