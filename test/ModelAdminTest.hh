@@ -5,6 +5,7 @@ class ModelAdminTest : public CppUnit::TestFixture
 	CPPUNIT_TEST(testSetName);
 	CPPUNIT_TEST(testAddUser);
 	CPPUNIT_TEST(testRemoveUser);
+	CPPUNIT_TEST(testChangeUserLevel);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -103,5 +104,21 @@ public:
 		CPPUNIT_ASSERT(ma->getUsers()->length() == 2);
 		ma->removeUser(uas[1]);
 		CPPUNIT_ASSERT(ma->getUsers()->length() == 1);
+	}
+
+	void testChangeUserLevel()
+	{
+		VersionControl::Root_var root = authref->login("admin", "admin");
+		VersionControl::Admin_var admin = root->getAdmin();
+		VersionControl::Model_var model = admin->addModel("foo");
+		VersionControl::ModelAdmin_var ma = admin->getModelAdmin(model);
+		ma->changeUserLevel(root->getMyUser(), VersionControl::Read);
+		int found = 0;
+		try {
+			model->lock();
+		} catch (VersionControl::AccessDenied& e) {
+			found = 1;
+		}
+		CPPUNIT_ASSERT(found == 1);
 	}
 };
