@@ -2,6 +2,7 @@ class ModelAdminTest : public CppUnit::TestFixture
 {
 	CPPUNIT_TEST_SUITE(ModelAdminTest);
 	CPPUNIT_TEST(testGetUsers);
+	CPPUNIT_TEST(testSetName);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -48,5 +49,15 @@ public:
 		VersionControl::Model_var model = admin->addModel("model");
 		VersionControl::ModelAdmin_var ma = admin->getModelAdmin(model);
 		CPPUNIT_ASSERT(ma->getUsers()->length() == 1);
+	}
+
+	void testSetName()
+	{
+		VersionControl::Root_var root = authref->login("admin", "admin");
+		VersionControl::Admin_var admin = root->getAdmin();
+		VersionControl::Model_var model = admin->addModel("foo");
+		VersionControl::ModelAdmin_var ma = admin->getModelAdmin(model);
+		ma->setName("bar");
+		CPPUNIT_ASSERT(!strcmp(model->getName(), "bar") == 1);
 	}
 };
