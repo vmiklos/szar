@@ -24,3 +24,4 @@ void test_server_destroy();
 #include "AuthTest.hh"
 #include "RootTest.hh"
 #include "AdminTest.hh"
+#include "ModelAdminTest.hh"

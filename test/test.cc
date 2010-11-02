@@ -57,6 +57,7 @@ int main(int argc, char ** argv)
 	runner.addTest( AuthTest::suite() );
 	runner.addTest( RootTest::suite() );
 	runner.addTest( AdminTest::suite() );
+	runner.addTest( ModelAdminTest::suite() );
 	runner.run();
 
 	return 0;
