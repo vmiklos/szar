@@ -4,6 +4,7 @@ class ModelAdminTest : public CppUnit::TestFixture
 	CPPUNIT_TEST(testGetUsers);
 	CPPUNIT_TEST(testSetName);
 	CPPUNIT_TEST(testAddUser);
+	CPPUNIT_TEST(testRemoveUser);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -85,5 +86,22 @@ public:
 			CPPUNIT_ASSERT(0);
 		}
 		CPPUNIT_ASSERT(ma->getUsers()->length() == 2);
+	}
+
+	void testRemoveUser()
+	{
+		VersionControl::Root_var root = authref->login("admin", "admin");
+		VersionControl::Admin_var admin = root->getAdmin();
+		VersionControl::UserAdminSeq_var uas = admin->getUsers();
+		VersionControl::Model_var model = admin->addModel("foo");
+		VersionControl::ModelAdmin_var ma = admin->getModelAdmin(model);
+		VersionControl::UserAccess access;
+		access.grantee = VersionControl::UserAdmin::_duplicate(uas[1]);
+		access.level = VersionControl::ReadWrite;
+		CPPUNIT_ASSERT(ma->getUsers()->length() == 1);
+		ma->addUser(access);
+		CPPUNIT_ASSERT(ma->getUsers()->length() == 2);
+		ma->removeUser(uas[1]);
+		CPPUNIT_ASSERT(ma->getUsers()->length() == 1);
 	}
 };
