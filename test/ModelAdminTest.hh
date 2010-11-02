@@ -1,3 +1,4 @@
+/// Tests the ModelAdmin interface. Status: tests everything.
 class ModelAdminTest : public CppUnit::TestFixture
 {
 	CPPUNIT_TEST_SUITE(ModelAdminTest);
