@@ -92,3 +92,8 @@ VersionControl::UserAdmin_ptr RootImpl::getMyUser() {
 		new POA_VersionControl::UserAdmin_tie<UserAdminImpl>(uai);
 	return uat->_this();
 }
+
+VersionControl::Resolver_ptr RootImpl::getResolver() {
+	ResolverImpl *impl = new ResolverImpl();
+	return impl->_this();
+}

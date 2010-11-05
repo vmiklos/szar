@@ -6,6 +6,7 @@
 #include "ModelReader.hh"
 #include "ModelWriter.hh"
 #include "AdminImpl.hh"
+#include "ResolverImpl.hh"
 
 using namespace std;
 
@@ -20,5 +21,6 @@ public:
 	virtual VersionControl::ModelSeq* getModels();
 	virtual VersionControl::Model_ptr getModel(const char* name);
 	virtual VersionControl::UserAdmin_ptr getMyUser();
+	virtual VersionControl::Resolver_ptr getResolver();
 };
 #endif

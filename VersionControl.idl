@@ -24,6 +24,12 @@ module VersionControl {
 		AccessLevel level;
 	};
 
+	// Model with a name
+	struct NamedModel {
+		string name;
+		ModelData data;
+	};
+
 	// User is already assigned to the model
 	exception UserAlreadyAssigned {
 		UserAccess access;
@@ -92,12 +98,24 @@ module VersionControl {
 		ModelAdmin getModelAdmin(in Model target);
 	};
 
+	// 3-way merge resulted in a conflict
+	exception ConflictException {
+		// ModelData containing the conflict markers
+		ModelData toResolve;
+	};
+
+	// This interface used to export 3-way merge logic
+	interface Resolver {
+		ModelData merge(in ModelData base, in NamedModel modela, in NamedModel modelb) raises (ConflictException);
+	};
+
 	// The interface for logged-in users ("hallway")
 	interface Root {
 		Admin getAdmin() raises (AccessDenied);
 		ModelSeq getModels() raises (DbError);
 		Model getModel(in string name) raises (InvalidModel, DbError);
 		UserAdmin getMyUser();
+		Resolver getResolver();
 	};
 
 	// The only interface with network-facing implementation ("door")
