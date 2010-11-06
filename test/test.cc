@@ -54,10 +54,10 @@ int main(int argc, char ** argv)
 
 	CppUnit::TextUi::TestRunner runner;
 
-	/*runner.addTest( AuthTest::suite() );
+	runner.addTest( AuthTest::suite() );
 	runner.addTest( RootTest::suite() );
 	runner.addTest( AdminTest::suite() );
-	runner.addTest( ModelAdminTest::suite() );*/
+	runner.addTest( ModelAdminTest::suite() );
 	runner.addTest( ResolverTest::suite() );
 	runner.run();
 
