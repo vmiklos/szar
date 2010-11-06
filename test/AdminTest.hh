@@ -1,4 +1,4 @@
-/// Tests the Admin interface. Status: everything tested, except getModelAdmin()
+/// Tests the Admin interface. Status: everything tested.
 class AdminTest : public CppUnit::TestFixture
 {
 	CPPUNIT_TEST_SUITE(AdminTest);
@@ -8,6 +8,7 @@ class AdminTest : public CppUnit::TestFixture
 	CPPUNIT_TEST(testAddUserFailure);
 	CPPUNIT_TEST(testGetUsers);
 	CPPUNIT_TEST(testRemoveUser);
+	CPPUNIT_TEST(testGetModelAdmin);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -108,5 +109,13 @@ public:
 		CPPUNIT_ASSERT(admin->getUsers()->length() == 2);
 		admin->removeUser(u);
 		CPPUNIT_ASSERT(admin->getUsers()->length() == 1);
+	}
+
+	void testGetModelAdmin()
+	{
+		VersionControl::Root_var root = authref->login("admin", "admin");
+		VersionControl::Admin_var admin = root->getAdmin();
+		VersionControl::Model_var model = admin->addModel("model");
+		VersionControl::ModelAdmin_var ma = admin->getModelAdmin(model);
 	}
 };
