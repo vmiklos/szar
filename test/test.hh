@@ -25,3 +25,4 @@ void test_server_destroy();
 #include "RootTest.hh"
 #include "AdminTest.hh"
 #include "ModelAdminTest.hh"
+#include "ResolverTest.hh"
