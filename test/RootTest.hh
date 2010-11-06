@@ -4,6 +4,7 @@ class RootTest : public CppUnit::TestFixture
 	CPPUNIT_TEST_SUITE(RootTest);
 	CPPUNIT_TEST(testGetAdminSuccess);
 	CPPUNIT_TEST(testGetAdminFailure);
+	CPPUNIT_TEST(testGetModels);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -61,5 +62,11 @@ public:
 			failed = 2;
 		}
 		CPPUNIT_ASSERT(failed == 1);
+	}
+
+	void testGetModels()
+	{
+		VersionControl::Root_var root = authref->login("admin", "admin");
+		CPPUNIT_ASSERT(root->getModels()->length() == 0);
 	}
 };
