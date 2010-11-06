@@ -59,6 +59,22 @@ int main (int argc, char **argv)
 			cerr << admin->getUsers()->length() << endl;
 			admin->removeUser(u);
 			cerr << admin->getUsers()->length() << endl;*/
+
+			/*VersionControl::Resolver_var resolver = root->getResolver();
+			VersionControl::NamedModel modela;
+			modela.name = "foo";
+			modela.data = "A\nb\nc\nd\ne\nf\ng\nh\n";
+			//modela.data = "AA\nb\nc\nd\ne\nf\ng\nh\n";
+			VersionControl::NamedModel modelb;
+			modelb.name = "bar";
+			modelb.data = "a\nb\nc\nd\ne\nf\ng\nH\n";
+			//modelb.data = "BB\nb\nc\nd\ne\nf\ng\nh\n";
+			try {
+				char* ret = resolver->merge("a\nb\nc\nd\ne\nf\ng\nh\n", modela, modelb);
+				cout << "ok, got result: '" << ret << "'" << endl;
+			} catch (VersionControl::ConflictException& e) {
+				cout << "err, conflict is: '" << e.toResolve << "'" << endl;
+			}*/
 		}
 		catch (VersionControl::AccessDenied& e) {
 			cerr << "Access denied" << endl;
