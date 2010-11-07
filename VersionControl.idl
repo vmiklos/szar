@@ -57,6 +57,11 @@ module VersionControl {
 		User getAuthor() raises (DbError);
 	};
 
+	// Model is not up to date
+	exception NotUptodateException {
+		Revision head;
+	};
+
 	typedef sequence<Revision> RevisionSeq;
 
 	// The interface of models (the object being tracked)
@@ -65,7 +70,7 @@ module VersionControl {
 		RevisionSeq getRevisions() raises (DbError);
 		Revision getRevision(in unsigned long number);
 		Revision getCurrentRevision() raises (InvalidModel, DbError);
-		void commit(in ModelData data, in unsigned long base) raises (AccessDenied, InvalidModel, LockedException, DbError);
+		void commit(in ModelData data, in unsigned long base) raises (NotUptodateException, InvalidModel, LockedException, DbError);
 		void lock() raises (AccessDenied, InvalidModel, LockedException, DbError);
 		void unlock() raises (AccessDenied, InvalidModel, LockedException, DbError); // AD + LE not raised for admins
 	};

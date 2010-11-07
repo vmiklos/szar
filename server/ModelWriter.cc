@@ -33,8 +33,12 @@ void ModelWriter::commit(const char* data, ::CORBA::ULong base) {
 		q.bindValue(":mid", mid);
 		if (!q.exec() || !q.next()) throw VersionControl::DbError();
 		QSqlRecord r = q.record();
-		if (r.value("revnum").toUInt() != base)
-			throw VersionControl::AccessDenied(); // TODO
+		if (r.value("revnum").toUInt() != base) {
+			RevisionImpl *impl = new RevisionImpl();
+			impl->setRevnum(r.value("revnum").toUInt());
+			impl->setMid(mid);
+			throw VersionControl::NotUptodateException(impl->_this());
+		}
 		q.prepare("INSERT INTO revisions (model_id, user_id, content) "
 			" VALUES (:mid, :uid, :content);");
 		q.bindValue(":mid", mid);

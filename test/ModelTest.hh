@@ -62,6 +62,19 @@ public:
 		VersionControl::Admin_var admin = root->getAdmin();
 		VersionControl::Model_var model = admin->addModel("model");
 		model->commit("data", 0);
+
+		// base is now 1, still using 0 results in an exception where head is set to 1
+		int found = 0;
+		try {
+			model->commit("data2", 0);
+		} catch (VersionControl::NotUptodateException& e) {
+			found = 1;
+			CPPUNIT_ASSERT(e.head->getNumber() == 1);
+		}
+		CPPUNIT_ASSERT(found == 1);
+
+		// using 1 as base works fine
+		model->commit("data", 1);
 	}
 
 	void testGetCurrentRevision()
