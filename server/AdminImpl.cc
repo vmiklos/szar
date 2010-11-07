@@ -8,8 +8,10 @@ VersionControl::Model_ptr AdminImpl::addModel(const char* name)
 {
 	QSqlDatabase db = QSqlDatabase::database();
 	QSqlQuery q(db);
-	q.prepare("select id from models where name = :name");
+	q.prepare("SELECT m.id AS id, a.rights AS rights FROM models m JOIN acl a ON a.model_id = m.id "
+			"WHERE a.user_id = :uid and m.name = :name ORDER BY m.name ASC");
 	q.bindValue(":name", name);
+	q.bindValue(":uid", uid);
 	if (q.exec()) {
 		if (q.size() > 0 && q.next()) {
 			VersionControl::Model_ptr model = RootImpl::modelFromId(q, uid);
@@ -32,8 +34,10 @@ VersionControl::Model_ptr AdminImpl::addModel(const char* name)
 				throw;
 			}
 			db.commit();
-			q.prepare("select id from models where name = :name");
+			q.prepare("SELECT m.id AS id, a.rights AS rights FROM models m JOIN acl a ON a.model_id = m.id "
+					"WHERE a.user_id = :uid and m.name = :name ORDER BY m.name ASC");
 			q.bindValue(":name", name);
+			q.bindValue(":uid", uid);
 			if (q.exec() && q.next())
 				return RootImpl::modelFromId(q, uid);
 		}

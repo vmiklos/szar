@@ -115,13 +115,6 @@ public:
 		VersionControl::Model_var model = admin->addModel("foo");
 		VersionControl::ModelAdmin_var ma = admin->getModelAdmin(model);
 		ma->changeUserLevel(root->getMyUser(), VersionControl::Read);
-		int found = 0;
-		try {
-			model->lock();
-		} catch (VersionControl::AccessDenied& e) {
-			found = 1;
-		}
-		CPPUNIT_ASSERT(found == 1);
 	}
 
 	void testRemoveModel()
