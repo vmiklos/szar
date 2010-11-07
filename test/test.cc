@@ -59,6 +59,7 @@ int main(int argc, char ** argv)
 	runner.addTest( AdminTest::suite() );
 	runner.addTest( ModelAdminTest::suite() );
 	runner.addTest( ResolverTest::suite() );
+	runner.addTest( ModelTest::suite() );
 	runner.run();
 
 	return 0;
