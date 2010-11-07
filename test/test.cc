@@ -2,9 +2,39 @@
 
 pid_t pid = 0;
 
-void test_server_init(char *name) {
+static void corba_server_init() {
 	pid = fork();
 	if (pid == 0) {
+		QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
+		db.setHostName("localhost");
+		db.setDatabaseName("swartest");
+		db.setUserName("root");
+		db.setPassword("");
+		db.open();
+
+		// start the server
+		int argc_ = 5;
+		char* argv_[] = {
+			(char*)"",
+			(char*)"-ORBendPoint",
+			(char*)"giop:tcp::31337",
+			(char*)"-ORBnativeCharCodeSet",
+			(char*)"UTF-8"
+		};
+		corba_run(argc_, argv_);
+		exit(1);
+	}
+	// give a little time to start up
+	sleep(1);
+}
+
+static void corba_server_destroy() {
+	kill(pid, 15);
+}
+
+void test_server_init(char *name) {
+	int sqlpid = fork();
+	if (sqlpid == 0) {
 		QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
 		db.setHostName("localhost");
 		db.setDatabaseName("swartest");
@@ -26,26 +56,14 @@ void test_server_init(char *name) {
 			}
 			file.close();
 		}
-
-		// start the server
-		int argc_ = 5;
-		char* argv_[] = {
-			(char*)"",
-			(char*)"-ORBendPoint",
-			(char*)"giop:tcp::31337",
-			(char*)"-ORBnativeCharCodeSet",
-			(char*)"UTF-8"
-		};
-		corba_run(argc_, argv_);
-		exit(1);
+		exit(0);
+	} else {
+		int status;
+		waitpid(sqlpid, &status, 0);
 	}
-	// give a little time to start up
-	sleep(1);
-
 }
 
 void test_server_destroy() {
-	kill(pid, 15);
 }
 
 int main(int argc, char ** argv)
@@ -60,7 +78,10 @@ int main(int argc, char ** argv)
 	runner.addTest( ModelAdminTest::suite() );
 	runner.addTest( ResolverTest::suite() );
 	runner.addTest( ModelTest::suite() );
+
+	corba_server_init();
 	runner.run();
+	corba_server_destroy();
 
 	return 0;
 }
