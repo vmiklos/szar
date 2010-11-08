@@ -37,3 +37,4 @@ public:
 #include "ModelAdminTest.hh"
 #include "ResolverTest.hh"
 #include "ModelTest.hh"
+#include "RevisionTest.hh"
