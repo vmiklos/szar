@@ -1,8 +1,6 @@
 #include "test.hh"
 
-pid_t pid = 0;
-
-static void corba_server_init() {
+void Test::corbaInit() {
 	pid = fork();
 	if (pid == 0) {
 		// start the server
@@ -21,11 +19,12 @@ static void corba_server_init() {
 	sleep(1);
 }
 
-static void corba_server_destroy() {
+void Test::corbaDestroy() {
 	kill(pid, 15);
 }
 
-void sql_init(char *name) {
+void Test::sqlInit(char *name)
+{
 	QSqlDatabase db = QSqlDatabase::database();
 
 	QSqlQuery q(db);
@@ -37,17 +36,15 @@ void sql_init(char *name) {
 		while (!file.atEnd()) {
 			line = file.readLine();
 			if (!q.exec(line))
-				cerr << "sql_init() warning: can't execute SQL query: "
+				cerr << "Test::sqlInit() warning: can't execute SQL query: "
 					<< q.lastError().text().toStdString() << endl;
 		}
 		file.close();
 	}
 }
 
-int main(int argc, char ** argv)
+void Test::run()
 {
-	argc = argc, argv = argv;
-
 	QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
 	db.setHostName("localhost");
 	db.setDatabaseName("swartest");
@@ -55,20 +52,24 @@ int main(int argc, char ** argv)
 	db.setPassword("");
 	db.open();
 
-	CppUnit::TextUi::TestRunner runner;
+	corbaInit();
 
+	CppUnit::TextUi::TestRunner runner;
 	runner.addTest( AuthTest::suite() );
 	runner.addTest( RootTest::suite() );
 	runner.addTest( AdminTest::suite() );
 	runner.addTest( ModelAdminTest::suite() );
 	runner.addTest( ResolverTest::suite() );
 	runner.addTest( ModelTest::suite() );
-
-	corba_server_init();
 	runner.run();
-	corba_server_destroy();
+
+	corbaDestroy();
 
 	db.close();
+}
 
-	return 0;
+int main()
+{
+	Test t;
+	t.run();
 }

@@ -19,7 +19,7 @@ public:
 	void setUp()
 	{
 		// setup up the db & corba server
-		sql_init((char*)"RootTest");
+		Test::sqlInit((char*)"RootTest");
 
 		// set up the client
 		int argc = 5;

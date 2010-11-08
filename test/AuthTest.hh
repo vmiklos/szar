@@ -14,7 +14,7 @@ public:
 	void setUp()
 	{
 		// setup up the db & corba server
-		sql_init((char*)"AuthTest");
+		Test::sqlInit((char*)"AuthTest");
 
 		// set up the client
 		int argc = 5;

@@ -19,7 +19,15 @@ using namespace std;
 
 #include "server_lib.hh"
 
-void sql_init(char *name);
+class Test
+{
+	pid_t pid;
+	void corbaInit();
+	void corbaDestroy();
+public:
+	void run();
+	static void sqlInit(char *name);
+};
 
 #include "AuthTest.hh"
 #include "RootTest.hh"

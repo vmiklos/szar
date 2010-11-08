@@ -14,7 +14,7 @@ public:
 	void setUp()
 	{
 		// setup up the db & corba server
-		sql_init((char*)"ResolverTest");
+		Test::sqlInit((char*)"ResolverTest");
 
 		// set up the client
 		int argc = 5;
