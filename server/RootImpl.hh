@@ -16,6 +16,7 @@ protected:
 	int uid;
 public:
 	static VersionControl::Model_ptr modelFromId(QSqlQuery &q, int uid);
+	static bool isAdmin(int uid);
 	void setUid(int value);
 	virtual VersionControl::Admin_ptr getAdmin();
 	virtual VersionControl::ModelSeq* getModels();

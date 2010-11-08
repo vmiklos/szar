@@ -4,12 +4,29 @@ void RootImpl::setUid(int value) {
 	uid = value;
 }
 
+bool RootImpl::isAdmin(int uid) {
+	QSqlDatabase db = QSqlDatabase::database();
+	QSqlQuery q(db);
+	q.prepare("SELECT admin FROM users WHERE id = :uid");
+	q.bindValue(":uid", uid);
+	if (q.exec() && q.next()) {
+		return q.record().value("admin").toBool();
+	} else {
+		cerr << "RootImpl::isAdmin() Error occured during SQL query: " << q.lastError().text().toStdString() << endl;
+	}
+	throw VersionControl::DbError();
+}
+
 VersionControl::Model_ptr RootImpl::modelFromId(QSqlQuery &q, int uid) {
 	QSqlRecord r = q.record();
 	int mid = r.value("id").toInt();
-	QString rights = r.value("rights").toString();
-	cout << "Result: ID = " << mid << " rights = " << rights.toStdString() << endl;
-	if (rights == "ReadWrite") {
+	bool writable = isAdmin(uid);
+	if (!writable) {
+		QString rights = r.value("rights").toString();
+		cout << "Result: ID = " << mid << " rights = " << rights.toStdString() << endl;
+		writable = rights == "ReadWrite";
+	}
+	if (writable) {
 		ModelWriter *mw = new ModelWriter();
 		mw->setMid(mid);
 		mw->setUid(uid);

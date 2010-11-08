@@ -48,7 +48,7 @@ public:
 		VersionControl::Admin_var admin = root->getAdmin();
 		VersionControl::Model_var model = admin->addModel("model");
 		VersionControl::ModelAdmin_var ma = admin->getModelAdmin(model);
-		CPPUNIT_ASSERT(ma->getUsers()->length() == 1);
+		CPPUNIT_ASSERT(ma->getUsers()->length() == 0);
 	}
 
 	void testSetName()
@@ -83,7 +83,7 @@ public:
 			cerr << "dberror" << endl;
 			CPPUNIT_ASSERT(0);
 		}
-		CPPUNIT_ASSERT(ma->getUsers()->length() == 2);
+		CPPUNIT_ASSERT(ma->getUsers()->length() == 1);
 	}
 
 	void testRemoveUser()
@@ -96,11 +96,11 @@ public:
 		VersionControl::UserAccess access;
 		access.grantee = VersionControl::UserAdmin::_duplicate(uas[1]);
 		access.level = VersionControl::ReadWrite;
-		CPPUNIT_ASSERT(ma->getUsers()->length() == 1);
+		CPPUNIT_ASSERT(ma->getUsers()->length() == 0);
 		ma->addUser(access);
-		CPPUNIT_ASSERT(ma->getUsers()->length() == 2);
-		ma->removeUser(uas[1]);
 		CPPUNIT_ASSERT(ma->getUsers()->length() == 1);
+		ma->removeUser(uas[1]);
+		CPPUNIT_ASSERT(ma->getUsers()->length() == 0);
 	}
 
 	void testChangeUserLevel()
@@ -109,6 +109,10 @@ public:
 		VersionControl::Admin_var admin = root->getAdmin();
 		VersionControl::Model_var model = admin->addModel("foo");
 		VersionControl::ModelAdmin_var ma = admin->getModelAdmin(model);
+		VersionControl::UserAccess access;
+		access.grantee = root->getMyUser();
+		access.level = VersionControl::ReadWrite;
+		ma->addUser(access);
 		ma->changeUserLevel(root->getMyUser(), VersionControl::Read);
 	}
 
@@ -118,11 +122,10 @@ public:
 		VersionControl::Admin_var admin = root->getAdmin();
 		VersionControl::Model_var model = admin->addModel("foo");
 		VersionControl::ModelAdmin_var ma = admin->getModelAdmin(model);
-		root->getModel("foo");
 		ma->removeModel();
 		int found = 0;
 		try {
-			root->getModel("foo");
+			ma->removeModel();
 		} catch (VersionControl::InvalidModel& e) {
 			found = 1;
 		}

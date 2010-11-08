@@ -120,5 +120,11 @@ void ModelAdminImpl::removeModel()
 	QSqlQuery q(db);
 	q.prepare("delete from models where id = :mid");
 	q.bindValue(":mid", mid);
-	if (!q.exec()) throw VersionControl::DbError();
+	if (q.exec()) {
+		if (q.numRowsAffected() == 1)
+			return;
+		else
+			throw VersionControl::InvalidModel();
+	}
+	throw VersionControl::DbError();
 }

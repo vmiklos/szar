@@ -15,27 +15,11 @@ VersionControl::Model_ptr AdminImpl::addModel(const char* name)
 			VersionControl::Model_ptr model = RootImpl::modelFromId(q, uid);
 			throw VersionControl::AlreadyExistsException(model);
 		} else {
-			if (!db.transaction()) throw VersionControl::DbError();
-			try {
-				q.prepare("insert into models (name) values (:name)");
-				q.bindValue(":name", name);
-				if (!q.exec()) throw VersionControl::DbError();
-				int mid = q.lastInsertId().toInt();
-				q.prepare("insert into acl (user_id, model_id, rights) values (:uid, :mid, :rights);");
-				q.bindValue(":uid", uid);
-				q.bindValue(":mid", mid);
-				q.bindValue(":rights", "ReadWrite");
-				if (!q.exec()) throw VersionControl::DbError();
-			} catch (CORBA::Exception& ex) {
-				cerr << "Exception in AdminImpl::addModel(), rollback" << endl;
-				db.rollback();
-				throw;
-			}
-			db.commit();
-			q.prepare("SELECT m.id AS id, a.rights AS rights FROM models m JOIN acl a ON a.model_id = m.id "
-					"WHERE a.user_id = :uid and m.name = :name ORDER BY m.name ASC");
+			q.prepare("insert into models (name) values (:name)");
 			q.bindValue(":name", name);
-			q.bindValue(":uid", uid);
+			if (!q.exec()) throw VersionControl::DbError();
+			q.prepare("select id from models where name = :name");
+			q.bindValue(":name", name);
 			if (q.exec() && q.next())
 				return RootImpl::modelFromId(q, uid);
 		}
