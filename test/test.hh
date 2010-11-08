@@ -39,3 +39,4 @@ public:
 #include "ModelTest.hh"
 #include "RevisionTest.hh"
 #include "UserTest.hh"
+#include "UserAdminTest.hh"

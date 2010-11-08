@@ -73,6 +73,7 @@ void Test::run()
 	runner.addTest( ModelTest::suite() );
 	runner.addTest( RevisionTest::suite() );
 	runner.addTest( UserTest::suite() );
+	runner.addTest( UserAdminTest::suite() );
 
 	runner.run();
 	corbaDestroy();
