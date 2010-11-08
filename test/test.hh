@@ -24,6 +24,8 @@ class Test
 	pid_t pid;
 	void corbaInit();
 	void corbaDestroy();
+	void sqlConnect();
+	void sqlDisconnect();
 public:
 	void run();
 	static void sqlInit(char *name);

@@ -43,7 +43,7 @@ void Test::sqlInit(char *name)
 	}
 }
 
-void Test::run()
+void Test::sqlConnect()
 {
 	QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
 	db.setHostName("localhost");
@@ -51,21 +51,30 @@ void Test::run()
 	db.setUserName("root");
 	db.setPassword("");
 	db.open();
+}
 
+void Test::sqlDisconnect()
+{
+	QSqlDatabase db = QSqlDatabase::database();
+	db.close();
+}
+
+void Test::run()
+{
+	sqlConnect();
 	corbaInit();
-
 	CppUnit::TextUi::TestRunner runner;
+
 	runner.addTest( AuthTest::suite() );
 	runner.addTest( RootTest::suite() );
 	runner.addTest( AdminTest::suite() );
 	runner.addTest( ModelAdminTest::suite() );
 	runner.addTest( ResolverTest::suite() );
 	runner.addTest( ModelTest::suite() );
+
 	runner.run();
-
 	corbaDestroy();
-
-	db.close();
+	sqlDisconnect();
 }
 
 int main()
