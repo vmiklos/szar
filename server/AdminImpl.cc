@@ -61,9 +61,10 @@ VersionControl::UserAdmin_ptr AdminImpl::addUser(const char* name)
 				cerr << "AdminImpl::addUser() Error occured during SQL insert: " << q.lastError().text().toStdString() << endl;
 				throw VersionControl::DbError();
 			}
-			int uid = q.lastInsertId().toInt();
+			int addedUid = q.lastInsertId().toInt();
 			UserAdminImpl *uai = new UserAdminImpl();
-			uai->setUid(uid);
+			uai->setUid(addedUid);
+			uai->setAdminUid(uid);
 			POA_VersionControl::UserAdmin_tie<UserAdminImpl> *uat =
 				new POA_VersionControl::UserAdmin_tie<UserAdminImpl>(uai);
 			return uat->_this();
@@ -83,9 +84,10 @@ VersionControl::UserAdminSeq* AdminImpl::getUsers()
 		retval->length(q.size());
 		for (int i = 0; q.next(); i++) {
 			QSqlRecord r = q.record();
-			int uid = r.value("id").toInt();
+			int currentUid = r.value("id").toInt();
 			UserAdminImpl *uai = new UserAdminImpl();
-			uai->setUid(uid);
+			uai->setUid(currentUid);
+			uai->setAdminUid(uid);
 			POA_VersionControl::UserAdmin_tie<UserAdminImpl> *uat =
 				new POA_VersionControl::UserAdmin_tie<UserAdminImpl>(uai);
 			(*retval)[i] = uat->_this();

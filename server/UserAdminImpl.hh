@@ -7,8 +7,10 @@ using namespace std;
 
 class UserAdminImpl : public UserImpl
 {
+	int adminuid;
 public:
 	void setPassword(const char* password);
 	void setAdmin(::CORBA::Boolean admin);
+	void setAdminUid(int value);
 };
 #endif
