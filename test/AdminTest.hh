@@ -19,7 +19,7 @@ public:
 	void setUp()
 	{
 		// setup up the db & corba server
-		test_server_init((char*)"AdminTest");
+		sql_init((char*)"AdminTest");
 
 		// set up the client
 		int argc = 5;

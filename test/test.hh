@@ -19,7 +19,7 @@ using namespace std;
 
 #include "server_lib.hh"
 
-void test_server_init(char *name);
+void sql_init(char *name);
 
 #include "AuthTest.hh"
 #include "RootTest.hh"

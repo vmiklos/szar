@@ -32,7 +32,7 @@ static void corba_server_destroy() {
 	kill(pid, 15);
 }
 
-void test_server_init(char *name) {
+void sql_init(char *name) {
 	int sqlpid = fork();
 	if (sqlpid == 0) {
 		QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
@@ -51,7 +51,7 @@ void test_server_init(char *name) {
 			while (!file.atEnd()) {
 				line = file.readLine();
 				if (!q.exec(line))
-					cerr << "test_server_init() warning: can't execute SQL query: "
+					cerr << "sql_init() warning: can't execute SQL query: "
 						<< q.lastError().text().toStdString() << endl;
 			}
 			file.close();
