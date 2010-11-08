@@ -55,10 +55,8 @@ VersionControl::UserAdmin_ptr AdminImpl::addUser(const char* name)
 		if (q.size() > 0 && q.next()) {
 			throw VersionControl::AlreadyExistsException();
 		} else {
-			q.prepare("insert into users (username, password) values (:name, :pass)");
+			q.prepare("insert into users (username) values (:name)");
 			q.bindValue(":name", name);
-			// Just like in /etc/passwd, use UserAdmin::setPassword() later.
-			q.bindValue(":pass", "x");
 			if (!q.exec()) {
 				cerr << "AdminImpl::addUser() Error occured during SQL insert: " << q.lastError().text().toStdString() << endl;
 				throw VersionControl::DbError();
