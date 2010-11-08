@@ -38,3 +38,4 @@ public:
 #include "ResolverTest.hh"
 #include "ModelTest.hh"
 #include "RevisionTest.hh"
+#include "UserTest.hh"

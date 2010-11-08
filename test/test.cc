@@ -65,13 +65,14 @@ void Test::run()
 	corbaInit();
 	CppUnit::TextUi::TestRunner runner;
 
-	//runner.addTest( AuthTest::suite() );
-	//runner.addTest( RootTest::suite() );
-	//runner.addTest( AdminTest::suite() );
-	//runner.addTest( ModelAdminTest::suite() );
-	//runner.addTest( ResolverTest::suite() );
-	//runner.addTest( ModelTest::suite() );
+	runner.addTest( AuthTest::suite() );
+	runner.addTest( RootTest::suite() );
+	runner.addTest( AdminTest::suite() );
+	runner.addTest( ModelAdminTest::suite() );
+	runner.addTest( ResolverTest::suite() );
+	runner.addTest( ModelTest::suite() );
 	runner.addTest( RevisionTest::suite() );
+	runner.addTest( UserTest::suite() );
 
 	runner.run();
 	corbaDestroy();
