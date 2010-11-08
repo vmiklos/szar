@@ -13,7 +13,7 @@ public:
 
 	void setUp()
 	{
-		// setup up the db & corba server
+		// setup up the db
 		Test::sqlInit((char*)"UserTest");
 
 		// set up the client

@@ -17,7 +17,7 @@ public:
 
 	void setUp()
 	{
-		// setup up the db & corba server
+		// setup up the db
 		Test::sqlInit((char*)"ModelAdminTest");
 
 		// set up the client
