@@ -20,7 +20,6 @@ using namespace std;
 #include "server_lib.hh"
 
 void test_server_init(char *name);
-void test_server_destroy();
 
 #include "AuthTest.hh"
 #include "RootTest.hh"

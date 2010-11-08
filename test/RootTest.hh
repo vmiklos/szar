@@ -41,11 +41,6 @@ public:
 		CORBA::release(authref);
 		CORBA::release(obj);
 		orb->destroy();
-
-		test_server_destroy();
-
-		QSqlDatabase db = QSqlDatabase::database();
-		db.close();
 	}
 
 	void testGetAdminSuccess()

@@ -63,9 +63,6 @@ void test_server_init(char *name) {
 	}
 }
 
-void test_server_destroy() {
-}
-
 int main(int argc, char ** argv)
 {
 	argc = argc, argv = argv;
