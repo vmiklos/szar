@@ -52,7 +52,7 @@ VersionControl::Root_ptr showConnectDialog(QWidget *mw, CORBA::ORB_var orb) {
 	}
 }
 
-void buildTree(Ui::MainWindow &ui, VersionControl::Root_ptr root) {
+void buildTree(Ui::MainWindow &ui, VersionControl::Root_var root) {
 	QTreeWidget *tw = ui.treeWidget;
 	QList<QTreeWidgetItem *> items;
 	VersionControl::ModelSeq *models = root->getModels();
@@ -83,8 +83,8 @@ int main(int argc, char *argv[])
 	frect.moveCenter(QDesktopWidget().availableGeometry().center());
 	mw->move(frect.topLeft());
 	mw->show();
-	VersionControl::Root_ptr root = showConnectDialog(mw, orb);
-	VersionControl::User_ptr user = root->getMyUser();
+	VersionControl::Root_var root = showConnectDialog(mw, orb);
+	VersionControl::User_var user = root->getMyUser();
 	ui.statusbar->addWidget(new QLabel(user->getName()));
 	ui.menuAdministration->menuAction()->setVisible(user->getAdmin());
 	QObject::connect(ui.actionAbout_QT, SIGNAL(activated()), &app, SLOT(aboutQt()));
