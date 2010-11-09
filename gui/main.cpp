@@ -3,6 +3,7 @@
 #include <VersionControl.hh>
 #include <QMessageBox>
 #include <QSettings>
+#include <QDesktopWidget>
 
 VersionControl::Root_ptr showConnectDialog(QWidget *mw, CORBA::ORB_var orb) {
 	QDialog *cd = new QDialog(mw, Qt::WindowSystemMenuHint | Qt::WindowTitleHint);
@@ -75,6 +76,9 @@ int main(int argc, char *argv[])
 	QMainWindow *mw = new QMainWindow;
 	Ui::MainWindow ui;
 	ui.setupUi(mw);
+	QRect frect = mw->frameGeometry();
+	frect.moveCenter(QDesktopWidget().availableGeometry().center());
+	mw->move(frect.topLeft());
 	mw->show();
 	VersionControl::Root_ptr root = showConnectDialog(mw, orb);
 	VersionControl::User_ptr user = root->getMyUser();
