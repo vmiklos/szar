@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <QSettings>
 #include <QDesktopWidget>
+#include "Controller.h"
 
 VersionControl::Root_ptr showConnectDialog(QWidget *mw, CORBA::ORB_var orb) {
 	QDialog *cd = new QDialog(mw, Qt::WindowSystemMenuHint | Qt::WindowTitleHint);
@@ -88,6 +89,8 @@ int main(int argc, char *argv[])
 	ui.statusbar->addWidget(new QLabel(user->getName()));
 	ui.menuAdministration->menuAction()->setVisible(user->getAdmin());
 	QObject::connect(ui.actionAbout_QT, SIGNAL(activated()), &app, SLOT(aboutQt()));
+	Controller ctrl(mw, root);
+	QObject::connect(ui.actionNew_model, SIGNAL(activated()), &ctrl, SLOT(addModel()));
 	buildTree(ui, root);
 	return app.exec();
 }

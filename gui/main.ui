@@ -39,6 +39,7 @@
     <property name="title">
      <string>Administration</string>
     </property>
+    <addaction name="actionNew_model"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -49,6 +50,11 @@
    <addaction name="menuAdministration"/>
    <addaction name="menuHelp"/>
   </widget>
+  <action name="actionNew_model">
+   <property name="text">
+    <string>New model...</string>
+   </property>
+  </action>
   <action name="actionAbout_QT">
    <property name="text">
     <string>About Qt</string>
