@@ -68,6 +68,7 @@ int main(int argc, char *argv[])
 	VersionControl::User_ptr user = root->getMyUser();
 	ui.statusbar->addWidget(new QLabel(user->getName()));
 	ui.menuAdministration->menuAction()->setVisible(user->getAdmin());
+	QObject::connect(ui.actionAbout_QT, SIGNAL(activated()), &app, SLOT(aboutQt()));
 	buildTree(ui, root);
 	return app.exec();
 }

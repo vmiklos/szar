@@ -29,8 +29,20 @@
      <string>Administration</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout_QT"/>
+   </widget>
    <addaction name="menuAdministration"/>
+   <addaction name="menuHelp"/>
   </widget>
+  <action name="actionAbout_QT">
+   <property name="text">
+    <string>About Qt</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
