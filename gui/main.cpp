@@ -54,13 +54,16 @@ VersionControl::Root_ptr showConnectDialog(QWidget *mw, CORBA::ORB_var orb) {
 
 void buildTree(Ui::MainWindow &ui, VersionControl::Root_ptr root) {
 	QTreeWidget *tw = ui.treeWidget;
-	tw->setColumnCount(1);
 	QList<QTreeWidgetItem *> items;
 	VersionControl::ModelSeq *models = root->getModels();
 	for (unsigned int i = 0; i < models->length(); i++) {
 		VersionControl::Model_var model = (*models)[i];
 		QString name = QString::fromUtf8(model->getName());
-		items.append(new QTreeWidgetItem((QTreeWidget*)0, QStringList(name)));
+		QString numrevs;
+		numrevs.setNum(model->getRevisions()->length());
+		QStringList columns;
+		columns << name << numrevs + " revision(s)";
+		items.append(new QTreeWidgetItem((QTreeWidget*)0, columns));
 	}
 	tw->insertTopLevelItems(0, items);
 }

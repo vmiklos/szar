@@ -13,7 +13,18 @@
   <property name="windowTitle">
    <string>SQL Version Control</string>
   </property>
-  <widget class="QTreeWidget" name="treeWidget"/>
+  <widget class="QTreeWidget" name="treeWidget">
+   <column>
+    <property name="text">
+     <string>Name</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Notes</string>
+    </property>
+   </column>
+  </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
