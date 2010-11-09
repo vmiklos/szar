@@ -65,6 +65,7 @@ int main(int argc, char *argv[])
 	ui.setupUi(mw);
 	mw->show();
 	VersionControl::Root_ptr root = showConnectDialog(mw, orb);
+	ui.statusbar->addWidget(new QLabel(root->getMyUser()->getName()));
 	buildTree(ui, root);
 	return app.exec();
 }
