@@ -8,18 +8,19 @@ VersionControl::Model_ptr AdminImpl::addModel(const char* name)
 {
 	QSqlDatabase db = QSqlDatabase::database();
 	QSqlQuery q(db);
+	QString qsName = QString::fromUtf8(name);
 	q.prepare("SELECT id, 'ReadWrite' FROM models WHERE name = :name;");
-	q.bindValue(":name", name);
+	q.bindValue(":name", qsName);
 	if (q.exec()) {
 		if (q.size() > 0 && q.next()) {
 			VersionControl::Model_ptr model = RootImpl::modelFromId(q, uid);
 			throw VersionControl::AlreadyExistsException(model);
 		} else {
 			q.prepare("insert into models (name) values (:name)");
-			q.bindValue(":name", name);
+			q.bindValue(":name", qsName);
 			if (!q.exec()) throw VersionControl::DbError();
 			q.prepare("select id from models where name = :name");
-			q.bindValue(":name", name);
+			q.bindValue(":name", qsName);
 			if (q.exec() && q.next())
 				return RootImpl::modelFromId(q, uid);
 		}
@@ -33,14 +34,15 @@ VersionControl::UserAdmin_ptr AdminImpl::addUser(const char* name)
 {
 	QSqlDatabase db = QSqlDatabase::database();
 	QSqlQuery q(db);
+	QString qsName = QString::fromUtf8(name);
 	q.prepare("select id from users where username = :name");
-	q.bindValue(":name", name);
+	q.bindValue(":name", qsName);
 	if (q.exec()) {
 		if (q.size() > 0 && q.next()) {
 			throw VersionControl::AlreadyExistsException();
 		} else {
 			q.prepare("insert into users (username) values (:name)");
-			q.bindValue(":name", name);
+			q.bindValue(":name", qsName);
 			if (!q.exec()) {
 				cerr << "AdminImpl::addUser() Error occured during SQL insert: " << q.lastError().text().toStdString() << endl;
 				throw VersionControl::DbError();
@@ -88,7 +90,7 @@ void AdminImpl::removeUser(VersionControl::UserAdmin_ptr user)
 	QSqlDatabase db = QSqlDatabase::database();
 	QSqlQuery q(db);
 	q.prepare("delete from users where username = :name limit 1");
-	q.bindValue(":name", user->getName());
+	q.bindValue(":name", QString::fromUtf8(user->getName()));
 	if (!q.exec() || q.numRowsAffected() < 1) throw VersionControl::DbError();
 }
 
@@ -97,7 +99,7 @@ VersionControl::ModelAdmin_ptr AdminImpl::getModelAdmin(VersionControl::Model_pt
 	QSqlDatabase db = QSqlDatabase::database();
 	QSqlQuery q(db);
 	q.prepare("select id from models where name = :name");
-	q.bindValue(":name", target->getName());
+	q.bindValue(":name", QString::fromUtf8(target->getName()));
 	if (q.exec()) {
 		if (q.size() > 0 && q.next()) {
 			QSqlRecord r = q.record();
