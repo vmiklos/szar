@@ -2,11 +2,18 @@
 #include "ui_connect.h"
 #include <VersionControl.hh>
 #include <QMessageBox>
+#include <QSettings>
 
 VersionControl::Root_ptr showConnectDialog(QWidget *mw, CORBA::ORB_var orb) {
 	QDialog *cd = new QDialog(mw, Qt::WindowSystemMenuHint | Qt::WindowTitleHint);
 	Ui::ConnectDialog ui;
 	ui.setupUi(cd);
+	// Load settings
+	QSettings settings("IRC Software Development", "SQL Version Control");
+	ui.host->setText(settings.value("repository/host").toString());
+	ui.port->setText(settings.value("repository/port").toString());
+	ui.username->setText(settings.value("repository/username").toString());
+	if (ui.username->text() != "") ui.password->setFocus(Qt::OtherFocusReason);
 	while (true) {
 		if (cd->exec() != QDialog::Accepted) exit(0);
 		QString initref("corbaloc:iiop:");
@@ -14,9 +21,14 @@ VersionControl::Root_ptr showConnectDialog(QWidget *mw, CORBA::ORB_var orb) {
 		try {
 			CORBA::Object_var obj = orb->string_to_object(initref.toUtf8().constData());
 			VersionControl::Auth_var authref = VersionControl::Auth::_narrow(obj);
-			return authref->login(
+			VersionControl::Root_ptr retval = authref->login(
 				ui.username->text().toUtf8().constData(),
 				ui.password->text().toUtf8().constData());
+			// Successful login, save settings
+			settings.setValue("repository/host", ui.host->text());
+			settings.setValue("repository/port", ui.port->text());
+			settings.setValue("repository/username", ui.username->text());
+			return retval;
 		}
 		catch (VersionControl::AccessDenied& e) {
 			QMessageBox mb(QMessageBox::Critical, "Access Denied",
