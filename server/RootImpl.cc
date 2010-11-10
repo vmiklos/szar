@@ -67,18 +67,23 @@ VersionControl::Admin_ptr RootImpl::getAdmin() {
 VersionControl::ModelSeq* RootImpl::getModels() {
 	QSqlDatabase db = QSqlDatabase::database();
 	QSqlQuery q(db);
-	q.prepare("SELECT m.id AS id, a.rights AS rights FROM models m JOIN acl a "
-		"ON a.model_id = m.id WHERE a.user_id = :uid ORDER BY m.name ASC");
-	q.bindValue(":uid", uid);
-	if (q.exec()) {
-		VersionControl::ModelSeq *retval = new VersionControl::ModelSeq();
-		retval->length(q.size());
-		for (int i = 0; q.next(); i++) (*retval)[i] = modelFromId(q, uid);
-		return retval;
-	} else {
+	try {
+		if (isAdmin(uid)) {
+			if (!q.exec("SELECT m.id AS id FROM models m")) throw VersionControl::DbError();
+		} else {
+			q.prepare("SELECT m.id AS id, a.rights AS rights FROM models m JOIN acl a "
+					"ON a.model_id = m.id WHERE a.user_id = :uid ORDER BY m.name ASC");
+			q.bindValue(":uid", uid);
+			if (!q.exec()) throw VersionControl::DbError();
+		}
+	} catch(VersionControl::DbError& e) {
 		cerr << "RootImpl::getModels() Error occured during SQL query: " << q.lastError().text().toStdString() << endl;
+		throw;
 	}
-	throw VersionControl::DbError();
+	VersionControl::ModelSeq *retval = new VersionControl::ModelSeq();
+	retval->length(q.size());
+	for (int i = 0; q.next(); i++) (*retval)[i] = modelFromId(q, uid);
+	return retval;
 }
 
 VersionControl::Model_ptr RootImpl::getModel(const char* name) {
