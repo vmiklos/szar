@@ -1,5 +1,5 @@
 /// Tests the Root interface. Status: everything tested.
-class RootTest : public CppUnit::TestFixture
+class RootTest : public TestBase
 {
 	CPPUNIT_TEST_SUITE(RootTest);
 	CPPUNIT_TEST(testGetAdminSuccess);
@@ -12,28 +12,11 @@ class RootTest : public CppUnit::TestFixture
 	CPPUNIT_TEST_SUITE_END();
 
 public:
-	CORBA::ORB_ptr orb;
-	CORBA::Object_ptr obj;
-	VersionControl::Auth_ptr authref;
+	using TestBase::setUp;
 
 	void setUp()
 	{
-		// setup up the db
-		Test::sqlInit((char*)"RootTest");
-
-		// set up the client
-		int argc = 5;
-		char* argv[] = {
-			(char*)"",
-			(char*)"-ORBInitRef",
-			(char*)"AuthService=corbaloc:iiop:localhost:31337/AuthService",
-			(char*)"-ORBnativeCharCodeSet",
-			(char*)"UTF-8"
-		};
-		orb = CORBA::ORB_init(argc, argv);
-		obj = orb->resolve_initial_references("AuthService");
-		authref = VersionControl::Auth::_narrow(obj);
-		CPPUNIT_ASSERT( !CORBA::is_nil(authref) );
+		setUp((char*)"RootTest");
 	}
 
 	void tearDown() 
