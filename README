@@ -3,7 +3,7 @@ Build procedure: qmake-qt4 && make stub && make
 Available documentation:
 
 - Requirement specification: doc/spec.pdf (make -C doc spec.pdf)
-- System design: FIXME
+- System design: doc/rendszerterv.pdf (make -C doc rendszerterv.pdf)
 - API documentation: doc/devel.pdf (sh mkdeveldoc.sh)
 - Installation documentation: FIXME
 - User documentation: FIXME
