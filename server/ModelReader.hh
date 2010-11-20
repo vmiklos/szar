@@ -4,6 +4,7 @@
 #include <QtSql>
 #include "RevisionImpl.hh"
 
+/// Read-only implementation for the Model interface.
 class ModelReader
 {
 protected:

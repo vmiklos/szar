@@ -5,6 +5,7 @@
 
 using namespace std;
 
+/// Implementation of the UserAdmin interface.
 class UserAdminImpl : public UserImpl
 {
 	int adminuid;

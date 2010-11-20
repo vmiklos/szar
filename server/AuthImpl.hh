@@ -8,6 +8,7 @@
 
 using namespace std;
 
+/// Implementation of the Auth interface.
 class AuthImpl : public POA_VersionControl::Auth
 {
 public:

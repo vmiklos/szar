@@ -5,6 +5,7 @@
 
 using namespace std;
 
+/// Read-write implementation for the Model interface.
 class ModelWriter : public ModelReader
 {
 protected:

@@ -4,6 +4,7 @@
 
 using namespace std;
 
+/// Implementation of the ModelAdmin interface.
 class ModelAdminImpl : public ModelWriter
 {
 public:

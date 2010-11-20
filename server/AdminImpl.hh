@@ -9,6 +9,7 @@
 
 using namespace std;
 
+/// Implementation of the Admin interface
 class AdminImpl : public POA_VersionControl::Admin
 {
 protected:

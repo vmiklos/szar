@@ -4,6 +4,7 @@
 #include <QtSql>
 #include "UserImpl.hh"
 
+/// Implementation of the Revision interface.
 class RevisionImpl : public POA_VersionControl::Revision
 {
 protected:

@@ -6,6 +6,7 @@
 
 using namespace std;
 
+/// Implementation of the User interface.
 class UserImpl
 {
 protected:

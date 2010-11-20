@@ -7,6 +7,7 @@
 
 using namespace std;
 
+/// Implementation of the Resolver interface.
 class ResolverImpl : public POA_VersionControl::Resolver
 {
 public:

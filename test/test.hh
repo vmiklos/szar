@@ -19,6 +19,7 @@ using namespace std;
 
 #include "server_lib.hh"
 
+/// Helper class to run testcases.
 class Test
 {
 	pid_t pid;
@@ -31,6 +32,7 @@ public:
 	static void sqlInit(char *name);
 };
 
+/// Base class for testcases.
 class TestBase : public CppUnit::TestFixture
 {
 public:

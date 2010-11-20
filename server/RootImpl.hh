@@ -10,6 +10,7 @@
 
 using namespace std;
 
+/// Implementation of the Root interface.
 class RootImpl : public POA_VersionControl::Root
 {
 protected:
