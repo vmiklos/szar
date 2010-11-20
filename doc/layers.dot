@@ -1,0 +1,10 @@
+digraph G {
+	node [shape=record]
+	c0 [label="{Megjelenítés}"]
+
+	c1 [label="{Üzleti logika}"]
+	c0 -> c1 [dir=both, label="CORBA"]
+
+	c2 [label="{Adatelérés}"]
+	c1 -> c2 [dir=both, label="SQL"]
+}
