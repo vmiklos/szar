@@ -6,125 +6,166 @@ module VersionControl {
 	enum AccessLevel { Read, ReadWrite };
 
 	// Exceptions without parameters
+	/// Exception thrown when the caller does not have enough access to perform the operation.
 	exception AccessDenied {};
+	/// Exception thrown when a database error occurs.
 	exception DbError {};
+	/// Exception thrown when the supplied user is not valid.
 	exception InvalidUser {};
+	/// Exception thrown when the supplied model is not valid.
 	exception InvalidModel {};
+	/// Exception thrown when the supplied revision is not valid.
 	exception InvalidRevision {};
 
-	// Interface for user information
+	/// Interface for user information.
 	interface User {
+		/// Returns the name of the user.
 		string getName() raises (DbError, InvalidUser);
+		/// Returns if the user is an administrator.
 		boolean getAdmin() raises (DbError, InvalidUser);
 	};
 
-	// User - Access tuple
+	/// User - Access tuple.
 	struct UserAccess {
+		/// The user who grants the access.
 		User grantee;
+		/// The level of access being granted.
 		AccessLevel level;
 	};
 
-	// Model with a name
+	/// Model with a name
 	struct NamedModel {
+		/// Name of the model.
 		string name;
+		/// The model itself.
 		ModelData data;
 	};
 
-	// User is already assigned to the model
+	/// User is already assigned to the model.
 	exception UserAlreadyAssigned {
 		UserAccess access;
 	};
 
 	typedef sequence<UserAccess> UserAccessSeq;
 
-	// Interface for user administration
+	/// Interface for user administration
 	interface UserAdmin : User {
+		/// Set the password of the user.
 		void setPassword(in string password) raises (DbError);
-		void setAdmin(in boolean admin) raises (AccessDenied, DbError); // inaccessible for users
+		/// Set the administrator flag of the user (inaccessible for users).
+		void setAdmin(in boolean admin) raises (AccessDenied, DbError);
 	};
 
 	typedef sequence<UserAdmin> UserAdminSeq;
 
-	// Model is locked by another user
+	/// Model is locked by another user
 	exception LockedException {
 		User lockedBy;
 	};
 
-	// The interface of a single revision of a model
+	/// The interface of a single revision of a model.
 	interface Revision {
+		/// Returns the version of the revision.
 		unsigned long getNumber();
+		/// Returns the data of the revision.
 		string getData() raises (DbError);
+		/// Returns the author of the revision.
 		User getAuthor() raises (DbError);
 	};
 
-	// Model is not up to date
+	/// Model is not up to date.
 	exception NotUptodateException {
 		Revision head;
 	};
 
 	typedef sequence<Revision> RevisionSeq;
 
-	// The interface of models (the object being tracked)
+	/// The interface of models (the object being tracked)
 	interface Model {
+		/// Get the name of the model.
 		string getName() raises (InvalidModel, DbError);
+		/// Get revisions of the model.
 		RevisionSeq getRevisions() raises (DbError);
+		/// Get a specified revision of the model.
 		Revision getRevision(in unsigned long number);
+		/// Get the latest revision of the model.
 		Revision getCurrentRevision() raises (InvalidModel, DbError);
+		/// Update the model to a new version.
 		void commit(in ModelData data, in unsigned long base) raises (NotUptodateException, InvalidModel, LockedException, DbError);
+		/// Lock the model.
 		void lock() raises (AccessDenied, InvalidModel, LockedException, DbError);
+		/// Unlock the model.
 		void unlock() raises (AccessDenied, InvalidModel, LockedException, DbError); // AD + LE not raised for admins
 	};
 
-	// Interface for model administration
+	/// Interface for model administration.
 	interface ModelAdmin : Model {
+		/// Returns the users of a model.
 		UserAccessSeq getUsers() raises (InvalidModel, DbError);
+		/// Set the name of the model.
 		void setName(in string name) raises (InvalidModel, DbError);
+		/// Remove user from a model.
 		void removeUser(in User toRemove) raises (InvalidModel, InvalidUser, DbError);
+		/// Change the access level of a user for this model.
 		void changeUserLevel(in User toChange, in AccessLevel access) raises (InvalidModel, InvalidUser, DbError);
+		/// Add a user to this model.
 		void addUser(in UserAccess access) raises (InvalidModel, InvalidUser, UserAlreadyAssigned, DbError);
+		/// Drop the model.
 		void removeModel() raises (InvalidModel, DbError);
 	};
 
 	typedef sequence<ModelAdmin> ModelAdminSeq;
 
-	// A model with this name already exists
+	/// A model with this name already exists.
 	exception AlreadyExistsException {
 		Model existingModel;
 	};
 
 	typedef sequence<Model> ModelSeq;
 
-	// The interface for administrators ("director room")
+	/// The interface for administrators ("director room").
 	interface Admin {
+		/// Adds a new model.
 		Model addModel(in string name) raises (AlreadyExistsException, DbError);
+		/// Adds a new user.
 		UserAdmin addUser(in string name) raises (AlreadyExistsException, DbError);
+		/// Returns existing users.
 		UserAdminSeq getUsers() raises (DbError);
+		/// Removes a user.
 		void removeUser(in UserAdmin user) raises (DbError);
+		/// Returns the model administration interface.
 		ModelAdmin getModelAdmin(in Model target);
 	};
 
-	// 3-way merge resulted in a conflict
+	/// 3-way merge resulted in a conflict.
 	exception ConflictException {
-		// ModelData containing the conflict markers
+		// ModelData containing the conflict markers.
 		ModelData toResolve;
 	};
 
-	// This interface used to export 3-way merge logic
+	/// This interface used to export 3-way merge logic.
 	interface Resolver {
+		/// Performs a 3-way merge.
 		ModelData merge(in ModelData base, in NamedModel modela, in NamedModel modelb) raises (ConflictException);
 	};
 
-	// The interface for logged-in users ("hallway")
+	/// The interface for logged-in users ("hallway").
 	interface Root {
+		/// Returns the administrative interface.
 		Admin getAdmin() raises (AccessDenied);
+		/// Returns the list of available models.
 		ModelSeq getModels() raises (DbError);
+		/// Returns a model by its name.
 		Model getModel(in string name) raises (InvalidModel, DbError);
+		/// Returns self-administration interface.
 		UserAdmin getMyUser();
+		/// Returns the conflict resolution interface.
 		Resolver getResolver();
 	};
 
-	// The only interface with network-facing implementation ("door")
+	/// The only interface with network-facing implementation ("door").
 	interface Auth {
+		/// Use this method to provide credentials so that you can enter the system.
 		Root login(in string username, in string password) raises (AccessDenied, DbError);
 	};
 };
