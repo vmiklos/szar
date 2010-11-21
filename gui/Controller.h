@@ -27,4 +27,5 @@ public slots:
 	void editACL();
 	void commit();
 	void checkout();
+	void changePassword();
 };

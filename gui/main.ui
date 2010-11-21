@@ -59,6 +59,15 @@
     <addaction name="actionCommit"/>
     <addaction name="actionCheckout"/>
    </widget>
+   <widget class="QMenu" name="menuMain">
+    <property name="title">
+     <string>Main</string>
+    </property>
+    <addaction name="actionChange_password"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <addaction name="menuMain"/>
    <addaction name="menuModel"/>
    <addaction name="menuAdministration"/>
    <addaction name="menuHelp"/>
@@ -106,7 +115,34 @@
     <string>Checkout...</string>
    </property>
   </action>
+  <action name="actionChange_password">
+   <property name="text">
+    <string>Change password...</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actionExit</sender>
+   <signal>activated()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>209</x>
+     <y>179</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

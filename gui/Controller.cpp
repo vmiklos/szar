@@ -183,6 +183,22 @@ void Controller::checkout() {
 	}
 }
 
+void Controller::changePassword() {
+	const QString pw = QInputDialog::getText(m_mw, "Password",
+		"New password:", QLineEdit::Password);
+	const QString pw2 = QInputDialog::getText(m_mw, "Password",
+		"New password (again):", QLineEdit::Password);
+	if (pw.isEmpty() || pw2.isEmpty()) return; // Cancel or empty password
+	if (pw != pw2) {
+		QMessageBox::critical(m_mw, "Password mismatch", "The passwords entered doesn't match!");
+		return;
+	}
+	try {
+		m_root->getMyUser()->setPassword(pw.toUtf8().constData());
+		CATCH_DBERROR
+	}
+}
+
 Controller::Controller(QWidget *mw, Ui::MainWindow *ui, VersionControl::Root_var root) {
 	m_mw = mw;
 	m_ui = ui;

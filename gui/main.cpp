@@ -72,6 +72,7 @@ int main(int argc, char *argv[])
 	QObject::connect(ui.actionEdit_ACL, SIGNAL(activated()), &ctrl, SLOT(editACL()));
 	QObject::connect(ui.actionCommit, SIGNAL(activated()), &ctrl, SLOT(commit()));
 	QObject::connect(ui.actionCheckout, SIGNAL(activated()), &ctrl, SLOT(checkout()));
+	QObject::connect(ui.actionChange_password, SIGNAL(activated()), &ctrl, SLOT(changePassword()));
 	ctrl.buildTree();
 	return app.exec();
 }
