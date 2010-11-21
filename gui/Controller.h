@@ -2,6 +2,7 @@
 #include <QInputDialog>
 #include <QObject>
 #include <QMessageBox>
+#include <QFileDialog>
 #include "ui_main.h"
 #include "ui_users.h"
 #include "Exceptions.h"
@@ -24,4 +25,5 @@ public slots:
 	void removeModel();
 	void manageUsers();
 	void editACL();
+	void commit();
 };

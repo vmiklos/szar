@@ -122,6 +122,37 @@ void Controller::editACL() {
 	}
 }
 
+void Controller::commit() {
+	QTreeWidgetItem *twi = m_ui->treeWidget->currentItem();
+	if (twi == NULL) return;
+	QString fn = QFileDialog::getOpenFileName(m_mw, "Select file to commit",
+		"", "SQL scripts (*.sql);;All files (*.*)");
+	if (fn == NULL) return; // Cancel
+	QFile file(fn);
+	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		QMessageBox::critical(m_mw, "Cannot open file",
+			"The selected file cannot be opened. Check permissions.");
+		return;
+	}
+	QByteArray ba = file.readAll();
+	if (ba.size() != file.size()) {
+		QMessageBox::critical(m_mw, "Cannot read file",
+			"The contents of the selected file cannot be read.");
+		return;
+	}
+	try {
+		const QString name = twi->text(0);
+		m_root->getModel(name.toUtf8().constData())->commit(
+			ba.constData(), twi->childCount());
+		buildTree();
+		QMessageBox::information(m_mw, "Successful commit",
+			"The selected file has been committed to the repository.");
+		CATCH_DBERROR
+		CATCH_INVALIDMODEL
+		CATCH_ACCESSDENIED("You don't have write permissions on the selected model.")
+	}
+}
+
 Controller::Controller(QWidget *mw, Ui::MainWindow *ui, VersionControl::Root_var root) {
 	m_mw = mw;
 	m_ui = ui;

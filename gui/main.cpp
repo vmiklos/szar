@@ -70,6 +70,7 @@ int main(int argc, char *argv[])
 	QObject::connect(ui.actionRemove_model, SIGNAL(activated()), &ctrl, SLOT(removeModel()));
 	QObject::connect(ui.actionManage_users, SIGNAL(activated()), &ctrl, SLOT(manageUsers()));
 	QObject::connect(ui.actionEdit_ACL, SIGNAL(activated()), &ctrl, SLOT(editACL()));
+	QObject::connect(ui.actionCommit, SIGNAL(activated()), &ctrl, SLOT(commit()));
 	ctrl.buildTree();
 	return app.exec();
 }
