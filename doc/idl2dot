@@ -25,8 +25,10 @@ class Class:
 		self.stereotype = s.replace('<', r'\<').replace('>', r'\>')
 
 ininterface = False
+instruct = False
 classes = []
 interface = None
+struct = None
 for i in lines:
 	line = i.strip().replace('unsigned long', 'unsigned_long')
 	tokens = line.split(' ')
@@ -39,21 +41,41 @@ for i in lines:
 		interface.setstereotype("<<interface>>")
 		if tokens[2] == ":":
 			interface.base = tokens[3]
-	if tokens[0] == "};":
+	elif tokens[0] == "};":
 		if ininterface:
 			ininterface = False
 			classes.append(interface)
 			interface = None
-	if ininterface and "(" in line:
-		m = Method()
-		m.name = tokens[1].split('(')[0]
-		m.setrettype(tokens[0])
-		for j in line.split('(')[1].split(')')[0].split(', '):
-			l = j.split(' ')
-			if len(l) and len(l[0]):
-				direction, argtype, name = j.split(' ')
-				m.arguments.append("%s : %s" % (name, argtype.replace('_', ' ')))
-		interface.methods.append(m)
+		if instruct:
+			instruct = False
+			classes.append(struct)
+			struct = None
+	elif ininterface and "(" in line:
+		if ininterface:
+			m = Method()
+			m.name = tokens[1].split('(')[0]
+			m.setrettype(tokens[0])
+			for j in line.split('(')[1].split(')')[0].split(', '):
+				l = j.split(' ')
+				if len(l) and len(l[0]):
+					direction, argtype, name = j.split(' ')
+					m.arguments.append("%s : %s" % (name, argtype.replace('_', ' ')))
+			interface.methods.append(m)
+	elif tokens[0] == "struct":
+		instruct = True
+		struct = Class()
+		struct.name = tokens[1]
+	elif tokens[0] == "typedef":
+		pass
+	elif tokens[0] == "enum":
+		pass
+	elif tokens[0] == "exception":
+		pass
+	elif len(tokens[0]) and tokens[-1][-1] == ";":
+		if instruct:
+			attrtype = tokens[0];
+			name = tokens[1].strip(';')
+			struct.attributes.append('%s : %s' % (name, attrtype.replace('_', ' ')))
 
 print "digraph G {"
 print "node [shape=record]"
@@ -63,6 +85,8 @@ for i in classes:
 	if i.stereotype:
 		header = r"%s \n %s" % (i.stereotype, header)
 	attrs = ""
+	for j in i.attributes:
+		attrs += "+ %s\l" % j
 	methods = ""
 	for j in i.methods:
 		methods += "+ %s(%s) : %s\l" % (j.name, ", ".join(j.arguments), j.rettype)
