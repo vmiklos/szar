@@ -37,7 +37,8 @@ for i in lines:
 		interface = Class()
 		interface.name = tokens[1]
 		interface.setstereotype("<<interface>>")
-		interface
+		if tokens[2] == ":":
+			interface.base = tokens[3]
 	if tokens[0] == "};":
 		if ininterface:
 			ininterface = False
@@ -66,4 +67,6 @@ for i in classes:
 	for j in i.methods:
 		methods += "+ %s(%s) : %s\l" % (j.name, ", ".join(j.arguments), j.rettype)
 	print """%s [label="{%s|%s|%s}"]""" % (name, header, attrs, methods)
+	if i.base:
+		print "%s -> %s [arrowtail=empty,dir=back]" % (i.base, i.name)
 print "}"
