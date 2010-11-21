@@ -1,0 +1,69 @@
+#!/usr/bin/env python
+
+import sys
+
+sock = open(sys.argv[1])
+lines = sock.readlines()
+sock.close()
+
+class Method:
+	def __init__(self):
+		self.name = None
+		self.arguments = []
+		self.rettype = "void"
+	def setrettype(self, s):
+		self.rettype = s.replace('_', ' ')
+
+class Class:
+	def __init__(self):
+		self.name = None
+		self.base = None
+		self.stereotype = None
+		self.attributes = []
+		self.methods = []
+	def setstereotype(self, s):
+		self.stereotype = s.replace('<', r'\<').replace('>', r'\>')
+
+ininterface = False
+classes = []
+interface = None
+for i in lines:
+	line = i.strip().replace('unsigned long', 'unsigned_long')
+	tokens = line.split(' ')
+	if not len(tokens) or tokens[0].startswith("//"):
+		continue
+	if tokens[0] == "interface":
+		ininterface = True
+		interface = Class()
+		interface.name = tokens[1]
+		interface.setstereotype("<<interface>>")
+		interface
+	if tokens[0] == "};":
+		if ininterface:
+			ininterface = False
+			classes.append(interface)
+			interface = None
+	if ininterface and "(" in line:
+		m = Method()
+		m.name = tokens[1].split('(')[0]
+		m.setrettype(tokens[0])
+		for j in line.split('(')[1].split(')')[0].split(', '):
+			l = j.split(' ')
+			if len(l) and len(l[0]):
+				direction, argtype, name = j.split(' ')
+				m.arguments.append("%s : %s" % (name, argtype.replace('_', ' ')))
+		interface.methods.append(m)
+
+print "digraph G {"
+print "node [shape=record]"
+for i in classes:
+	name = i.name
+	header = i.name
+	if i.stereotype:
+		header = r"%s \n %s" % (i.stereotype, header)
+	attrs = ""
+	methods = ""
+	for j in i.methods:
+		methods += "+ %s(%s) : %s\l" % (j.name, ", ".join(j.arguments), j.rettype)
+	print """%s [label="{%s|%s|%s}"]""" % (name, header, attrs, methods)
+print "}"
