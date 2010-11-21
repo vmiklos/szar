@@ -90,10 +90,14 @@ VersionControl::Model_ptr RootImpl::getModel(const char* name) {
 	cout << "[debug] getModel(name = \"" << name << "\")" << endl;
 	QSqlDatabase db = QSqlDatabase::database();
 	QSqlQuery q(db);
-	q.prepare("SELECT m.id AS id, a.rights AS rights FROM models m JOIN acl a "
-		"ON a.model_id = m.id WHERE m.name = :name AND a.user_id = :uid");
+	if (isAdmin(uid)) {
+		q.prepare("SELECT m.id AS id FROM models m WHERE m.name = :name");
+	} else {
+		q.prepare("SELECT m.id AS id, a.rights AS rights FROM models m JOIN acl a "
+			"ON a.model_id = m.id WHERE m.name = :name AND a.user_id = :uid");
+		q.bindValue(":uid", uid);
+	}
 	q.bindValue(":name", QString::fromUtf8(name));
-	q.bindValue(":uid", uid);
 	if (q.exec()) {
 		if (q.size() < 1) {
 			cout << "Result: model not found" << endl;
