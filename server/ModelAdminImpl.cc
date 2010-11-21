@@ -37,7 +37,7 @@ void ModelAdminImpl::setName(const char* name)
 	QSqlDatabase db = QSqlDatabase::database();
 	QSqlQuery q(db);
 	q.prepare("update models set name = :name where id = :id limit 1");
-	q.bindValue(":name", name);
+	q.bindValue(":name", QString::fromUtf8(name));
 	q.bindValue(":id", mid);
 	if (q.exec()) {
 		if (q.numRowsAffected() == 1)
@@ -53,7 +53,7 @@ void ModelAdminImpl::removeUser(VersionControl::User_ptr toRemove)
 	QSqlDatabase db = QSqlDatabase::database();
 	QSqlQuery q(db);
 	q.prepare("select id from users where username = :name");
-	q.bindValue(":name", toRemove->getName());
+	q.bindValue(":name", QString::fromUtf8(toRemove->getName()));
 	if (!q.exec() || !q.next())
 		throw VersionControl::InvalidUser();
 	QSqlRecord r = q.record();
@@ -77,7 +77,7 @@ void ModelAdminImpl::changeUserLevel(VersionControl::User_ptr toChange, VersionC
 	QSqlDatabase db = QSqlDatabase::database();
 	QSqlQuery q(db);
 	q.prepare("select id from users where username = :name");
-	q.bindValue(":name", toChange->getName());
+	q.bindValue(":name", QString::fromUtf8(toChange->getName()));
 	if (!q.exec() || !q.next())
 		throw VersionControl::InvalidUser();
 	int tcid = q.record().value("id").toInt();
@@ -98,7 +98,7 @@ void ModelAdminImpl::addUser(const VersionControl::UserAccess& access)
 	QSqlDatabase db = QSqlDatabase::database();
 	QSqlQuery q(db);
 	q.prepare("select id from users where username = :name");
-	q.bindValue(":name", access.grantee->getName());
+	q.bindValue(":name", QString::fromUtf8(access.grantee->getName()));
 	if (!q.exec() || !q.next())
 		throw VersionControl::InvalidUser();
 	int taid = q.record().value("id").toInt();
