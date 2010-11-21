@@ -13,6 +13,7 @@ void Controller::buildTree() {
 		columns << name << numrevs + " revision(s)";
 		items.append(new QTreeWidgetItem((QTreeWidget*)0, columns));
 	}
+	tw->clear();
 	tw->insertTopLevelItems(0, items);
 }
 
@@ -22,6 +23,7 @@ void Controller::addModel() {
 		QString name = QInputDialog::getText(m_mw, "New model", "Model name:");
 		if (name.isEmpty()) return; // Cancel or empty name
 		admin->addModel(name.toUtf8().constData());
+		buildTree();
 	}
 	catch (VersionControl::AccessDenied& e) {
 		QMessageBox mb(QMessageBox::Critical, "Access Denied",
