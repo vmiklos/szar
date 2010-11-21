@@ -24,24 +24,9 @@ void Controller::addModel() {
 		if (name.isEmpty()) return; // Cancel or empty name
 		admin->addModel(name.toUtf8().constData());
 		buildTree();
-	}
-	catch (VersionControl::AccessDenied& e) {
-		QMessageBox mb(QMessageBox::Critical, "Access Denied",
-			"Only administrators can add models.",
-			QMessageBox::Ok, m_mw);
-		mb.exec();
-	}
-	catch (VersionControl::AlreadyExistsException& e) {
-		QMessageBox mb(QMessageBox::Critical, "Duplicate model",
-			"A model with the same name already exists.",
-			QMessageBox::Ok, m_mw);
-		mb.exec();
-	}
-	catch (VersionControl::DbError& e) {
-		QMessageBox mb(QMessageBox::Critical, "Database error",
-			"A database error occured on the server, please try again.",
-			QMessageBox::Ok, m_mw);
-		mb.exec();
+		CATCH_DBERROR
+		CATCH_ACCESSDENIED("Only administrators can add models.")
+		CATCH_ALREADYEXISTS("model")
 	}
 }
 

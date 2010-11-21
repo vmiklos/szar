@@ -5,6 +5,7 @@
 #include <QSettings>
 #include <QDesktopWidget>
 #include "Controller.h"
+#include "Exceptions.h"
 
 VersionControl::Root_ptr showConnectDialog(QWidget *mw, CORBA::ORB_var orb) {
 	QDialog *cd = new QDialog(mw, Qt::WindowSystemMenuHint | Qt::WindowTitleHint);
@@ -32,23 +33,13 @@ VersionControl::Root_ptr showConnectDialog(QWidget *mw, CORBA::ORB_var orb) {
 			settings.setValue("repository/username", ui.username->text());
 			return retval;
 		}
-		catch (VersionControl::AccessDenied& e) {
-			QMessageBox mb(QMessageBox::Critical, "Access Denied",
-				"Check your username and password and try again.",
-				QMessageBox::Ok, mw);
-			mb.exec();
-		}
-		catch (VersionControl::DbError& e) {
-			QMessageBox mb(QMessageBox::Critical, "Database error",
-				"A database error occured on the server, please try again.",
-				QMessageBox::Ok, mw);
-			mb.exec();
-		}
 		catch(CORBA::TRANSIENT&) {
 			QMessageBox mb(QMessageBox::Critical, "Connection error",
 				"Unable to contact the server. Check the host/port and try again.",
 				QMessageBox::Ok, mw);
 			mb.exec();
+			CATCH_ACCESSDENIED("Check your username and password and try again.")
+			CATCH_DBERROR
 		}
 	}
 }

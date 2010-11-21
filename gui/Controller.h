@@ -3,6 +3,7 @@
 #include <QObject>
 #include <QMessageBox>
 #include "ui_main.h"
+#include "Exceptions.h"
 
 class Controller : public QObject {
 	Q_OBJECT
