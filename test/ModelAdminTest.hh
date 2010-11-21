@@ -59,7 +59,7 @@ public:
 		} catch (VersionControl::InvalidUser& e) {
 			cerr << "invalid user" << endl;
 			CPPUNIT_ASSERT(0);
-		} catch (VersionControl::AlreadyExistsException& e) {
+		} catch (VersionControl::UserAlreadyAssigned& e) {
 			cerr << "already exists" << endl;
 			CPPUNIT_ASSERT(0);
 		} catch (VersionControl::DbError& e) {

@@ -107,11 +107,17 @@ void ModelAdminImpl::addUser(const VersionControl::UserAccess& access)
 	if (!q.exec() || !q.next())
 		throw VersionControl::InvalidUser();
 	int taid = q.record().value("id").toInt();
-	q.prepare("select user_id from acl where user_id = :uid and model_id = :mid");
+	q.prepare("select user_id, rights from acl where user_id = :uid and model_id = :mid");
 	q.bindValue(":uid", taid);
 	q.bindValue(":mid", mid);
 	if (!q.exec()) throw VersionControl::DbError();
-	if (q.size() > 0 && q.next()) throw VersionControl::AlreadyExistsException();
+	if (q.size() > 0 && q.next()) {
+		VersionControl::UserAccess ua;
+		ua.grantee = access.grantee;
+		ua.level = q.record().value("rights").toString() == "ReadWrite"
+			? VersionControl::ReadWrite : VersionControl::Read;
+		throw VersionControl::UserAlreadyAssigned(ua);
+	}
 	q.prepare("insert into acl (user_id, model_id, rights) values (:uid, :mid, :rigths)");
 	q.bindValue(":uid", taid);
 	q.bindValue(":mid", mid);
