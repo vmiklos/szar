@@ -3,7 +3,9 @@
 #include <QObject>
 #include <QMessageBox>
 #include "ui_main.h"
+#include "ui_users.h"
 #include "Exceptions.h"
+#include "Users.h"
 
 class Controller : public QObject {
 	Q_OBJECT
@@ -19,4 +21,5 @@ public slots:
 	void addModel();
 	void renameModel();
 	void removeModel();
+	void manageUsers();
 };

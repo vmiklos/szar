@@ -42,6 +42,8 @@
     <addaction name="actionNew_model"/>
     <addaction name="actionRename_model"/>
     <addaction name="actionRemove_model"/>
+    <addaction name="separator"/>
+    <addaction name="actionManage_users"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -73,6 +75,11 @@
    </property>
    <property name="shortcut">
     <string>Del</string>
+   </property>
+  </action>
+  <action name="actionManage_users">
+   <property name="text">
+    <string>Manage users...</string>
    </property>
   </action>
  </widget>

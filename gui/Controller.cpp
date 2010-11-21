@@ -68,6 +68,23 @@ void Controller::removeModel() {
 	}
 }
 
+void Controller::manageUsers() {
+	try {
+		VersionControl::Admin_var admin = m_root->getAdmin();
+		QDialog *ud = new QDialog(m_mw, Qt::WindowSystemMenuHint | Qt::WindowTitleHint);
+		Ui::UsersDialog ui;
+		ui.setupUi(ud);
+		Users ctrl(ud, &ui, admin);
+		QObject::connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)),
+			&ctrl, SLOT(clicked(QAbstractButton*)));
+		QObject::connect(ui.listWidget, SIGNAL(itemChanged(QListWidgetItem*)),
+			&ctrl, SLOT(itemChanged(QListWidgetItem*)));
+		ud->exec();
+		CATCH_DBERROR
+		CATCH_ACCESSDENIED("Only administrators can manage users.")
+	}
+}
+
 Controller::Controller(QWidget *mw, Ui::MainWindow *ui, VersionControl::Root_var root) {
 	m_mw = mw;
 	m_ui = ui;
