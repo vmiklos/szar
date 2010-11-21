@@ -44,6 +44,7 @@
     <addaction name="actionRemove_model"/>
     <addaction name="separator"/>
     <addaction name="actionManage_users"/>
+    <addaction name="actionEdit_ACL"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -80,6 +81,11 @@
   <action name="actionManage_users">
    <property name="text">
     <string>Manage users...</string>
+   </property>
+  </action>
+  <action name="actionEdit_ACL">
+   <property name="text">
+    <string>Edit ACL...</string>
    </property>
   </action>
  </widget>

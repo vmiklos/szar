@@ -6,6 +6,7 @@
 #include "ui_users.h"
 #include "Exceptions.h"
 #include "Users.h"
+#include "ACL.h"
 
 class Controller : public QObject {
 	Q_OBJECT
@@ -22,4 +23,5 @@ public slots:
 	void renameModel();
 	void removeModel();
 	void manageUsers();
+	void editACL();
 };

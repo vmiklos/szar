@@ -10,6 +10,14 @@
 	__EXCEPTION_HANDLER(VersionControl::InvalidModel, "Invalid model", \
 		"An invalid model was referenced, please refresh and try again.")
 
+#define CATCH_INVALIDUSER \
+	__EXCEPTION_HANDLER(VersionControl::InvalidUser, "Invalid user", \
+		"An invalid user was referenced, please refresh and try again.")
+
+#define CATCH_ALREADYASSIGNED \
+	__EXCEPTION_HANDLER(VersionControl::UserAlreadyAssigned, "User already assigned", \
+		"This user is already assigned to this model. Please refresh and use the checkboxes.")
+
 #define CATCH_DBERROR \
 	__EXCEPTION_HANDLER(VersionControl::DbError, "Database error", \
 		"A database error occured on the server, please try again.")

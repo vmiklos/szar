@@ -85,6 +85,29 @@ void Controller::manageUsers() {
 	}
 }
 
+void Controller::editACL() {
+	QTreeWidgetItem *twi = m_ui->treeWidget->currentItem();
+	if (twi == NULL) return;
+	try {
+		const QString name = twi->text(0);
+		VersionControl::Admin_var admin = m_root->getAdmin();
+		VersionControl::ModelAdmin_var model =
+			admin->getModelAdmin(m_root->getModel(name.toUtf8().constData()));
+		QDialog *ud = new QDialog(m_mw, Qt::WindowSystemMenuHint | Qt::WindowTitleHint);
+		Ui::UsersDialog ui;
+		ui.setupUi(ud);
+		ACL ctrl(ud, &ui, model, admin);
+		QObject::connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)),
+			&ctrl, SLOT(clicked(QAbstractButton*)));
+		QObject::connect(ui.listWidget, SIGNAL(itemChanged(QListWidgetItem*)),
+			&ctrl, SLOT(itemChanged(QListWidgetItem*)));
+		ud->exec();
+		CATCH_DBERROR
+		CATCH_INVALIDMODEL
+		CATCH_ACCESSDENIED("Only administrators can edit ACL.")
+	}
+}
+
 Controller::Controller(QWidget *mw, Ui::MainWindow *ui, VersionControl::Root_var root) {
 	m_mw = mw;
 	m_ui = ui;
