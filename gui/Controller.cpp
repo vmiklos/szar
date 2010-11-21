@@ -47,6 +47,7 @@ void Controller::addModel() {
 void Controller::renameModel() {
 	QTreeWidgetItem *twi = m_ui->treeWidget->currentItem();
 	if (twi == NULL) return;
+	while (twi->parent() != NULL) twi = twi->parent(); // get model
 	try {
 		const QString oldName = twi->text(0);
 		VersionControl::ModelAdmin_var admin =
@@ -66,6 +67,7 @@ void Controller::renameModel() {
 void Controller::removeModel() {
 	QTreeWidgetItem *twi = m_ui->treeWidget->currentItem();
 	if (twi == NULL) return;
+	while (twi->parent() != NULL) twi = twi->parent(); // get model
 	try {
 		const QString oldName = twi->text(0);
 		VersionControl::ModelAdmin_var admin =
@@ -102,6 +104,7 @@ void Controller::manageUsers() {
 void Controller::editACL() {
 	QTreeWidgetItem *twi = m_ui->treeWidget->currentItem();
 	if (twi == NULL) return;
+	while (twi->parent() != NULL) twi = twi->parent(); // get model
 	try {
 		const QString name = twi->text(0);
 		VersionControl::Admin_var admin = m_root->getAdmin();
