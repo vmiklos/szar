@@ -6,13 +6,31 @@ sock = open(sys.argv[1])
 lines = sock.readlines()
 sock.close()
 
+associations = {}
+
 class Method:
 	def __init__(self):
 		self.name = None
 		self.arguments = []
 		self.rettype = "void"
 	def setrettype(self, s):
-		self.rettype = s.replace('_', ' ')
+		global associations, interface
+		t = s.replace('_', ' ')
+		try:
+			if interface.name not in associations[t]:
+				associations[t].append(interface.name)
+		except KeyError:
+			associations[t] = [interface.name]
+		self.rettype = t
+	def addargument(self, name, argtype):
+		global associations, interface
+		t = argtype.replace('_', ' ')
+		try:
+			if interface.name not in associations[t]:
+				associations[t].append(interface.name)
+		except KeyError:
+			associations[t] = [interface.name]
+		self.arguments.append("%s : %s" % (name, t))
 
 class Class:
 	def __init__(self):
@@ -23,6 +41,15 @@ class Class:
 		self.methods = []
 	def setstereotype(self, s):
 		self.stereotype = s.replace('<', r'\<').replace('>', r'\>')
+	def addattribute(self, name, attrtype):
+		global associations, struct
+		t = attrtype.replace('_', ' ')
+		try:
+			if struct.name not in associations[t]:
+				associations[t].append(struct.name)
+		except KeyError:
+			associations[t] = [struct.name]
+		self.attributes.append('%s : %s' % (name, t))
 
 ininterface = False
 instruct = False
@@ -59,7 +86,7 @@ for i in lines:
 				l = j.split(' ')
 				if len(l) and len(l[0]):
 					direction, argtype, name = j.split(' ')
-					m.arguments.append("%s : %s" % (name, argtype.replace('_', ' ')))
+					m.addargument(name, argtype)
 			interface.methods.append(m)
 	elif tokens[0] == "struct":
 		instruct = True
@@ -75,12 +102,14 @@ for i in lines:
 		if instruct:
 			attrtype = tokens[0];
 			name = tokens[1].strip(';')
-			struct.attributes.append('%s : %s' % (name, attrtype.replace('_', ' ')))
+			struct.addattribute(name, attrtype)
 
 print "digraph G {"
 print "node [shape=record]"
+cnames = []
 for i in classes:
 	name = i.name
+	cnames.append(name)
 	header = i.name
 	if i.stereotype:
 		header = r"%s \n %s" % (i.stereotype, header)
@@ -93,4 +122,9 @@ for i in classes:
 	print """%s [label="{%s|%s|%s}"]""" % (name, header, attrs, methods)
 	if i.base:
 		print "%s -> %s [arrowtail=empty,dir=back]" % (i.base, i.name)
+for k, v in associations.items():
+	if not k in cnames:
+		continue
+	for i in v:
+		print """%s -> %s [arrowtail=open,label="\<\<use\>\>",style="dashed",dir=back]""" % (k, i)
 print "}"
