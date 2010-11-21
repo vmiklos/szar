@@ -65,7 +65,6 @@ void Users::clicked(QAbstractButton *button) {
 		try {
 			m_hash[lwi]->setPassword(pw.toUtf8().constData());
 			CATCH_DBERROR
-			CATCH_ACCESSDENIED("Only administrators can alter passwords.")
 		}
 	}
 }
