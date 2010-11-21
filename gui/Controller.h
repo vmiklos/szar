@@ -26,4 +26,5 @@ public slots:
 	void manageUsers();
 	void editACL();
 	void commit();
+	void checkout();
 };

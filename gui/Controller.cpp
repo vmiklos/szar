@@ -157,6 +157,32 @@ void Controller::commit() {
 	}
 }
 
+void Controller::checkout() {
+	QTreeWidgetItem *twi = m_ui->treeWidget->currentItem();
+	if (twi == NULL) return;
+	QTreeWidgetItem *parent = twi->parent();
+	if (parent == NULL) {
+		QMessageBox::critical(m_mw, "Invalid selection", "Please select a revision to check out.");
+		return;
+	}
+	QString fn = QFileDialog::getSaveFileName(m_mw, "Select file name to check out to",
+		parent->text(0) + "-" + twi->text(0) + ".sql", "SQL scripts (*.sql);;All files (*.*)");
+	if (fn == NULL) return; // Cancel
+	QFile file(fn);
+	if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
+		QMessageBox::critical(m_mw, "Cannot open file",
+			"The selected file cannot be opened. Check permissions.");
+		return;
+	}
+	unsigned int revnum = atoi(twi->text(0).toUtf8().constData() + 1); // skip 'r'
+	const QString name = parent->text(0);
+	try {
+		file.write(m_root->getModel(name.toUtf8().constData())->getRevision(revnum)->getData());
+		CATCH_INVALIDMODEL
+		CATCH_DBERROR
+	}
+}
+
 Controller::Controller(QWidget *mw, Ui::MainWindow *ui, VersionControl::Root_var root) {
 	m_mw = mw;
 	m_ui = ui;

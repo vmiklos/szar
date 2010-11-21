@@ -57,6 +57,7 @@
      <string>Model</string>
     </property>
     <addaction name="actionCommit"/>
+    <addaction name="actionCheckout"/>
    </widget>
    <addaction name="menuModel"/>
    <addaction name="menuAdministration"/>
@@ -98,6 +99,11 @@
   <action name="actionCommit">
    <property name="text">
     <string>Commit...</string>
+   </property>
+  </action>
+  <action name="actionCheckout">
+   <property name="text">
+    <string>Checkout...</string>
    </property>
   </action>
  </widget>
