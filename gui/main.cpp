@@ -75,6 +75,7 @@ int main(int argc, char *argv[])
 	QObject::connect(ui.actionChange_password, SIGNAL(activated()), &ctrl, SLOT(changePassword()));
 	QObject::connect(ui.actionLock, SIGNAL(activated()), &ctrl, SLOT(lock()));
 	QObject::connect(ui.actionUnlock, SIGNAL(activated()), &ctrl, SLOT(unlock()));
+	QObject::connect(ui.actionRefresh_tree, SIGNAL(activated()), &ctrl, SLOT(buildTree()));
 	ctrl.buildTree();
 	return app.exec();
 }

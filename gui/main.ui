@@ -60,6 +60,7 @@
     <addaction name="actionCheckout"/>
     <addaction name="actionLock"/>
     <addaction name="actionUnlock"/>
+    <addaction name="actionRefresh_tree"/>
    </widget>
    <widget class="QMenu" name="menuMain">
     <property name="title">
@@ -135,6 +136,14 @@
   <action name="actionUnlock">
    <property name="text">
     <string>Unlock</string>
+   </property>
+  </action>
+  <action name="actionRefresh_tree">
+   <property name="text">
+    <string>Refresh tree</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
    </property>
   </action>
  </widget>

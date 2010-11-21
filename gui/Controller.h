@@ -18,7 +18,6 @@ protected:
 	QWidget *m_mw;
 public:
 	Controller(QWidget *mw, Ui::MainWindow *ui, VersionControl::Root_var root);
-	void buildTree();
 public slots:
 	void addModel();
 	void renameModel();
@@ -30,4 +29,5 @@ public slots:
 	void changePassword();
 	void lock();
 	void unlock();
+	void buildTree();
 };
