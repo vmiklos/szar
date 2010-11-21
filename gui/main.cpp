@@ -66,6 +66,7 @@ int main(int argc, char *argv[])
 	QObject::connect(ui.actionAbout_QT, SIGNAL(activated()), &app, SLOT(aboutQt()));
 	Controller ctrl(mw, &ui, root);
 	QObject::connect(ui.actionNew_model, SIGNAL(activated()), &ctrl, SLOT(addModel()));
+	QObject::connect(ui.actionRename_model, SIGNAL(activated()), &ctrl, SLOT(renameModel()));
 	ctrl.buildTree();
 	return app.exec();
 }

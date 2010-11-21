@@ -6,6 +6,10 @@
 } catch ( exception & e) { \
 	QMessageBox::critical(0, title, msg);
 
+#define CATCH_INVALIDMODEL \
+	__EXCEPTION_HANDLER(VersionControl::InvalidModel, "Invalid model", \
+		"An invalid model was referenced, please refresh and try again.")
+
 #define CATCH_DBERROR \
 	__EXCEPTION_HANDLER(VersionControl::DbError, "Database error", \
 		"A database error occured on the server, please try again.")

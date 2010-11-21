@@ -30,6 +30,25 @@ void Controller::addModel() {
 	}
 }
 
+void Controller::renameModel() {
+	QTreeWidgetItem *twi = m_ui->treeWidget->currentItem();
+	if (twi == NULL) return;
+	try {
+		const QString oldName = twi->text(0);
+		VersionControl::ModelAdmin_var admin =
+			m_root->getAdmin()->getModelAdmin(m_root->getModel(oldName.toUtf8().constData()));
+		const QString newName = QInputDialog::getText(
+			m_mw, "New model", "Model name:", QLineEdit::Normal, oldName);
+		if (newName.isEmpty() || newName == oldName) return; // Cancel or empty or old name
+		admin->setName(newName.toUtf8().constData());
+		buildTree();
+		CATCH_DBERROR
+		CATCH_INVALIDMODEL
+		CATCH_ACCESSDENIED("Only administrators can rename models.")
+		CATCH_ALREADYEXISTS("model")
+	}
+}
+
 Controller::Controller(QWidget *mw, Ui::MainWindow *ui, VersionControl::Root_var root) {
 	m_mw = mw;
 	m_ui = ui;

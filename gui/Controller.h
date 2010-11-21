@@ -17,4 +17,5 @@ public:
 	void buildTree();
 public slots:
 	void addModel();
+	void renameModel();
 };
