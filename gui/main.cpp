@@ -53,22 +53,6 @@ VersionControl::Root_ptr showConnectDialog(QWidget *mw, CORBA::ORB_var orb) {
 	}
 }
 
-void buildTree(Ui::MainWindow &ui, VersionControl::Root_var root) {
-	QTreeWidget *tw = ui.treeWidget;
-	QList<QTreeWidgetItem *> items;
-	VersionControl::ModelSeq *models = root->getModels();
-	for (unsigned int i = 0; i < models->length(); i++) {
-		VersionControl::Model_var model = (*models)[i];
-		QString name = QString::fromUtf8(model->getName());
-		QString numrevs;
-		numrevs.setNum(model->getRevisions()->length());
-		QStringList columns;
-		columns << name << numrevs + " revision(s)";
-		items.append(new QTreeWidgetItem((QTreeWidget*)0, columns));
-	}
-	tw->insertTopLevelItems(0, items);
-}
-
 int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
@@ -89,8 +73,8 @@ int main(int argc, char *argv[])
 	ui.statusbar->addWidget(new QLabel(user->getName()));
 	ui.menuAdministration->menuAction()->setVisible(user->getAdmin());
 	QObject::connect(ui.actionAbout_QT, SIGNAL(activated()), &app, SLOT(aboutQt()));
-	Controller ctrl(mw, root);
+	Controller ctrl(mw, &ui, root);
 	QObject::connect(ui.actionNew_model, SIGNAL(activated()), &ctrl, SLOT(addModel()));
-	buildTree(ui, root);
+	ctrl.buildTree();
 	return app.exec();
 }

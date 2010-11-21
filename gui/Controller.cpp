@@ -1,5 +1,21 @@
 #include "Controller.h"
 
+void Controller::buildTree() {
+	QTreeWidget *tw = m_ui->treeWidget;
+	QList<QTreeWidgetItem *> items;
+	VersionControl::ModelSeq *models = m_root->getModels();
+	for (unsigned int i = 0; i < models->length(); i++) {
+		VersionControl::Model_var model = (*models)[i];
+		QString name = QString::fromUtf8(model->getName());
+		QString numrevs;
+		numrevs.setNum(model->getRevisions()->length());
+		QStringList columns;
+		columns << name << numrevs + " revision(s)";
+		items.append(new QTreeWidgetItem((QTreeWidget*)0, columns));
+	}
+	tw->insertTopLevelItems(0, items);
+}
+
 void Controller::addModel() {
 	try {
 		VersionControl::Admin_var admin = m_root->getAdmin();
@@ -27,7 +43,8 @@ void Controller::addModel() {
 	}
 }
 
-Controller::Controller(QWidget *mw, VersionControl::Root_var root) {
+Controller::Controller(QWidget *mw, Ui::MainWindow *ui, VersionControl::Root_var root) {
 	m_mw = mw;
+	m_ui = ui;
 	m_root = root;
 }
