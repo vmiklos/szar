@@ -28,4 +28,6 @@ public slots:
 	void commit();
 	void checkout();
 	void changePassword();
+	void lock();
+	void unlock();
 };

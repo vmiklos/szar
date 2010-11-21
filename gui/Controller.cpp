@@ -151,6 +151,7 @@ void Controller::commit() {
 		buildTree();
 		QMessageBox::information(m_mw, "Successful commit",
 			"The selected file has been committed to the repository.");
+		CATCH_LOCKED
 		CATCH_DBERROR
 		CATCH_INVALIDMODEL
 		CATCH_ACCESSDENIED("You don't have write permissions on the selected model.")
@@ -196,6 +197,36 @@ void Controller::changePassword() {
 	try {
 		m_root->getMyUser()->setPassword(pw.toUtf8().constData());
 		CATCH_DBERROR
+	}
+}
+
+void Controller::lock() {
+	QTreeWidgetItem *twi = m_ui->treeWidget->currentItem();
+	if (twi == NULL) return;
+	while (twi->parent() != NULL) twi = twi->parent(); // get model
+	try {
+		m_root->getModel(twi->text(0).toUtf8().constData())->lock();
+		QMessageBox::information(m_mw, "Successful lock",
+			"Model is now locked, only you (and administrators) can unlock it.");
+		CATCH_LOCKED
+		CATCH_DBERROR
+		CATCH_INVALIDMODEL
+		CATCH_ACCESSDENIED("You don't have write permissions on the selected model.")
+	}
+}
+
+void Controller::unlock() {
+	QTreeWidgetItem *twi = m_ui->treeWidget->currentItem();
+	if (twi == NULL) return;
+	while (twi->parent() != NULL) twi = twi->parent(); // get model
+	try {
+		m_root->getModel(twi->text(0).toUtf8().constData())->unlock();
+		QMessageBox::information(m_mw, "Successful lock",
+			"Model is now unlocked, everyone with write privileges can commit to it.");
+		CATCH_LOCKED
+		CATCH_DBERROR
+		CATCH_INVALIDMODEL
+		CATCH_ACCESSDENIED("You don't have write permissions on the selected model.")
 	}
 }
 

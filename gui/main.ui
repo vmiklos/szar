@@ -58,6 +58,8 @@
     </property>
     <addaction name="actionCommit"/>
     <addaction name="actionCheckout"/>
+    <addaction name="actionLock"/>
+    <addaction name="actionUnlock"/>
    </widget>
    <widget class="QMenu" name="menuMain">
     <property name="title">
@@ -123,6 +125,16 @@
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionLock">
+   <property name="text">
+    <string>Lock</string>
+   </property>
+  </action>
+  <action name="actionUnlock">
+   <property name="text">
+    <string>Unlock</string>
    </property>
   </action>
  </widget>

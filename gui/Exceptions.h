@@ -22,6 +22,10 @@
 	__EXCEPTION_HANDLER(VersionControl::DbError, "Database error", \
 		"A database error occured on the server, please try again.")
 
+#define CATCH_LOCKED \
+	__EXCEPTION_HANDLER(VersionControl::LockedException, "Model locked", \
+		QString("The model is locked by ") + QString::fromUtf8(e.lockedBy->getName()))
+
 #define CATCH_ACCESSDENIED(msg) \
 	__EXCEPTION_HANDLER(VersionControl::AccessDenied, "Access Denied", msg)
 
