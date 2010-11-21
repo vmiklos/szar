@@ -71,6 +71,8 @@ module VersionControl {
 		string getData() raises (DbError);
 		/// Returns the author of the revision.
 		User getAuthor() raises (DbError);
+		/// Returns the timestamp of the revision.
+		string getTimestamp() raises (DbError);
 	};
 
 	/// Model is not up to date.

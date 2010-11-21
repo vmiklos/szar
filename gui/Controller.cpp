@@ -20,7 +20,8 @@ void Controller::buildTree() {
 			QString rn;
 			rn.setNum(rev->getNumber());
 			revCols << QString("r") + rn <<
-				QString("by ") + QString::fromUtf8(rev->getAuthor()->getName());
+				QString::fromUtf8(rev->getTimestamp()).replace('T', " ") +
+				" by " + QString::fromUtf8(rev->getAuthor()->getName());
 			QTreeWidgetItem *revItem = new QTreeWidgetItem(revCols);
 			item->insertChild(0, revItem);
 		}

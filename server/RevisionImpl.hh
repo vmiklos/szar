@@ -16,5 +16,6 @@ public:
 	::CORBA::ULong getNumber();
 	char* getData();
 	VersionControl::User_ptr getAuthor();
+	char* getTimestamp();
 };
 #endif

@@ -24,6 +24,18 @@ char* RevisionImpl::getData() {
 	throw VersionControl::DbError();
 }
 
+char* RevisionImpl::getTimestamp() {
+	QSqlDatabase db = QSqlDatabase::database();
+	QSqlQuery q(db);
+	q.prepare("SELECT created FROM revisions "
+		"WHERE revnum = :revnum AND model_id = :mid");
+	q.bindValue(":revnum", revnum);
+	q.bindValue(":mid", mid);
+	if (q.exec() && q.next())
+		return strdup(q.record().value("created").toString().toUtf8().constData());
+	throw VersionControl::DbError();
+}
+
 VersionControl::User_ptr RevisionImpl::getAuthor() {
 	QSqlDatabase db = QSqlDatabase::database();
 	QSqlQuery q(db);
