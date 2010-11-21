@@ -41,6 +41,7 @@
     </property>
     <addaction name="actionNew_model"/>
     <addaction name="actionRename_model"/>
+    <addaction name="actionRemove_model"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -64,6 +65,14 @@
   <action name="actionRename_model">
    <property name="text">
     <string>Rename model...</string>
+   </property>
+  </action>
+  <action name="actionRemove_model">
+   <property name="text">
+    <string>Remove model</string>
+   </property>
+   <property name="shortcut">
+    <string>Del</string>
    </property>
   </action>
  </widget>

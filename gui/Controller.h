@@ -18,4 +18,5 @@ public:
 public slots:
 	void addModel();
 	void renameModel();
+	void removeModel();
 };
