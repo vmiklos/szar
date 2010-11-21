@@ -93,7 +93,7 @@ module VersionControl {
 		/// Get the latest revision of the model.
 		Revision getCurrentRevision() raises (InvalidModel, DbError);
 		/// Update the model to a new version.
-		void commit(in ModelData data, in unsigned long base) raises (NotUptodateException, InvalidModel, LockedException, DbError);
+		void commit(in ModelData data, in unsigned long base) raises (NotUptodateException, InvalidModel, LockedException, DbError, AccessDenied);
 		/// Lock the model.
 		void lock() raises (AccessDenied, InvalidModel, LockedException, DbError);
 		/// Unlock the model.
