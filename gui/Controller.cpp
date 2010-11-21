@@ -8,10 +8,23 @@ void Controller::buildTree() {
 		VersionControl::Model_var model = (*models)[i];
 		QString name = QString::fromUtf8(model->getName());
 		QString numrevs;
-		numrevs.setNum(model->getRevisions()->length());
+		VersionControl::RevisionSeq *revs = model->getRevisions();
+		unsigned int revnum = revs->length();
+		numrevs.setNum(revnum);
 		QStringList columns;
-		columns << name << numrevs + " revision(s)";
-		items.append(new QTreeWidgetItem((QTreeWidget*)0, columns));
+		columns << name << numrevs + " revision" + (numrevs == "1" ? "" : "s");
+		QTreeWidgetItem *item = new QTreeWidgetItem(columns);
+		for (unsigned int j = 0; j < revnum; j++) {
+			VersionControl::Revision_var rev = (*revs)[j];
+			QStringList revCols;
+			QString rn;
+			rn.setNum(rev->getNumber());
+			revCols << QString("r") + rn <<
+				QString("by ") + QString::fromUtf8(rev->getAuthor()->getName());
+			QTreeWidgetItem *revItem = new QTreeWidgetItem(revCols);
+			item->insertChild(0, revItem);
+		}
+		items.append(item);
 	}
 	tw->clear();
 	tw->insertTopLevelItems(0, items);
