@@ -36,6 +36,11 @@ void ModelAdminImpl::setName(const char* name)
 {
 	QSqlDatabase db = QSqlDatabase::database();
 	QSqlQuery q(db);
+	q.prepare("SELECT COUNT(*) FROM models WHERE name = :name");
+	q.bindValue(":name", QString::fromUtf8(name));
+	if (!q.exec() || !q.next()) throw VersionControl::DbError();
+	QSqlRecord r = q.record();
+	if (r.value(0) != 0) throw VersionControl::AlreadyExistsException();
 	q.prepare("update models set name = :name where id = :id limit 1");
 	q.bindValue(":name", QString::fromUtf8(name));
 	q.bindValue(":id", mid);

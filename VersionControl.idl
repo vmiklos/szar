@@ -98,12 +98,17 @@ module VersionControl {
 		void unlock() raises (AccessDenied, InvalidModel, LockedException, DbError); // AD + LE not raised for admins
 	};
 
+	/// A model with this name already exists.
+	exception AlreadyExistsException {
+		Model existingModel;
+	};
+
 	/// Interface for model administration.
 	interface ModelAdmin : Model {
 		/// Returns the users of a model.
 		UserAccessSeq getUsers() raises (InvalidModel, DbError);
 		/// Set the name of the model.
-		void setName(in string name) raises (InvalidModel, DbError);
+		void setName(in string name) raises (InvalidModel, AlreadyExistsException, DbError);
 		/// Remove user from a model.
 		void removeUser(in User toRemove) raises (InvalidModel, InvalidUser, DbError);
 		/// Change the access level of a user for this model.
@@ -115,12 +120,6 @@ module VersionControl {
 	};
 
 	typedef sequence<ModelAdmin> ModelAdminSeq;
-
-	/// A model with this name already exists.
-	exception AlreadyExistsException {
-		Model existingModel;
-	};
-
 	typedef sequence<Model> ModelSeq;
 
 	/// The interface for administrators ("director room").
