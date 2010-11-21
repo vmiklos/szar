@@ -125,6 +125,7 @@ void Controller::editACL() {
 void Controller::commit() {
 	QTreeWidgetItem *twi = m_ui->treeWidget->currentItem();
 	if (twi == NULL) return;
+	while (twi->parent() != NULL) twi = twi->parent(); // get model
 	QString fn = QFileDialog::getOpenFileName(m_mw, "Select file to commit",
 		"", "SQL scripts (*.sql);;All files (*.*)");
 	if (fn == NULL) return; // Cancel
