@@ -3,6 +3,7 @@
 #include <QObject>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QSettings>
 #include "ui_main.h"
 #include "ui_users.h"
 #include "Exceptions.h"

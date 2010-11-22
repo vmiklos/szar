@@ -178,7 +178,11 @@ void Controller::checkout() {
 	unsigned int revnum = atoi(twi->text(0).toUtf8().constData() + 1); // skip 'r'
 	const QString name = parent->text(0);
 	try {
-		file.write(m_root->getModel(name.toUtf8().constData())->getRevision(revnum)->getData());
+		const QByteArray ba = name.toUtf8();
+		file.write(m_root->getModel(ba.constData())->getRevision(revnum)->getData());
+		// Successful file write, save revision
+		QSettings settings;
+		settings.setValue(QString("checkouts/") + ba.toHex(), revnum);
 		CATCH_INVALIDMODEL
 		CATCH_DBERROR
 	}
