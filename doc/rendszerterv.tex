@@ -38,7 +38,7 @@ A rendszert 3 réteg alkotja:
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=25mm,keepaspectratio]{layers.png}
+\includegraphics[width=25mm,keepaspectratio]{layers.pdf}
 \caption{A verziókövető rendszer architektúrája}
 \end{figure}
 
@@ -50,6 +50,7 @@ olyan funkcionalitás, mely nem triviális, és megjelenítés-független.
 tartalmaz, minden egyéb funkciót a kiszolgálón keresztül biztosít.
 \end{itemize}
 
+\clearpage
 \section{Adatbázis réteg}
 
 Fizikailag a következő entitásokat kívánunk tárolni:
@@ -75,10 +76,50 @@ Az ábrán látható módon ezek között a következő kapcsolatokat tervezzük
 \item a modellekhez egy-egy felhasználó verziókat hozhat létre
 \end{itemize}
 
+\clearpage
 \section{Üzleti logika}
 
-FIXME ide johetne corba interfeszrol class diagram, lehetne dumalni az sql
-injection elleni prepared statementekrol, tie megoldasokrol
+Az üzleti logika lefelé az adatbázis felé SQL segítségével kommunikál, a
+megjelenítési réteg felé pedig CORBA interfészeken.
+
+Az interfészek:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=130mm,keepaspectratio]{classdiagram.pdf}
+\caption{Az adatbázis sémájának modellje}
+\end{figure}
+
+\clearpage
+Az interfészek tervezésekor látszólagos problémát jelentett, hogy az
+interfészek öröklődése is megengedett (amihez aztán az omniORB csonk
+osztályokat generál), valamint mi is örököltetni akartuk az ilyen interfészek
+egyes implementációit.
+
+Példa erre a User és a UserAdmin osztályok. Ebben az esetben a UserAdmin
+egyrészt a POA\_VersionControl:: UserAdmin osztályból kellene öröklődjön,
+másrészt viszont az UserImpl implementációs osztályban már megvalósított
+logikát szeretnénk újrahasznosítani. Ezt úgy oldottuk meg, hogy ténylegesen a
+UserImpl osztályt adtuk meg ősnek, viszont a kliens egy UserAdminImpl
+osztállyal paraméterezett POA\_VersionControl:: UserAdmin\_tie osztályt kapott
+vissza, amely a UserAdmin interfészből öröklődik.
+
+Az üzleti logika tervezésekor ezen kívül még két döntést hoztunk az alkalmazás
+biztoságának növelése érdekében:
+
+\begin{itemize}
+\item A kliensek csak az Auth interfészhez férnek hozzá, és ezen keresztül érik
+el hitelesítés után a többi interfészt.
+\item Az SQL parancsok végrehajtásakor kizárólag prepared statementek
+segítségével helyettesítünk be paramétereket, ezáltal elkerülve az esetleges
+SQL injection problémakörébe tartozó veszélyeket.
+\end{itemize}
+
+A megvalósítás során, utólag hoztuk a döntést, hogy idő hiányában a 3-way merge
+funkcionalitást egy külső, szabadon elérhető (LGPL) könyvtár segítségével
+oldjuk meg. Mivel a kiválasztott LibXDiff könyvtár C nyelven íródott, az
+előadáson ismertetett Wrapper Facade tervezési mintát használva készítettük el
+a Resolver interfészt a könyvtár általunk használni kívánt részéhez.
 
 \section{Megjelenítési réteg}
 
