@@ -1,19 +1,12 @@
 /// Tests the User interface. Status: tests everything.
 class UserTest : public TestBase
 {
-	CPPUNIT_TEST_SUITE(UserTest);
+	TEST_SUITE(UserTest);
 	CPPUNIT_TEST(testGetName);
 	CPPUNIT_TEST(testGetAdmin);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
-	using TestBase::setUp;
-
-	void setUp()
-	{
-		setUp((char*)"UserTest");
-	}
-
 	void tearDown() 
 	{
 		CORBA::release(authref);

@@ -19,6 +19,15 @@ using namespace std;
 
 #include "server_lib.hh"
 
+#define TEST_SUITE(x) \
+	public: \
+	using TestBase::setUp; \
+	void setUp() \
+	{ \
+		setUp((char*)#x); \
+	} \
+	CPPUNIT_TEST_SUITE(x);
+
 /// Helper class to run testcases.
 class Test
 {

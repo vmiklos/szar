@@ -1,7 +1,7 @@
 /// Tests the Admin interface. Status: everything tested.
 class AdminTest : public TestBase
 {
-	CPPUNIT_TEST_SUITE(AdminTest);
+	TEST_SUITE(AdminTest);
 	CPPUNIT_TEST(testAddModelSuccess);
 	CPPUNIT_TEST(testAddModelFailure);
 	CPPUNIT_TEST(testAddUserSuccess);
@@ -12,13 +12,6 @@ class AdminTest : public TestBase
 	CPPUNIT_TEST_SUITE_END();
 
 public:
-	using TestBase::setUp;
-
-	void setUp()
-	{
-		setUp((char*)"AdminTest");
-	}
-
 	void tearDown() 
 	{
 		CORBA::release(authref);

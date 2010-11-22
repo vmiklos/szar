@@ -1,7 +1,7 @@
 /// Tests the Root interface. Status: everything tested.
 class RootTest : public TestBase
 {
-	CPPUNIT_TEST_SUITE(RootTest);
+	TEST_SUITE(RootTest);
 	CPPUNIT_TEST(testGetAdminSuccess);
 	CPPUNIT_TEST(testGetAdminFailure);
 	CPPUNIT_TEST(testGetModels);
@@ -12,13 +12,6 @@ class RootTest : public TestBase
 	CPPUNIT_TEST_SUITE_END();
 
 public:
-	using TestBase::setUp;
-
-	void setUp()
-	{
-		setUp((char*)"RootTest");
-	}
-
 	void tearDown() 
 	{
 		CORBA::release(authref);

@@ -1,7 +1,7 @@
 /// Tests the Model interface. Status: tests everything.
 class ModelTest : public TestBase
 {
-	CPPUNIT_TEST_SUITE(ModelTest);
+	TEST_SUITE(ModelTest);
 	CPPUNIT_TEST(testGetName);
 	CPPUNIT_TEST(testGetRevisions);
 	CPPUNIT_TEST(testGetRevision);
@@ -12,13 +12,6 @@ class ModelTest : public TestBase
 	CPPUNIT_TEST_SUITE_END();
 
 public:
-	using TestBase::setUp;
-
-	void setUp()
-	{
-		setUp((char*)"ModelTest");
-	}
-
 	void tearDown() 
 	{
 		CORBA::release(authref);

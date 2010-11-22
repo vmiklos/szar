@@ -1,20 +1,13 @@
 /// Tests the UserAdmin interface. Status: tests everything.
 class UserAdminTest : public TestBase
 {
-	CPPUNIT_TEST_SUITE(UserAdminTest);
+	TEST_SUITE(UserAdminTest);
 	CPPUNIT_TEST(testSetPassword);
 	CPPUNIT_TEST(testSetAdminSuccess);
 	CPPUNIT_TEST(testSetAdminFailure);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
-	using TestBase::setUp;
-
-	void setUp()
-	{
-		setUp((char*)"UserAdminTest");
-	}
-
 	void tearDown() 
 	{
 		CORBA::release(authref);

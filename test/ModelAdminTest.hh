@@ -1,7 +1,7 @@
 /// Tests the ModelAdmin interface. Status: tests everything.
 class ModelAdminTest : public TestBase
 {
-	CPPUNIT_TEST_SUITE(ModelAdminTest);
+	TEST_SUITE(ModelAdminTest);
 	CPPUNIT_TEST(testGetUsers);
 	CPPUNIT_TEST(testSetName);
 	CPPUNIT_TEST(testAddUser);
@@ -11,13 +11,6 @@ class ModelAdminTest : public TestBase
 	CPPUNIT_TEST_SUITE_END();
 
 public:
-	using TestBase::setUp;
-
-	void setUp()
-	{
-		setUp((char*)"ModelAdminTest");
-	}
-
 	void tearDown() 
 	{
 		CORBA::release(authref);

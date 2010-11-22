@@ -1,19 +1,12 @@
 /// Tests the Auth interface. Status: tests everything.
 class AuthTest : public TestBase
 {
-	CPPUNIT_TEST_SUITE(AuthTest);
+	TEST_SUITE(AuthTest);
 	CPPUNIT_TEST(testLoginSuccess);
 	CPPUNIT_TEST(testLoginFailure);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
-	using TestBase::setUp;
-
-	void setUp()
-	{
-		setUp((char*)"AuthTest");
-	}
-
 	void tearDown() 
 	{
 		CORBA::release(authref);

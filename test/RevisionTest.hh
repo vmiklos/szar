@@ -1,20 +1,13 @@
 /// Tests the Revision interface. Status: tests everything.
 class RevisionTest : public TestBase
 {
-	CPPUNIT_TEST_SUITE(RevisionTest);
+	TEST_SUITE(RevisionTest);
 	CPPUNIT_TEST(testGetNumber);
 	CPPUNIT_TEST(testGetData);
 	CPPUNIT_TEST(testGetAuthor);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
-	using TestBase::setUp;
-
-	void setUp()
-	{
-		setUp((char*)"RevisionTest");
-	}
-
 	void tearDown() 
 	{
 		CORBA::release(authref);

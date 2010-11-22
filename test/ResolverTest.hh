@@ -1,19 +1,12 @@
 /// Tests the Resolver interface. Status: tests everything.
 class ResolverTest : public TestBase
 {
-	CPPUNIT_TEST_SUITE(ResolverTest);
+	TEST_SUITE(ResolverTest);
 	CPPUNIT_TEST(testMergeSuccess);
 	CPPUNIT_TEST(testMergeFailure);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
-	using TestBase::setUp;
-
-	void setUp()
-	{
-		setUp((char*)"ResolverTest");
-	}
-
 	void tearDown() 
 	{
 		CORBA::release(authref);
