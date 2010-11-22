@@ -12,7 +12,7 @@ VersionControl::Root_ptr showConnectDialog(QWidget *mw, CORBA::ORB_var orb) {
 	Ui::ConnectDialog ui;
 	ui.setupUi(cd);
 	// Load settings
-	QSettings settings("IRC Software Development", "SQL Version Control");
+	QSettings settings;
 	ui.host->setText(settings.value("repository/host").toString());
 	ui.port->setText(settings.value("repository/port").toString());
 	ui.username->setText(settings.value("repository/username").toString());
@@ -47,6 +47,8 @@ VersionControl::Root_ptr showConnectDialog(QWidget *mw, CORBA::ORB_var orb) {
 int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
+	QCoreApplication::setOrganizationName("IRC Software Development");
+	QCoreApplication::setApplicationName("SQL Version Control");
 	const char* options[][2] = {
 		{ "nativeCharCodeSet", "UTF-8" },
 		{ 0, 0 }
