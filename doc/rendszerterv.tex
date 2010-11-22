@@ -139,6 +139,21 @@ kapcsolatot a teszt-adatbázissal, valamint leállítjuk a CORBA szervert.
 
 \section{Továbbfejlesztési lehetőségek}
 
-FIXME itt lehetne reszletezni az omniorb vs ssl kerdest, addig is vpnt ajanlani
+A rendszer elkészítése során több továbbfejlesztési lehetőség is eszünkbe
+jutott, melyeket idő hiányában még nem tudtunk megvalósítani:
+
+\begin{itemize}
+\item Az omniORB alapértelmezetten nem támogatja az SSL használatát a CORBA
+kommunikáció során. Jelenleg erre megoldásként a VPN használatát tudjuk
+javasolni, ennek ellenére lenne értelme mind a kliens, mind az szerver esetén
+beállíthatóvá tenni az SSL-t, arra az esetre ha mégis mindkét oldalon elérhető
+lenne az omniORB SSL támogatása.
+\item A jelenleg 3-way merge kód általában szöveges állományok merge-ölésére
+lett kifejlesztve, ezt le lehetne cserélni egy olyan algoritmusra, ami
+specifikusan SQL scriptek kezelésére készült, ezáltal növelve az automatikusan
+feloldható ütközések arányát.
+\item A Qt-alapú kliens mellett webes felületet is lehetne készíteni a
+rendszerhez.
+\end{itemize}
 
 \end{document}
