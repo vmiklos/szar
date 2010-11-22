@@ -127,7 +127,15 @@ FIXME
 
 \section{Befejezés}
 
-FIXME
+A rétegek áttekintése után nem maradt más hátra, mint áttekinteni, hogy milyen
+módszert terveztünk használni a szoftver teszteléséhez. A specifikációnak
+megfelelően automatikus tesztelést az üzleti logikára valósítottuk meg.
+
+A teszt keretrendszert a cppunit projekt adja. A tesztek futtatása előtt a
+CORBA szervert automatikusan indítjuk, kapcsolódunk egy külön erre a célra
+allokált teszt adatbázishoz. Minden interfészt egy külön teszt osztály tesztel,
+az adatbázist minden teszt előtt inicializáljuk. A teszt végén bontjuk a
+kapcsolatot a teszt-adatbázissal, valamint leállítjuk a CORBA szervert.
 
 \section{Továbbfejlesztési lehetőségek}
 
