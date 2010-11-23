@@ -4,7 +4,8 @@
 
 using namespace std;
 
-bool db_init() {
+bool db_init(int argc, char **argv) {
+	bool confirm = argc < 2 || strcmp(argv[1], "-yes");
 	// Builtin defaults
 	QString hostName("localhost");
 	QString databaseName("swar");
@@ -22,20 +23,28 @@ bool db_init() {
 
 	// Confirm, so that settings can be modified
 	string ret;
-	cout << "MySQL hostname? [" << hostName.toStdString() << "] ";
-	getline(cin, ret);
+	if (confirm) {
+		cout << "MySQL hostname? [" << hostName.toStdString() << "] ";
+		getline(cin, ret);
+	}
 	if (ret.length())
 		hostName = ret.c_str();
-	cout << "MySQL database name? [" << databaseName.toStdString() << "] ";
-	getline(cin, ret);
+	if (confirm) {
+		cout << "MySQL database name? [" << databaseName.toStdString() << "] ";
+		getline(cin, ret);
+	}
 	if (ret.length())
 		databaseName = ret.c_str();
-	cout << "MySQL username? [" << userName.toStdString() << "] ";
-	getline(cin, ret);
+	if (confirm) {
+		cout << "MySQL username? [" << userName.toStdString() << "] ";
+		getline(cin, ret);
+	}
 	if (ret.length())
 		userName = ret.c_str();
-	cout << "MySQL password? ";
-	getline(cin, ret);
+	if (confirm) {
+		cout << "MySQL password? ";
+		getline(cin, ret);
+	}
 
 	QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
 	db.setHostName(hostName);
@@ -54,7 +63,7 @@ bool db_init() {
 
 int main(int argc, char **argv)
 {
-	if (!db_init()) {
+	if (!db_init(argc, argv)) {
 		cerr << "Could not connect to MySQL" << endl;
 		return 1;
 	}
