@@ -9,6 +9,7 @@
 \usepackage{listings}
 \usepackage{multicol}
 \usepackage{graphicx}
+\usepackage{makecell}
 \usepackage{float}
 
 \title{Szoftverarchitektúrák (VIAUM105)\\Egyszerű verziókövető rendszer\\Felhasználói dokumentáció}
@@ -30,6 +31,40 @@ már a telepítési útmutató szerint megtörtént.
 
 \section{A szerver használata}
 
-Foo.
+A szerver komponens nem rendelkezik grafikus felhasználói felülettel: a kezdeti
+beállításokat parancssoros interfészen keresztül lehet beállítani, majd később
+a már beállított értékeket újra felhasználva nem-interaktív módban is
+indítható. A szerver a következő parancssori kapcsolókkal rendelkezik:
+
+\begin{center}
+\begin{table}[H]
+\centering
+\begin{tabular}{| l | l | l |}
+\hline
+Név & Funkció & Típus \\ \hline
+-ORBendPoint \emph{érték} & \makecell[l]{CORBA végpont \\ megadása, például \\ 31337-es  TCP \\ port esetén\\ giop:tcp::31337} & kötelező \\
+\hline
+\makecell[l]{-ORBnativeCharCodeSet \\ \emph{érték}} & \makecell[l]{CORBA karakterkódolás \\ megadása, például \\ UTF-8} & kötelező \\
+\hline
+-yes & \makecell[l]{korábban elmentett \\ beállítások használata, \\ interaktív mód \\ tiltása} & opcionális \\
+\hline
+\end{tabular}
+\caption{A szerver elérhető kapcsolói}
+\end{table}
+\end{center}
+
+Interaktív mód esetén indításkor a szerver a következő paraméterekre kérdez rá:
+
+\begin{itemize}
+\item MySQL host neve
+\item MySQL adatbázis neve
+\item MySQL felhasználó neve
+\item MySQL felhasználó jelszava
+\end{itemize}
+
+A MySQL felhasználó jelszavát a szerver soha nem tárolja le biztonsági okokból,
+így ha nem-interaktív módban szeretnénk használni a szervert, állítsuk be a
+MySQL hozzáférést az adott felhasználóra és elérési hostra jelszó nélkül
+engedélyezettre.
 
 \end{document}
