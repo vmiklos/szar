@@ -7,19 +7,15 @@ void Controller::buildTree() {
 	for (unsigned int i = 0; i < models->length(); i++) {
 		VersionControl::Model_var model = (*models)[i];
 		QString name = QString::fromUtf8(model->getName());
-		QString numrevs;
 		VersionControl::RevisionSeq *revs = model->getRevisions();
 		unsigned int revnum = revs->length();
-		numrevs.setNum(revnum);
 		QStringList columns;
-		columns << name << numrevs + " revision" + (numrevs == "1" ? "" : "s");
+		columns << name << QString::number(revnum) + " revision" + (revnum == 1 ? "" : "s");
 		QTreeWidgetItem *item = new QTreeWidgetItem(columns);
 		for (unsigned int j = 0; j < revnum; j++) {
 			VersionControl::Revision_var rev = (*revs)[j];
 			QStringList revCols;
-			QString rn;
-			rn.setNum(rev->getNumber());
-			revCols << QString("r") + rn <<
+			revCols << QString("r") + QString::number(rev->getNumber()) <<
 				QString::fromUtf8(rev->getTimestamp()).replace('T', " ") +
 				" by " + QString::fromUtf8(rev->getAuthor()->getName());
 			QTreeWidgetItem *revItem = new QTreeWidgetItem(revCols);
