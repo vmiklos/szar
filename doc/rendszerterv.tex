@@ -123,7 +123,38 @@ a Resolver interfészt a könyvtár általunk használni kívánt részéhez.
 
 \section{Megjelenítési réteg}
 
-FIXME
+A megjelenítési réteg a QT keretrendszer core modulja és GUI eszközkészlete
+felhasználásával készült el. Ez a C++ teljesítménybeli előnyeinek kihasználása
+mellett lehetővé tette, hogy a kliensprogram a forráskód módosítása nélkül
+lefordítható legyen Windows NT operációs rendszerre is akár GCC akár Visual
+C++ fordító használatával.
+
+A réteg elkészítése során MVC mintát követtünk, az alkalmazás egyszerűsége miatt
+a modell és nézet réteget is a QT keretrendszer adta (bonyolultabb esetben
+lehetőség lett volna saját modell osztályok használatára is). A nézetek
+elkészítésére a QT Designer alkalmazást használtuk, amely \verb|ui| kiterjesztésű
+XML fájlokat hozott létre, ezek tartalmazzák az ablakok kinézetét. Ezekhez --
+és a forráskódot alkotó \verb|cpp| és \verb|h| fájlokhoz a qmake segédprogram
+olyan platformfüggő (GNU ill.\ BSD make, nmake vagy vcproj) fájlt hozott létre,
+mely a függőségek figyelembevételével legenerálta a szükséges nézet osztályokat.
+
+Ezek a nézet osztályok futásidőben létrehozzák a megfelelő ablakokat, így a
+vezérlő (controller) osztályokból elegendő ezekre hivatkozni. A QT az implicit
+invokáció minta megvalósításához ún.\ signals--slots megoldást ad, ahol tetszőleges
+objektum signaljai (pl.\ rákattintottak) tetszőleges másik objektum slotjaihoz
+(pl.\ felhasználó létrehozása) hozzárendelhetők.
+
+Mint azt korábban említettük, az alkalmazás egyszerű, ilyen esetekre a QT az
+adatintenzív (lista, fa, stb.) widgetekhez biztosít egy alapértelmezett egyszerű
+modell objektumot, mi ezeket használtuk, mivel lerövidítették az implementációhoz
+szükséges időt, azonban később lecserélhetők a velük kompatíbilis, fejlesztő által
+biztosított modell osztályt használó widgetekre.
+
+A megjelenítési réteg a C++ nyelv használatánál fogva gyors, a QT GUI eszközkészlete
+pedig biztosítja, hogy standard widget- és ablakkészlettel (gomb, lista, fájl megnyitó
+ablak, stb.) rendelkező operációs rendszereken (Windows, Mac OS X) a felhasználó
+számára ismerős natív megjelenést biztosít, egyéb esetekben (Linux, BSD, stb.)
+választható témájú saját készletet használ.
 
 \section{Befejezés}
 
