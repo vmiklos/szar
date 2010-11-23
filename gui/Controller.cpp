@@ -129,7 +129,7 @@ void Controller::commit() {
 	QTreeWidgetItem *twi = m_ui->treeWidget->currentItem();
 	if (twi == NULL) return;
 	while (twi->parent() != NULL) twi = twi->parent(); // get model
-	QString fn = QFileDialog::getOpenFileName(m_mw, "Select file to commit",
+	const QString fn = QFileDialog::getOpenFileName(m_mw, "Select file to commit",
 		"", "SQL scripts (*.sql);;All files (*.*)");
 	if (fn == NULL) return; // Cancel
 	QFile file(fn);
@@ -144,10 +144,11 @@ void Controller::commit() {
 			"The contents of the selected file cannot be read.");
 		return;
 	}
+	file.close();
+	const QString name = twi->text(0);
 	try {
-		const QString name = twi->text(0);
-		m_root->getModel(name.toUtf8().constData())->commit(
-			ba.constData(), twi->childCount());
+		VersionControl::Model_var model = m_root->getModel(name.toUtf8().constData());
+		commitContent(ba.constData(), getBase(model, fn), model);
 		buildTree();
 		QMessageBox::information(m_mw, "Successful commit",
 			"The selected file has been committed to the repository.");
@@ -155,7 +156,83 @@ void Controller::commit() {
 		CATCH_DBERROR
 		CATCH_INVALIDMODEL
 		CATCH_ACCESSDENIED("You don't have write permissions on the selected model.")
+	} catch (CommitCancelled&) {}
+}
+
+unsigned int Controller::getBase(VersionControl::Model_var model, const QString fileName) {
+	QDialog *cd = new QDialog(m_mw, Qt::WindowSystemMenuHint | Qt::WindowTitleHint);
+	Ui::CommitDialog ui;
+	ui.setupUi(cd);
+	QString name = QString::fromUtf8(model->getName());
+	ui.lbModel->setText(name);
+	ui.lbFile->setText(fileName);
+	ui.lbRemote->setText(QString("r") +
+		QString::number(model->getCurrentRevision()->getNumber()));
+	VersionControl::RevisionSeq *revs = model->getRevisions();
+	unsigned int revnum = revs->length();
+	for (unsigned int j = 0; j < revnum; j++) {
+		VersionControl::Revision_var rev = (*revs)[j];
+		QString rn;
+		unsigned int cur = rev->getNumber();
+		ui.cbBase->addItem(QString("r") + QString::number(cur), cur);
 	}
+	QSettings settings;
+	QVariant v = settings.value(QString("checkouts/") + name.toUtf8().toHex(), NULL);
+	if (v == NULL) {
+		ui.lbLocal->setText("N/A");
+	} else {
+		QString r = QString("r") + v.toString();
+		ui.lbLocal->setText(r);
+		int i = ui.cbBase->findText(r);
+		if (i != -1) ui.cbBase->setCurrentIndex(i);
+	}
+	if (cd->exec() != QDialog::Accepted) throw CommitCancelled();
+	m_autoAccept = ui.cbAutoAccept->isChecked();
+	return ui.cbBase->itemData(ui.cbBase->currentIndex()).toUInt();
+}
+
+void Controller::commitContent(const char *content, unsigned int base, VersionControl::Model_var model) {
+	try {
+		model->commit(content, base);
+	} catch (VersionControl::NotUptodateException &e) {
+		VersionControl::Resolver_var res = m_root->getResolver();
+		VersionControl::Revision_var rev = model->getCurrentRevision();
+		VersionControl::NamedModel remote, local;
+		remote.name = "remote";
+		remote.data = rev->getData();
+		local.name = "local";
+		local.data = content;
+		const QString fileName = QString::fromUtf8(model->getName()) + "-merge-base" +
+			QString::number(base) + "-remote" + QString::number(rev->getNumber()) + "-local.sql";
+		try {
+			char *merged = res->merge(model->getRevision(base)->getData(), remote, local);
+			if (!m_autoAccept) showBrowser(merged, true, fileName);
+			commitContent(merged, rev->getNumber(), model);
+			delete merged;
+		} catch (VersionControl::ConflictException &e) {
+			showBrowser(e.toResolve, false, fileName);
+			throw CommitCancelled();
+		}
+	}
+}
+
+void Controller::showBrowser(const char *content, bool ok, const QString fileName) {
+	QDialog *bd = new QDialog(m_mw, Qt::WindowSystemMenuHint | Qt::WindowTitleHint);
+	Ui::BrowserDialog ui;
+	ui.setupUi(bd);
+	Browser ctrl(bd, &ui, content, fileName);
+	QObject::connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)),
+		&ctrl, SLOT(clicked(QAbstractButton*)));
+	if (!ok) {
+		ui.buttonBox->setStandardButtons(QDialogButtonBox::Close);
+		ui.label->setText(
+			"The commit resulted in conflicts that cannot be resolved automatically. "
+			"You can find the source of the model below, the parts where you and someone "
+			"else modified at since the base are marked with <b>remote</b> and <b>local</b>. "
+			"Click Save to save the version seen below to a file."
+		);
+	}
+	if (bd->exec() != QDialog::Accepted) throw CommitCancelled();
 }
 
 void Controller::checkout() {
