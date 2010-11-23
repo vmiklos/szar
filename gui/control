@@ -1,0 +1,9 @@
+Package: sql-version-control-gui
+Version: 1.0
+Section: vcs
+Priority: optional
+Architecture: i386
+Installed-Size: __IS__
+Depends: libomniorb4-1, libqtgui4
+Description: SQL Version Control GUI
+Maintainer: András Veres-Szentkirályi <vsza@vsza.hu>

@@ -1,0 +1,9 @@
+Package: sql-version-control-server
+Version: 1.0
+Section: vcs
+Priority: optional
+Architecture: i386
+Installed-Size: __IS__
+Depends: libomniorb4-1, libqt4-sql
+Description: SQL Version Control Server
+Maintainer: András Veres-Szentkirályi <vsza@vsza.hu>
