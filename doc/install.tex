@@ -6,6 +6,11 @@
 \usepackage[left=4cm,top=4cm,right=4cm,bottom=4cm,nohead]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage[magyar]{babel}
+\usepackage[
+  unicode=true,
+  colorlinks=false,
+  pdfborder={0 0 0 0},
+]{hyperref}
 
 \title{Szoftverarchitektúrák (VIAUM105)\\Egyszerű verziókövető rendszer\\Telepítési útmutató}
 \author{Vajna Miklós (AYU9RZ)\\Veres-Szentkirályi András (YZIOAW)}
@@ -107,5 +112,10 @@ egy parancsikont a Start menüben.
 \item kimeneti könyvtár kiválasztása, majd a ``Next'' gomb megnyomása
 \item telepítés befejezése után ``Finish'' gomb megnyomása
 \end{itemize}
+
+Amennyiben a program induláskor konfigurációs hibát jelez, szükséges a kb.\ 2 MB méretű
+Microsoft Visual C++ 2008 runtime csomag telepítése, ez ingyenesen letölthető a Microsoft
+letöltőközpontjából\footnote{
+\url{http://www.microsoft.com/downloads/en/details.aspx?FamilyID=9b2da534-3e03-4391-8a4d-074b9f2bc1bf}}.
 
 \end{document}
