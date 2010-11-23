@@ -83,6 +83,23 @@ a listából, majd a ``Telepítés'' gombra kattintás
 \item Grafikus felület használatával: fájlböngészőben deb fájlon dupla kattintás
 \end{itemize}
 
+\subsubsection{Adatbázis séma telepítése}
+
+A szervernek szüksége van egy MySQL adatbázisra, amelyen a következő feltételek teljesülnek:
+
+\begin{itemize}
+\item Támogatott az InnoDB tárolómotor (tranzakciók és külső kulcsok miatt).
+\item Létezik az alkalmazás által igényelt séma.
+\item A sémába tartozó táblákra írási és olvasási joga van az alkalmazás számára
+biztosított felhasználónak
+\end{itemize}
+
+Első feltétel könnyedén teljesíthető egy pár évnél nem régebbi MySQL verzió
+telepítésével, másodikhoz elég lefuttatni a szerverrel együtt terjesztett
+\verb|VersionControl.sql| szkriptet. Végül a harmadik teljesítéséhez
+leginkább egy, az alkalmazás számára dedikált adatbázis létrehozása,
+melyre egy felhasználó teljes írási/olvasási jogosultsággal rendelkezik.
+
 \clearpage
 \section{Microsoft Windows NT}
 
