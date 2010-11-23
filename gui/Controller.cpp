@@ -162,8 +162,12 @@ unsigned int Controller::getBase(VersionControl::Model_var model, const QString 
 	QString name = QString::fromUtf8(model->getName());
 	ui.lbModel->setText(name);
 	ui.lbFile->setText(fileName);
-	ui.lbRemote->setText(QString("r") +
-		QString::number(model->getCurrentRevision()->getNumber()));
+	try {
+		ui.lbRemote->setText(QString("r") +
+			QString::number(model->getCurrentRevision()->getNumber()));
+	} catch (VersionControl::InvalidModel&) {
+		return 0;
+	}
 	VersionControl::RevisionSeq *revs = model->getRevisions();
 	unsigned int revnum = revs->length();
 	for (unsigned int j = 0; j < revnum; j++) {
