@@ -1,5 +1,5 @@
 Build procedure: qmake-qt4 && make stub && make
-Debian package generation: make debs
+Debian package generation: fakeroot make debs
 
 Available documentation:
 
