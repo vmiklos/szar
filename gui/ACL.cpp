@@ -1,6 +1,6 @@
 #include "ACL.h"
 
-void ACL::buildList() {
+void ACLController::buildList() {
 	QListWidget *lw = m_ui->listWidget;
 	lw->clear();
 	m_hash.clear();
@@ -15,7 +15,7 @@ void ACL::buildList() {
 	}
 }
 
-void ACL::itemChanged(QListWidgetItem *item) {
+void ACLController::itemChanged(QListWidgetItem *item) {
 	if (item == NULL) return;
 	const QString name = item->text();
 	try {
@@ -28,7 +28,7 @@ void ACL::itemChanged(QListWidgetItem *item) {
 	buildList();
 }
 
-void ACL::clicked(QAbstractButton *button) {
+void ACLController::clicked(QAbstractButton *button) {
 	if (button == m_add) {
 		try {
 			QHash<QString, VersionControl::User_var> hash;
@@ -67,13 +67,13 @@ void ACL::clicked(QAbstractButton *button) {
 	}
 }
 
-void ACL::addButtons() {
+void ACLController::addButtons() {
 	QDialogButtonBox *bb = m_ui->buttonBox;
 	m_add = (QAbstractButton*)bb->addButton("Add", QDialogButtonBox::ActionRole);
 	m_remove = (QAbstractButton*)bb->addButton("Remove", QDialogButtonBox::ActionRole);
 }
 
-ACL::ACL(QDialog *d, Ui::UsersDialog *ui, VersionControl::ModelAdmin_var model, VersionControl::Admin_var admin) {
+ACLController::ACLController(QDialog *d, Ui::UsersDialog *ui, VersionControl::ModelAdmin_var model, VersionControl::Admin_var admin) {
 	m_d = d;
 	m_ui = ui;
 	m_admin = admin;

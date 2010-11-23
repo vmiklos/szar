@@ -5,7 +5,7 @@
 #include "ui_users.h"
 #include "Exceptions.h"
 
-class ACL : public QObject {
+class ACLController : public QObject {
 	Q_OBJECT
 
 protected:
@@ -17,7 +17,7 @@ protected:
 	QHash<QListWidgetItem*, VersionControl::UserAccess> m_hash;
 	void addButtons();
 public:
-	ACL(QDialog *d, Ui::UsersDialog *ui, VersionControl::ModelAdmin_var model, VersionControl::Admin_var admin);
+	ACLController(QDialog *d, Ui::UsersDialog *ui, VersionControl::ModelAdmin_var model, VersionControl::Admin_var admin);
 	void buildList();
 public slots:
 	void clicked(QAbstractButton *button);

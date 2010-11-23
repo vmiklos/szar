@@ -109,7 +109,7 @@ void Controller::editACL() {
 		QDialog *ud = new QDialog(m_mw, Qt::WindowSystemMenuHint | Qt::WindowTitleHint);
 		Ui::UsersDialog ui;
 		ui.setupUi(ud);
-		ACL ctrl(ud, &ui, model, admin);
+		ACLController ctrl(ud, &ui, model, admin);
 		QObject::connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)),
 			&ctrl, SLOT(clicked(QAbstractButton*)));
 		QObject::connect(ui.listWidget, SIGNAL(itemChanged(QListWidgetItem*)),
