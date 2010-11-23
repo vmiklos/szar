@@ -1,6 +1,7 @@
 Build procedure: qmake-qt4 && make stub && make
 Debian package generation: fakeroot make debs
 Windows installer generation: make nsis
+VC++ build: qmake -t vcapp + omniORB path fixes (see oo README)
 
 Available documentation:
 
