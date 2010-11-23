@@ -53,6 +53,9 @@ Név & Funkció & Típus \\ \hline
 \end{table}
 \end{center}
 
+A szervert bináris formában csak Linux rendszerre tettük elérhetővé, ott az
+sql-version-control-server parancs indítja.
+
 Interaktív mód esetén indításkor a szerver a következő paraméterekre kérdez rá:
 
 \begin{itemize}
@@ -66,5 +69,69 @@ A MySQL felhasználó jelszavát a szerver soha nem tárolja le biztonsági okok
 így ha nem-interaktív módban szeretnénk használni a szervert, állítsuk be a
 MySQL hozzáférést az adott felhasználóra és elérési hostra jelszó nélkül
 engedélyezettre.
+
+\section{A kliens használata}
+
+A kliens elérhető mind Linux, mind Windows rendszeren, indításához:
+
+\begin{itemize}
+\item Linuxon adjuk ki az sql-version-control-gui parancsot
+\item Windowson válasszuk a Start menüből az SQL Version Control elemet
+\end{itemize}
+
+A kliens indulásakor meg kell adjuk a szerver elérhetőségét, valamint
+felhasználói nevünket és jelszavunkat:
+
+FIXME login.png
+
+Ezután a klienst mind adminisztrációhoz, mind az SQL scriptek verzióinak
+kezeléséhez használhatjuk.
+
+\subsection{A kliens használata adminisztrációhoz}
+
+A kliens adminisztrációs felületet biztosít felhasználók létrehozásához, azok
+adatainak módosításához valamint törlésükhöz.
+
+Felhasználó létrehozásához válasszuk az Administration / Manage users
+menüpontot, majd kattintsunk az Add gombra. Ezt követően adjuk meg a
+felhasználó nevét és kattintsunk az OK gombra:
+
+FIXME createuser.png
+
+A felhasználó jelszavának beállításához ezután használjuk a Set password
+gombot, adjuk meg az új jelszót, végül kattintsunk az OK gombra:
+
+FIXME setpassword.png
+
+Ha a felhasználónak adminisztratív jogokat is kívánunk biztosítani, használjuk
+a felhasználó neve mellett elérhető jelölőnégyzetet:
+
+FIXME setadmin.png
+
+Felhasználók törléséhez válasszuk ki a törlendő felhasználót, kattintsunk a
+Remove gombra, majd erősítsük meg szándékunkat:
+
+FIXME removeuser.png
+
+\subsection{A kliens használata a verziók kezeléséhez}
+
+Az SQL scriptek verzióinak kezeléséhez szükséges funkciók használatát ismerteti
+ez a szakasz. Az SQL scriptek adatbázis sémákat modelleznek, így a továbbiakban
+a scripteket leíró objektumokat modellnek nevezzük.
+
+A modelleknek a következő operációit támogatja a rendszer:
+
+\begin{itemize}
+\item modell létrehozása
+\item adott verzió mentése külső file-ba
+\item új verzió hozzáadása külső file-ból
+\item modell törlése
+\item modell zárolása, ill. annak megszüntetése
+\item modell verzióinak listázása
+\end{itemize}
+
+A továbbiakban ezen funkciók használatát ismertetjük.
+
+FIXME
 
 \end{document}
