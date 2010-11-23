@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>SQL Version Control</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="gui.qrc">
+    <normaloff>:/gui.png</normaloff>:/gui.png</iconset>
+  </property>
   <widget class="QTreeWidget" name="treeWidget">
    <column>
     <property name="text">
@@ -147,7 +151,9 @@
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="gui.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>actionExit</sender>

@@ -5,3 +5,4 @@ HEADERS += *.h ../stub/VersionControl.hh
 INCLUDEPATH += ../stub
 LIBS += -lomniORB4
 CONFIG += qt
+RESOURCES += gui.qrc
