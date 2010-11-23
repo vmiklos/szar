@@ -243,20 +243,12 @@ void Controller::checkout() {
 		QMessageBox::critical(m_mw, "Invalid selection", "Please select a revision to check out.");
 		return;
 	}
-	QString fn = QFileDialog::getSaveFileName(m_mw, "Select file name to check out to",
-		parent->text(0) + "-" + twi->text(0) + ".sql", "SQL scripts (*.sql);;All files (*.*)");
-	if (fn == NULL) return; // Cancel
-	QFile file(fn);
-	if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
-		QMessageBox::critical(m_mw, "Cannot open file",
-			"The selected file cannot be opened. Check permissions.");
-		return;
-	}
 	unsigned int revnum = atoi(twi->text(0).toUtf8().constData() + 1); // skip 'r'
-	const QString name = parent->text(0);
+	const QByteArray ba = parent->text(0).toUtf8();
 	try {
-		const QByteArray ba = name.toUtf8();
-		file.write(m_root->getModel(ba.constData())->getRevision(revnum)->getData());
+		Browser::saveSQL(m_mw, "Select file name to check out to",
+			parent->text(0) + "-" + twi->text(0) + ".sql",
+			m_root->getModel(ba.constData())->getRevision(revnum)->getData());
 		// Successful file write, save revision
 		QSettings settings;
 		settings.setValue(QString("checkouts/") + ba.toHex(), revnum);
