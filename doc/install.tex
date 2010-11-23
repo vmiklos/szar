@@ -1,0 +1,116 @@
+\documentclass[a4paper,12pt]{article}
+
+\sloppy
+\frenchspacing
+
+\usepackage[left=4cm,top=4cm,right=4cm,bottom=4cm,nohead]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[magyar]{babel}
+\usepackage{listings}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage{float}
+
+\title{Szoftverarchitektúrák (VIAUM105)\\Egyszerű verziókövető rendszer\\Telepítési útmutató}
+\author{Vajna Miklós (AYU9RZ)\\Veres-Szentkirályi András (YZIOAW)}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\lstset{basicstyle=\ttfamily, breaklines=true, frame=single, tabsize=2}
+
+\pagebreak
+\onehalfspacing
+\section{Bevezetés}
+
+Jelen útmutató célja a házi feladat során létrehozott szoftver telepítésének
+bemutatása. A telepítési útmutatót két operációs rendszerhez készítettük el:
+
+\begin{itemize}
+\item Debian GNU/Linux (szerver és kliens)
+\item Microsoft Windows NT (csak kliens)
+\end{itemize}
+
+\section{Debian GNU/Linux}
+
+\subsection{Rendszerspecifikus telepítési folyamat}
+
+Debian GNU/Linux rendszereken a csomagok telepítésének megszokott módja a
+\verb|deb| csomagok használata. A gyakoribb eset az, hogy a felhasználó
+csomagkezelőjének konfigurációja tartalmazza annak a tárolónak az elérhetőségét,
+ahonnan a felhasználó a program nevének ismeretében egy kattintással telepítheti
+az alkalmazást. Ritkábban a csomagfájlt tölti le a felhasználó közvetlenül,
+majd azt szintén egy kattintással telepítheti.
+
+A Debian csomagfájlban megadható, hogy az alkalmazás milyen külső könyvtárakat
+igényel a futtatáshoz, a hivatalos Debian tárolók pedig tartalmazzák mindkét
+függőség (omniORB és QT) legfrissebb verzióját, így a csomagfájl mérete minimális,
+mindössze a metainformációkat tároló ún.\ control fájlban kell megadni az igényelt
+csomagok nevét (és opcionálisan a verziószámra vonatkozó feltételeket).
+
+\subsection{Kliens telepítésének módja}
+
+\subsubsection{Tárolóból}
+
+\begin{itemize}
+\item Parancssorból: \verb|apt-get install sql-version-control-gui|
+\item Grafikus felület (Synaptic) használatával: sql-version-control-gui kiválasztása
+a listából, majd a ``Telepítés'' gombra kattintás
+\end{itemize}
+
+\subsubsection{Csomagfájlból}
+
+\begin{itemize}
+\item Parancssorból: \verb|dpkg -i sql-version-control-gui-*.deb|
+\item Grafikus felület használatával: fájlböngészőben deb fájlon dupla kattintás
+\end{itemize}
+
+\subsection{Szerver telepítésének módja}
+
+\subsubsection{Tárolóból}
+
+\begin{itemize}
+\item Parancssorból: \verb|apt-get install sql-version-control-server|
+\item Grafikus felület (Synaptic) használatával: sql-version-control-server kiválasztása
+a listából, majd a ``Telepítés'' gombra kattintás
+\end{itemize}
+
+\subsubsection{Csomagfájlból}
+
+\begin{itemize}
+\item Parancssorból: \verb|dpkg -i sql-version-control-server-*.deb|
+\item Grafikus felület használatával: fájlböngészőben deb fájlon dupla kattintás
+\end{itemize}
+
+\clearpage
+\section{Microsoft Windows NT}
+
+\subsection{Rendszerspecifikus telepítési folyamat}
+
+Windows rendszereken alkalmazások telepítésének két megszokott módja a Microsoft Installer
+csomagok (\verb|msi| fájlok) ill.\ végrehajtható telepítő program használata. Előbbinek
+előnye, hogy csoportházirend használatával központilag is teríthető, hátránya azonban,
+hogy a létrehozására alkalmas szabad szoftverek nehezen kezelhetők, egyéb szoftverek
+használatához pedig megkötéseket tartalmazó végfelhasználói szerződést kell aláírni.
+
+Végrehajtható telepítő azonban könnyedén készíthető például a Nullsoft (Winamp fejlesztő)
+által fejlesztett NSIS használatával. Ennek előnye, hogy magas tömörítési rátát alkalmazó
+algoritmust (LZMA) is tartalmaz, a telepítőt pedig egy egyszerű szkriptfájlból generálja,
+a Windowsos telepítő létrehozásához pedig nincs szükség Windows futtatására. Az általunk
+írt script UAC-t tartalmazó Windows verziók esetén rendszergazdai jogosultságot kér, majd
+felmásolja a klienst tartalmazó végrehajtható programot, a szükséges könyvtárakat és
+az alkalmazás ikonját a felhasználó által választott kimeneti könyvtárba, majd létrehoz
+egy parancsikont a Start menüben.
+
+\subsection{Kliens telepítésének módja}
+
+\begin{itemize}
+\item sql-version-control-setup.exe elindítása
+\item UAC esetén rendszergazdai jogosultság megadása
+\item a megjelenő üdvözlőképernyőn a ``Next'' gomb megnyomása
+\item kimeneti könyvtár kiválasztása, majd a ``Next'' gomb megnyomása
+\item telepítés befejezése után ``Finish'' gomb megnyomása
+\end{itemize}
+
+\end{document}
