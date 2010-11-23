@@ -146,6 +146,32 @@ A modelleknek a következő operációit támogatja a rendszer:
 
 A továbbiakban ezen funkciók használatát ismertetjük.
 
-FIXME
+\subsubsection{Modell létrehozása}
+
+Új modell létrehozására azért van szükségünk, hogy azt követően a modellnek egy
+verzióját létre tudjuk hozni, majd a többi felhasználóval kollaborálni tudjunk.
+
+Első lépésben a tényleges modellt kell létrehozni, annak nevének megadásával,
+az Administration / New model menüpontot választva:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=50mm,keepaspectratio]{model-create.png}
+\caption{Modell létrehozása}
+\end{figure}
+
+Ezt követően az Administration / Edit ACL menüpontot választva adhatunk a
+nem-adminisztrátor felhasználóknak olvasás vagy írás jogot a modellhez.
+
+\subsubsection{Modell commitolása}
+
+A modell kezdetben üres, tehát nem tartalmaz verziókat. A commit művelet arra
+szolgál, hogy új verziót adjunk a modellhez. Ezt úgy tehetjük meg, hogy egy
+külső file-ban elkészítjük a modellt, majd a Modell / Commit menüpontot
+használva importáljuk a file-t a programba.
+
+\subsubsection{Modell letöltése}
+\subsubsection{Modell törlése}
+\subsubsection{Modell zárolása}
 
 \end{document}
