@@ -78,6 +78,7 @@ int main(int argc, char *argv[])
 	QObject::connect(ui.actionLock, SIGNAL(activated()), &ctrl, SLOT(lock()));
 	QObject::connect(ui.actionUnlock, SIGNAL(activated()), &ctrl, SLOT(unlock()));
 	QObject::connect(ui.actionRefresh_tree, SIGNAL(activated()), &ctrl, SLOT(buildTree()));
+	QObject::connect(ui.actionAbout_SQL_Version_Control, SIGNAL(activated()), &ctrl, SLOT(about()));
 	ctrl.buildTree();
 	return app.exec();
 }

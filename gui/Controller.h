@@ -40,4 +40,5 @@ public slots:
 	void lock();
 	void unlock();
 	void buildTree();
+	void about();
 };

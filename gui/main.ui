@@ -43,6 +43,7 @@
     <property name="title">
      <string>Help</string>
     </property>
+    <addaction name="actionAbout_SQL_Version_Control"/>
     <addaction name="actionAbout_QT"/>
    </widget>
    <widget class="QMenu" name="menuAdministration">
@@ -82,6 +83,11 @@
   <action name="actionNew_model">
    <property name="text">
     <string>New model...</string>
+   </property>
+  </action>
+  <action name="actionAbout_SQL_Version_Control">
+   <property name="text">
+    <string>About SQL Version Control</string>
    </property>
   </action>
   <action name="actionAbout_QT">

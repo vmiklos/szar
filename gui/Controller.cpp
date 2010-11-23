@@ -299,6 +299,15 @@ void Controller::unlock() {
 	}
 }
 
+void Controller::about() {
+	QMessageBox::about(m_mw, "About SQL Version Control", QString::fromUtf8(
+		"<b>SQL Version Control</b><br />"
+		"<a href='http://www.aut.bme.hu/portal/szoftverarchitekturak'>"
+		"http://www.aut.bme.hu/portal/szoftverarchitekturak</a><br /><br />"
+		"Vajna Miklós<br />Veres-Szentkirályi András<br /><br />2010"
+	));
+}
+
 Controller::Controller(QWidget *mw, Ui::MainWindow *ui, VersionControl::Root_var root) {
 	m_mw = mw;
 	m_ui = ui;
