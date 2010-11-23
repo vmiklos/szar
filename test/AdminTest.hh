@@ -12,13 +12,6 @@ class AdminTest : public TestBase
 	CPPUNIT_TEST_SUITE_END();
 
 public:
-	void tearDown() 
-	{
-		CORBA::release(authref);
-		CORBA::release(obj);
-		orb->destroy();
-	}
-
 	void testAddModelSuccess()
 	{
 		VersionControl::Root_var root = authref->login("admin", "admin");

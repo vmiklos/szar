@@ -7,13 +7,6 @@ class AuthTest : public TestBase
 	CPPUNIT_TEST_SUITE_END();
 
 public:
-	void tearDown() 
-	{
-		CORBA::release(authref);
-		CORBA::release(obj);
-		orb->destroy();
-	}
-
 	void testLoginSuccess()
 	{
 		int failed = 0;

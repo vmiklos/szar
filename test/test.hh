@@ -68,6 +68,13 @@ public:
 		authref = VersionControl::Auth::_narrow(obj);
 		CPPUNIT_ASSERT( !CORBA::is_nil(authref) );
 	}
+
+	void tearDown() 
+	{
+		CORBA::release(authref);
+		CORBA::release(obj);
+		orb->destroy();
+	}
 };
 
 #include "AuthTest.hh"
