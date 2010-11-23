@@ -1,5 +1,6 @@
 Build procedure: qmake-qt4 && make stub && make
 Debian package generation: fakeroot make debs
+Windows installer generation: make nsis
 
 Available documentation:
 
