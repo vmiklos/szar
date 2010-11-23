@@ -173,8 +173,8 @@ unsigned int Controller::getBase(VersionControl::Model_var model, const QString 
 		ui.cbBase->addItem(QString("r") + QString::number(cur), cur);
 	}
 	QSettings settings;
-	QVariant v = settings.value(QString("checkouts/") + name.toUtf8().toHex(), NULL);
-	if (v == NULL) {
+	QVariant v = settings.value(QString("checkouts/") + name.toUtf8().toHex(), "");
+	if (v == "") {
 		ui.lbLocal->setText("N/A");
 	} else {
 		QString r = QString("r") + v.toString();
