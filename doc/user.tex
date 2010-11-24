@@ -168,10 +168,74 @@ nem-adminisztrátor felhasználóknak olvasás vagy írás jogot a modellhez.
 A modell kezdetben üres, tehát nem tartalmaz verziókat. A commit művelet arra
 szolgál, hogy új verziót adjunk a modellhez. Ezt úgy tehetjük meg, hogy egy
 külső file-ban elkészítjük a modellt, majd a Modell / Commit menüpontot
-használva importáljuk a file-t a programba.
+használva importáljuk a file-t a programba. Az importálás után a program
+megerősítést kér, hogy mely verzión alapul az importált modell, és felajánlja,
+hogy automatikusan merge-öli a szerveren található esetleges újabb verzióval az
+importált modellt:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=100mm,keepaspectratio]{model-commit-askbase.png}
+\caption{Modell commitolása - paraméterek megerősítése}
+\end{figure}
+
+Amennyiben a szerveren nem volt új verzió, vagy megengedtük az automatikus
+merge használatát és az sikerrel zárult, a program értesít minket erről:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=100mm,keepaspectratio]{model-commit-simple.png}
+\caption{Modell commitolása - konfliktusmentes eset}
+\end{figure}
+
+Amennyiben ütközés keletkezik, akkor a CVS verziókezelőhöz hasonló módon
+ütközés-jelzőkkel annotált kimenetet kapunk:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=100mm,keepaspectratio]{model-commit-conflict.png}
+\caption{Modell commitolása - konfliktus}
+\end{figure}
+
+Ezt exportálhatjuk külső file-ba, majd újra megkísérelhetjük a commitolást,
+immár az új verziót megadva alapnak.
 
 \subsubsection{Modell letöltése}
-\subsubsection{Modell törlése}
+
+A commit művelettel ellentétben a letöltés egy meglehetősen egyszerű operáció:
+válasszuk ki a fa-struktúrában azt a modellt, amelyet letölteni szeretnénk, a
+csomópontot bontsuk ki, válasszuk ki a számunkra érdekes verziót, majd a Model
+/ Checkout menüpontra kattintva adjuk meg a cél file elérési útvonalát.
+
 \subsubsection{Modell zárolása}
+
+Lehetőség van egy modellt zárolni, ekkor csak a zárolást kezdeményező
+felhasználó és az adminisztrátorok képesek a modellt commitolni. A műveletet a
+Model / Lock menüpontból választhatjuk:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=75mm,keepaspectratio]{model-lock.png}
+\caption{Modell zárolása}
+\end{figure}
+
+Hasonló módon oldható fel egy zár a Model / Unlock menüpont választásával:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=75mm,keepaspectratio]{model-unlock.png}
+\caption{Modell zárolásának feloldása}
+\end{figure}
+
+\subsubsection{Modell törlése}
+
+A modelleket lehetséges törölni, de fontos figyelembe venni, hogy ekkor az
+összes modellhez kapcsolódó verzió is törlődik:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=75mm,keepaspectratio]{model-delete.png}
+\caption{Modell törlése}
+\end{figure}
 
 \end{document}
