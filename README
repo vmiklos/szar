@@ -10,3 +10,6 @@ Available documentation:
 - API documentation: doc/devel.pdf (sh mkdeveldoc.sh)
 - Installation documentation: doc/install.pdf (make -C doc install.pdf)
 - User documentation: doc/user.pdf (make -C doc user.pdf)
+
+To build a release zip which contains all documentation, source code and
+binaries: make release.
