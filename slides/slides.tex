@@ -35,6 +35,9 @@
 
 \begin{frame}
 \frametitle{Választott technológiák / szempontok}
+\begin{figure}[H]
+\includegraphics[width=15mm,keepaspectratio]{layers.pdf}
+\end{figure}
 \begin{itemize}
 \item Architektúra: háromrétegű
 \item Programnyelv: C++
@@ -48,6 +51,11 @@
 
 \begin{frame}
 \frametitle{Adatelérés}
+
+\begin{figure}[H]
+\includegraphics[width=75mm,keepaspectratio]{sqlschema.png}
+\end{figure}
+
 \begin{itemize}
 \item QtSql - mint JDBC Java esetén
 \item Jelenleg MySQL, de driver lecserélése csak beállítás kérdése
@@ -66,6 +74,13 @@
 \item Öröklések megkerülése: tie classok
 \item Interfészekhez több implemntáció (Model - ModelWriter, ModelReader)
 \end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Üzleti logika - interfészek}
+\begin{figure}[H]
+\includegraphics[width=60mm,keepaspectratio]{classdiagram.pdf}
+\end{figure}
 \end{frame}
 
 \begin{frame}
